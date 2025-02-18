@@ -1,0 +1,26 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "."
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint"],
+  "ignorePatterns": ["node_modules/", "coverage/", "dist/", "app/**/*.spec.ts"],
+  "rules": {
+    "@typescript-eslint/await-thenable": "error",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-duplicate-enum-values": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
+    ],
+    "no-return-await": "error",
+    "require-await": "error",
+    "max-params": ["error", 7],
+    "no-console": "error",
+    "no-duplicate-imports": "error",
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+  }
+}
