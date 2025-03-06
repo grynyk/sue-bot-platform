@@ -14,6 +14,8 @@ import { BotUserModule } from './modules/bot-user/bot-user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KeepAliveService } from './services/keep-alive.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { MessagingService } from './services/messaging.service';
+import { BotUser } from './modules/bot-user/entities/bot-user.entity';
 
 @Module({
   imports: [
@@ -34,7 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [],
+        entities: [BotUser],
         synchronize: true,
         logging: true,
       }),
@@ -56,6 +58,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     }),
     BotUserModule,
   ],
-  providers: [BotUpdate, KeepAliveService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene],
+  providers: [BotUpdate, KeepAliveService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, MessagingService],
 })
 export class BotModule {}
