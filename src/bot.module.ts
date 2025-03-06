@@ -12,11 +12,14 @@ import { SkinTypeTestScene } from './scenes/skin-type-test/skin-type-test.scene'
 import { SceneStateService } from './shared';
 import { BotUserModule } from './modules/bot-user/bot-user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { KeepAliveService } from './services/keep-alive.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     LoggerModule.forRoot(LoggerOptions),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -53,6 +56,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     BotUserModule,
   ],
-  providers: [BotUpdate, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene],
+  providers: [BotUpdate, KeepAliveService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene],
 })
 export class BotModule {}
