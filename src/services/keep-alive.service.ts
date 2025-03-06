@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Interval } from '@nestjs/schedule';
 import axios, { AxiosResponse } from 'axios';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
@@ -9,8 +9,12 @@ export class KeepAliveService {
 
   constructor(@InjectPinoLogger() protected readonly logger: PinoLogger) {}
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
-  handleCron(): void {
+  /**
+   * Pings the Heroku app to keep the dyno awake.
+   * every 25 minutes
+   */
+  @Interval(25 * 60 * 1000)
+  keepAlive(): void {
     this.logger.info(`Pinging ${this.url} to keep the dyno awake.`);
     axios
       .get(this.url)
