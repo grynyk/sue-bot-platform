@@ -1,9 +1,9 @@
 import { Markup } from 'telegraf';
 import { SkincareProduct, TestAnswer, TestQuestion } from '../models/skin-type-test.model';
 import { InlineKeyboardButton } from 'typegram';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from 'src/models';
 import { PRODUCT_SIZE } from '../enums/skin-test.enum';
 import { SKINCARE } from '../constants/skincare.constant';
+import { NAVIGATION_ICON, NAVIGATION_CALLBACK } from '@models/navigation.model';
 
 export function getQuestionKeyboard(question: TestQuestion): ReturnType<typeof Markup.inlineKeyboard> {
   const navigationButton: InlineKeyboardButton.CallbackButton =

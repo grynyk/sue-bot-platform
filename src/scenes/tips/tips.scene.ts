@@ -1,5 +1,4 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
-import { PARSE_MODE, SCENE_ID, SceneContext } from '@models';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
 import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '../../models/navigation.model';
@@ -11,6 +10,8 @@ import { isBotCommand } from '@utils';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
+import { SCENE_ID, SceneContext } from '@models/scenes.model';
+import { PARSE_MODE } from '@models/tg.model';
 
 @Scene(SCENE_ID.TIPS)
 export class TipsScene extends SceneNavigation {

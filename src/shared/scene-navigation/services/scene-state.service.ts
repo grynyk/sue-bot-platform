@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { NAVIGATION_CALLBACK, SCENE_ID, SceneContext } from '@models';
 import { dropRight, isNil, last, uniq } from 'lodash';
 import { GlobalStateItem } from '../models/scene-state.model';
+import { NAVIGATION_CALLBACK } from '@models/navigation.model';
+import { SCENE_ID, SceneContext } from '@models/scenes.model';
 
 @Injectable()
 export class SceneStateService {
