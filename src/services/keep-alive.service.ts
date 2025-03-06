@@ -5,7 +5,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class KeepAliveService {
-  private readonly url = process.env.HEROKU_APP_URL;
+  private readonly url: string | undefined = process.env.HEROKU_URL;
 
   constructor(@InjectPinoLogger() protected readonly logger: PinoLogger) {}
 
