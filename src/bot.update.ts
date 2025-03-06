@@ -2,9 +2,9 @@ import { Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
 import { Context, Markup, Telegraf } from 'telegraf';
 import { BotCommand } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { getDefinedBotCommands } from '@utils';
 import { BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
+import { getDefinedBotCommands } from '@utils/command.utils';
 
 @Update()
 export class BotUpdate {

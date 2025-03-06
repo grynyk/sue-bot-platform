@@ -5,12 +5,12 @@ import { get } from 'lodash';
 import { RecipesSceneContextType } from './models/recipes.model';
 import { getRecipesInitialKeyboard } from './utils/keyboard.factory';
 import { RECIPES } from './constants/recipes.constant';
-import { isBotCommand } from '@utils';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
 import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
+import { isBotCommand } from '@utils/command.utils';
 
 @Scene(SCENE_ID.RECIPES)
 export class RecipesScene extends SceneNavigation {
