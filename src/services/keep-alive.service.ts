@@ -17,7 +17,7 @@ export class KeepAliveService {
   keepAlive(): void {
     this.logger.info(`Pinging ${this.url} to keep the dyno awake.`);
     axios
-      .get(this.url)
+      .get(`${this.url}/bot-user`)
       .then((response: AxiosResponse): void => {
         this.logger.info(`Ping successful. Status: ${response.status}`);
       })
