@@ -1,6 +1,5 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
-import { deleteAndReply, isBotCommand } from '@utils';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { getAnswer, getQuestion, getResultProductSizeCaption, getResultProductCaption } from './utils/skin-type-test.utils';
 import { get, isNil } from 'lodash';
@@ -14,6 +13,8 @@ import { Message } from '@telegraf/types';
 import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { PARSE_MODE, DeleteAndReplyOptions } from '@models/tg.model';
+import { deleteAndReply } from '@utils/message.utils';
+import { isBotCommand } from '@utils/command.utils';
 
 @Scene(SCENE_ID.SKIN_TYPE_TEST)
 export class SkinTypeTestScene extends SceneNavigation {

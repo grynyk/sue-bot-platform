@@ -6,12 +6,12 @@ import { get } from 'lodash';
 import { TipsSceneContextType } from './models/tips.model';
 import { TIPS } from './constants/tips.constant';
 import { getTipsDynamicAffirmationKeyboard, getTipsInitialKeyboard, getTipsMusicAffirmationKeyboard } from './utils/keyboard.factory';
-import { isBotCommand } from '@utils';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { PARSE_MODE } from '@models/tg.model';
+import { isBotCommand } from '@utils/command.utils';
 
 @Scene(SCENE_ID.TIPS)
 export class TipsScene extends SceneNavigation {

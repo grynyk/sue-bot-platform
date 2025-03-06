@@ -8,7 +8,7 @@
     "paths": {
       "@models/*": ["models/*"],
       "@shared/*": ["shared/*"],
-      "@utils": ["utils"],
+      "@utils/*": ["utils/*"],
     }
   },
   "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
