@@ -1,5 +1,4 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON, SCENE_ID, SceneContext } from '@models';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
 import { get } from 'lodash';
@@ -10,6 +9,8 @@ import { isBotCommand } from '@utils';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
+import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
+import { SCENE_ID, SceneContext } from '@models/scenes.model';
 
 @Scene(SCENE_ID.RECIPES)
 export class RecipesScene extends SceneNavigation {

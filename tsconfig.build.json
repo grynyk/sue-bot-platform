@@ -1,4 +1,15 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "sourceMap": true,
+    "declaration": true,
+    "paths": {
+      "@models/*": ["models/*"],
+      "@shared/*": ["shared/*"],
+      "@utils": ["utils"],
+    }
+  },
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
 }

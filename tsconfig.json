@@ -18,7 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@models": ["src/models"],
       "@models/*": ["src/models/*"],
       "@shared/*": ["src/shared/*"],
       "@utils": ["src/utils"]

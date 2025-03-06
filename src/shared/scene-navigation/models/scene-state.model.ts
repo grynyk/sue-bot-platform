@@ -1,4 +1,5 @@
-import { NAVIGATION_CALLBACK, SCENE_ID } from '@models';
+import { NAVIGATION_CALLBACK } from '@models/navigation.model';
+import { SCENE_ID } from '@models/scenes.model';
 
 export type CallbacksHistoryType = NAVIGATION_CALLBACK | string;
 
