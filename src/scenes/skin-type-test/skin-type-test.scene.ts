@@ -10,11 +10,12 @@ import { RESULTS } from './constants/results.constant';
 import { PRODUCT_SIZE } from './enums/skin-test.enum';
 import { SKINCARE } from './constants/skincare.constant';
 import { Message } from '@telegraf/types';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
+import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { PARSE_MODE, DeleteAndReplyOptions } from '@models/tg.model';
 import { deleteAndReply } from '@utils/message.utils';
 import { isBotCommand } from '@utils/command.utils';
+import { backButtonKeyboard } from '@utils/keyboard.utils';
 
 @Scene(SCENE_ID.SKIN_TYPE_TEST)
 export class SkinTypeTestScene extends SceneNavigation {
@@ -45,10 +46,7 @@ export class SkinTypeTestScene extends SceneNavigation {
       const result: TestResult = RESULTS.find((result: TestResult): boolean => result.answerIds.includes(answerId));
       const product: SkincareProduct = result.products.find((product: SkincareProduct): boolean => product.size === productSize);
       const caption: string = product[detail.toLowerCase()];
-      const keyboard: ReturnType<typeof Markup.inlineKeyboard> = Markup.inlineKeyboard([
-        Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK),
-      ]);
-      this.deleteAndReply(ctx, caption, keyboard);
+      this.deleteAndReply(ctx, caption, backButtonKeyboard);
     } catch (error) {
       this.logger.error(`${ctx.text} handleResultDetails(...): ${error.message}`);
     }
