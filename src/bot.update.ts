@@ -21,8 +21,12 @@ export class BotUpdate {
      * Update user data on each action to keep it up-to-date.
      */
     this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
-      this.botUserDataService.update(ctx.from.id, { ...ctx.from });
-      await next();
+      try {
+        await this.botUserDataService.update(ctx.from.id, { ...ctx.from });
+        await next();
+      } catch (error) {
+        this.logger.error(`update bot user: ${error.message}`);
+      }
     });
   }
 
@@ -33,7 +37,7 @@ export class BotUpdate {
       await this.bot.telegram.setMyCommands(definedBotCommands);
       await ctx.scene.enter(SCENE_ID.SUBSCRIPTION);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onStart(...): ${error.message}`);
     }
   }
 
@@ -42,7 +46,7 @@ export class BotUpdate {
     try {
       await ctx.scene.enter(SCENE_ID.RECIPES);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onRecipes(...): ${error.message}`);
     }
   }
 
@@ -51,7 +55,7 @@ export class BotUpdate {
     try {
       await ctx.scene.enter(SCENE_ID.TIPS);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onTips(...): ${error.message}`);
     }
   }
 
@@ -60,7 +64,7 @@ export class BotUpdate {
     try {
       await ctx.scene.enter(SCENE_ID.SKIN_TYPE_TEST);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onSkinTypeTest(...): ${error.message}`);
     }
   }
 
@@ -69,7 +73,7 @@ export class BotUpdate {
     try {
       await ctx.scene.enter(SCENE_ID.SETTINGS);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onSettings(...): ${error.message}`);
     }
   }
 
@@ -94,6 +98,10 @@ export class BotUpdate {
     }
   }
 
+  /**
+   * Listen to all CONFIRM callbacks.
+   * Update message text to show that the action was completed.
+   */
   @Action(NAVIGATION_CALLBACK.CONFIRM)
   async onConfirm(@Ctx() ctx: Context): Promise<void> {
     try {
@@ -105,7 +113,7 @@ export class BotUpdate {
         await ctx.reply('✅ Зроблено');
       }
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onConfirm(...): ${error.message}`);
     }
   }
 }
