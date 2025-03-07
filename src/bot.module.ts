@@ -17,8 +17,8 @@ import { MessagingService } from './services/messaging.service';
 import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
 import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
+import { SettingsScene } from './scenes/settings/settings.scene';
 import { isDev, isStaging } from '@utils/env.util';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -61,6 +61,6 @@ import { isDev, isStaging } from '@utils/env.util';
     BotUserDataModule
   ],
   controllers: [],
-  providers: [BotUpdate, KeepAliveService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene],
+  providers: [BotUpdate, KeepAliveService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene],
 })
 export class BotModule {}

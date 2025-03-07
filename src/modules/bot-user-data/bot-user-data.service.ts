@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, LessThan, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { BotUser } from './entities/bot-user.entity';
 import { CreateBotUserDto } from './dto/create-bot-user.dto';
 import { UpdateBotUserDto } from './dto/update-bot-user.dto';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { BotUserStats } from './models/bot-user-stats.model';
+import { format } from 'date-fns';
 @Injectable()
 export class BotUserDataService {
   constructor(@InjectRepository(BotUser) private readonly userRepository: Repository<BotUser>,  @InjectPinoLogger() protected readonly logger: PinoLogger) {}
@@ -35,7 +37,7 @@ export class BotUserDataService {
 
   async update(id: number, updateUserDto: Partial<UpdateBotUserDto>): Promise<BotUser> {
     try {
-      const user = await this.userRepository.findOneBy({ id });
+      const user: BotUser = await this.userRepository.findOneBy({ id });
       if (!user) {
         throw new NotFoundException(`User with id ${id} not found`);
       }
@@ -44,6 +46,24 @@ export class BotUserDataService {
     } catch (error) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
+  }
+
+  async getStats(): Promise<BotUserStats> {
+    const total: number = await this.userRepository.count();
+    const active: number = await this.userRepository.count({ where: { was_active_today: true } });
+    const currentDate: string = format(new Date(), 'yyyy-MM-dd');
+    const newToday: number = await this.userRepository.count({ where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) } });
+    const notificationsDisabled = await this.userRepository.count({ where: { notifications_enabled: false } });
+    const changedNotificationTime: number = await this.userRepository.count({ where: [{ wake_up_time: Not('08:00') }, { bed_time: Not('23:00') }] });
+    const completedSkinTest: number = await this.userRepository.count({ where: { skin_type: Not(IsNull()) } });
+    return {
+      total,
+      active,
+      newToday,
+      notificationsDisabled,
+      changedNotificationTime,
+      completedSkinTest,
+    };
   }
 
   remove(id: number): Promise<{ affected?: number }> {

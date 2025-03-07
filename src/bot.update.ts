@@ -6,10 +6,16 @@ import { BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { getDefinedBotCommands } from '@utils/command.utils';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
+import { BotUserDataService, BotUserStats } from '@modules/bot-user-data';
+import { PARSE_MODE } from '@models/tg.model';
 
 @Update()
 export class BotUpdate {
-  constructor(@InjectBot() private readonly bot: Telegraf, @InjectPinoLogger() private readonly logger: PinoLogger) {}
+  constructor(
+    @InjectBot() private readonly bot: Telegraf,
+    @InjectPinoLogger() private readonly logger: PinoLogger,
+    private readonly botUserDataService: BotUserDataService
+  ) {}
 
   @Start()
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
@@ -19,7 +25,6 @@ export class BotUpdate {
       await ctx.scene.enter(SCENE_ID.SUBSCRIPTION);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
     }
   }
 
@@ -29,7 +34,6 @@ export class BotUpdate {
       await ctx.scene.enter(SCENE_ID.RECIPES);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
     }
   }
 
@@ -39,7 +43,6 @@ export class BotUpdate {
       await ctx.scene.enter(SCENE_ID.TIPS);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
     }
   }
 
@@ -49,29 +52,36 @@ export class BotUpdate {
       await ctx.scene.enter(SCENE_ID.SKIN_TYPE_TEST);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
     }
   }
 
   @Command(BOT_COMMAND_NAME.SETTINGS)
-  async onSettings(@Ctx() ctx: Context): Promise<void> {
+  async onSettings(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      await ctx.reply('Settings');
-      this.logger.info('Settings command executed');
+      await ctx.scene.enter(SCENE_ID.SETTINGS);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
     }
   }
 
   @Command(BOT_COMMAND_NAME.STATS)
   async onStats(@Ctx() ctx: Context): Promise<void> {
     try {
-      await ctx.reply('Stats');
-      this.logger.info('Stats command executed');
+      const statistics: BotUserStats = await this.botUserDataService.getStats();
+      const localizationStrings: Record<keyof BotUserStats, string> = {
+        total: 'Всього користувачів',
+        newToday: 'Нових сьогодні',
+        active: 'Зараз активних',
+        notificationsDisabled: 'З вимкненими сповіщеннями',
+        changedNotificationTime: 'Змінили час сповіщень',
+        completedSkinTest: 'Пройшли тест на тип шкіри',
+      };
+      const stringifiedStatistics: string = Object.entries(statistics)
+        .map(([key, value]: [string, number]): string => `${localizationStrings[key]}: ${value}`)
+        .join('\n');
+      await ctx.reply(`<strong>Статистика бота:</strong>\n\n<code>${stringifiedStatistics}</code>`, { parse_mode: PARSE_MODE.HTML });
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
-      throw new Error(error.message);
+      this.logger.error(`${ctx.text} onStats(...): ${error.message}`);
     }
   }
 
