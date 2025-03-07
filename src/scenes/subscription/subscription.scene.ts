@@ -56,7 +56,7 @@ export class SubscriptionScene {
   }
 
   @Action(SUBSCRIPTION_CALLBACK.SUBSCRIBE)
-  async onRecipe(@Ctx() ctx: SceneContext): Promise<void> {
+  async onSubscribe(@Ctx() ctx: SceneContext): Promise<void> {
     try {
       await ctx.answerCbQuery();
       await ctx.editMessageReplyMarkup(undefined);
