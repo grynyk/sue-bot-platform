@@ -15,7 +15,16 @@ export class BotUpdate {
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService
-  ) {}
+  ) {
+    /**
+     * Listen to all bot actions.
+     * Update user data on each action to keep it up-to-date.
+     */
+    this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
+      this.botUserDataService.update(ctx.from.id, { ...ctx.from });
+      await next();
+    });
+  }
 
   @Start()
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
@@ -71,7 +80,7 @@ export class BotUpdate {
       const localizationStrings: Record<keyof BotUserStats, string> = {
         total: 'Всього користувачів',
         newToday: 'Нових сьогодні',
-        active: 'Зараз активних',
+        active: 'Активних сьогодні',
         notificationsDisabled: 'З вимкненими сповіщеннями',
         changedNotificationTime: 'Змінили час сповіщень',
         completedSkinTest: 'Пройшли тест на тип шкіри',

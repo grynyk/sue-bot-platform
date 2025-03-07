@@ -41,7 +41,7 @@ export class BotUserDataService {
       if (!user) {
         throw new NotFoundException(`User with id ${id} not found`);
       }
-      Object.assign(user, updateUserDto);
+      Object.assign(user, {...updateUserDto, was_active_today: true });
       return this.userRepository.save(user);
     } catch (error) {
       throw new NotFoundException(`User with id ${id} not found`);
