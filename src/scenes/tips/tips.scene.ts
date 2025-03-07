@@ -1,7 +1,7 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '../../models/navigation.model';
+import { NAVIGATION_CALLBACK } from '../../models/navigation.model';
 import { get } from 'lodash';
 import { TipsSceneContextType } from './models/tips.model';
 import { TIPS } from './constants/tips.constant';
@@ -12,6 +12,7 @@ import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { PARSE_MODE } from '@models/tg.model';
 import { isBotCommand } from '@utils/command.utils';
+import { backButtonKeyboard } from '@utils/keyboard.utils';
 
 @Scene(SCENE_ID.TIPS)
 export class TipsScene extends SceneNavigation {
@@ -55,7 +56,7 @@ export class TipsScene extends SceneNavigation {
       }
       await ctx.editMessageText(TIPS.RESPONSES.MAIN[callbackData], {
         parse_mode: PARSE_MODE.MARKDOWN_V2,
-        ...Markup.inlineKeyboard([Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK)]),
+        ...backButtonKeyboard,
       });
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
@@ -70,7 +71,7 @@ export class TipsScene extends SceneNavigation {
       this.stateService.storeCallback(callbackData);
       await ctx.editMessageText(TIPS.RESPONSES.DYNAMIC_AFFIRMATION[callbackData], {
         parse_mode: PARSE_MODE.HTML,
-        ...Markup.inlineKeyboard([Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK)]),
+        ...backButtonKeyboard,
       });
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
@@ -85,7 +86,7 @@ export class TipsScene extends SceneNavigation {
       this.stateService.storeCallback(callbackData);
       await ctx.editMessageText(TIPS.RESPONSES.MUSIC_AFFIRMATION[callbackData], {
         parse_mode: PARSE_MODE.HTML,
-        ...Markup.inlineKeyboard([Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK)]),
+        ...backButtonKeyboard,
       });
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);

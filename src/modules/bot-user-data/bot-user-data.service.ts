@@ -6,10 +6,10 @@ import { CreateBotUserDto } from './dto/create-bot-user.dto';
 import { UpdateBotUserDto } from './dto/update-bot-user.dto';
 
 @Injectable()
-export class BotUserService {
+export class BotUserDataService {
   constructor(@InjectRepository(BotUser) private readonly userRepository: Repository<BotUser>) {}
 
-  create(createUserDto: CreateBotUserDto): Promise<BotUser> {
+  create(createUserDto: Partial<CreateBotUserDto>): Promise<BotUser> {
     const user: BotUser = new BotUser();
     user.id = createUserDto.id;
     user.first_name = createUserDto.first_name;
@@ -51,5 +51,9 @@ export class BotUserService {
 
   remove(id: number): Promise<{ affected?: number }> {
     return this.userRepository.delete(id);
+  }
+
+  drop(): Promise<void> {
+    return this.userRepository.clear();
   }
 }

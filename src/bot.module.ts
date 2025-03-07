@@ -10,12 +10,13 @@ import { RecipesScene } from './scenes/recipes/recipes.scene';
 import { TipsScene } from './scenes/tips/tips.scene';
 import { SkinTypeTestScene } from './scenes/skin-type-test/skin-type-test.scene';
 import { SceneStateService } from './shared';
-import { BotUserModule } from './modules/bot-user/bot-user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KeepAliveService } from './services/keep-alive.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MessagingService } from './services/messaging.service';
-import { BotUser } from './modules/bot-user/entities/bot-user.entity';
+import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
+import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
+import { SubscriptionScene } from './scenes/subscription/subscription.scene';
 
 @Module({
   imports: [
@@ -56,8 +57,9 @@ import { BotUser } from './modules/bot-user/entities/bot-user.entity';
         };
       },
     }),
-    BotUserModule,
+    BotUserDataModule
   ],
-  providers: [BotUpdate, KeepAliveService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, MessagingService],
+  controllers: [],
+  providers: [BotUpdate, KeepAliveService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene],
 })
 export class BotModule {}

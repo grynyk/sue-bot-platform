@@ -8,9 +8,10 @@ import { RECIPES } from './constants/recipes.constant';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
+import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { isBotCommand } from '@utils/command.utils';
+import { backButtonKeyboard } from '@utils/keyboard.utils';
 
 @Scene(SCENE_ID.RECIPES)
 export class RecipesScene extends SceneNavigation {
@@ -46,7 +47,7 @@ export class RecipesScene extends SceneNavigation {
       this.stateService.storeCallback(callbackData);
       await ctx.editMessageText(
         RECIPES.RESPONSES.MAIN[callbackData],
-        Markup.inlineKeyboard([Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK)])
+        backButtonKeyboard
       );
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);

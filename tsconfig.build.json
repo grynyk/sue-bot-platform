@@ -9,6 +9,7 @@
       "@models/*": ["models/*"],
       "@shared/*": ["shared/*"],
       "@utils/*": ["utils/*"],
+      "@modules/*": ["modules/*"],
     }
   },
   "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
