@@ -29,12 +29,12 @@ import { isDev, isStaging } from '@utils/env.util';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get<string>(GLOBAL_VARIABLES.DATABASE_URL, 'localhost'),
-        host: configService.get<string>(GLOBAL_VARIABLES.DB_HOST, 'localhost'),
+        url: configService.get<string>(GLOBAL_VARIABLES.DATABASE_URL),
+        host: configService.get<string>(GLOBAL_VARIABLES.DB_HOST),
         port: configService.get<number>(GLOBAL_VARIABLES.DB_PORT, 5432),
-        username: configService.get<string>(GLOBAL_VARIABLES.DB_USER, 'admin'),
-        password: configService.get<string>(GLOBAL_VARIABLES.DB_PASSWORD, 'password'),
-        database: configService.get<string>(GLOBAL_VARIABLES.DB_NAME, 'database'),
+        username: configService.get<string>(GLOBAL_VARIABLES.DB_USER),
+        password: configService.get<string>(GLOBAL_VARIABLES.DB_PASSWORD),
+        database: configService.get<string>(GLOBAL_VARIABLES.DB_NAME),
         ssl: {
           rejectUnauthorized: false,
         },

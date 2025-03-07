@@ -16,13 +16,15 @@ import { PARSE_MODE, DeleteAndReplyOptions } from '@models/tg.model';
 import { deleteAndReply } from '@utils/message.utils';
 import { isBotCommand } from '@utils/command.utils';
 import { backButtonKeyboard } from '@utils/keyboard.utils';
+import { BotUserDataService } from '@modules/bot-user-data';
 
 @Scene(SCENE_ID.SKIN_TYPE_TEST)
 export class SkinTypeTestScene extends SceneNavigation {
   constructor(
     @InjectBot() protected readonly bot: Telegraf,
     @InjectPinoLogger() protected readonly logger: PinoLogger,
-    protected readonly stateService: SceneStateService
+    protected readonly stateService: SceneStateService,
+    private readonly botUserDataService: BotUserDataService
   ) {
     super(bot, logger, stateService, SCENE_ID.SKIN_TYPE_TEST);
   }
@@ -63,6 +65,7 @@ export class SkinTypeTestScene extends SceneNavigation {
       const keyboard: ReturnType<typeof Markup.inlineKeyboard> = getResultProductKeyboard(product, answerId, productSize);
       const caption: string = getResultProductCaption(result, product);
       this.deleteAndReply(ctx, caption, keyboard, { image: product.image });
+      await this.botUserDataService.update(ctx.from.id, { skin_type: result.title }); 
     } catch (error) {
       this.logger.error(`${ctx.text} handleResult(...): ${error.message}`);
     }
