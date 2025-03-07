@@ -7,3 +7,9 @@ export enum GLOBAL_VARIABLES {
   DB_NAME = 'DB_NAME',
   DATABASE_URL = 'DATABASE_URL',
 }
+
+export enum ENV {
+  DEV = 'develop',
+  PROD = 'production',
+  STAGING = 'staging',
+}

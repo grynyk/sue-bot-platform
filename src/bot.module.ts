@@ -17,6 +17,7 @@ import { MessagingService } from './services/messaging.service';
 import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
 import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
+import { isDev, isStaging } from '@utils/env.util';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { SubscriptionScene } from './scenes/subscription/subscription.scene';
         },
         entities: [BotUser],
         synchronize: true,
-        logging: true,
+        logging: isDev() || isStaging(),
       }),
     }),
     TelegrafModule.forRootAsync({
