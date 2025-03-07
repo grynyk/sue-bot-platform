@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { PARSE_MODE } from '@models/tg.model';
 import { Observable, switchMap, tap, timer } from 'rxjs';
 import { SUBSCRIPTION_CALLBACK } from './enums/subscription.enum';
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
+import { confirmButtonKeyboard } from '@utils/keyboard.utils';
 
 const parse_mode = PARSE_MODE.HTML;
 
@@ -71,7 +71,7 @@ export class SubscriptionScene {
             (): Promise<Message> =>
               ctx.reply(
                 'Випий 200мл води 💧',
-                Markup.inlineKeyboard([Markup.button.callback(NAVIGATION_ICON.CONFIRM, NAVIGATION_CALLBACK.CONFIRM)])
+                confirmButtonKeyboard
               )
           ),
           tap((): void => {
