@@ -9,9 +9,11 @@ import { isBotCommand } from '@utils/command.utils';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { getSettingsInitialKeyboard, getSettingsNotificationsKeyboard } from './utils/keyboard.factory';
 import { SettingsSceneContextType } from './models/settings.model';
-import { get, isBoolean, isNil } from 'lodash';
+import { get, isBoolean, isNil, range } from 'lodash';
 import { SETTINGS } from './constants/settings.constant';
 import { PARSE_MODE } from '@models/tg.model';
+import { InlineKeyboardButton } from 'typegram';
+import { backButton } from '@utils/keyboard.utils';
 
 @Scene(SCENE_ID.SETTINGS)
 export class SettingsScene extends SceneNavigation {
@@ -66,6 +68,38 @@ export class SettingsScene extends SceneNavigation {
         this.onEnableNotifications(ctx);
         return;
       }
+      if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.WAKE_UP_TIME) {
+        this.onSetWakeUpTime(ctx);
+        return;
+      }
+      if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.BED_TIME) {
+        this.onSetBedTime(ctx);
+        return;
+      }
+    } catch (error) {
+      this.logger.error(`${ctx.text}: ${error.message}`);
+    }
+  }
+
+  @Action(/^WAKE_UP_TIME_(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])/)
+  async onSetWakeUpTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
+    try {
+      const wake_up_time: string = ctx.match[1];
+      await this.botUserDataService.update(ctx.from.id, { wake_up_time });
+      this.stateService.removeLastCallback();
+      this.onNotificationsSettings(ctx);
+    } catch (error) {
+      this.logger.error(`${ctx.text}: ${error.message}`);
+    }
+  }
+
+  @Action(/^BED_TIME_(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])/)
+  async onSetBedTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
+    try {
+      const bed_time: string = ctx.match[1];
+      await this.botUserDataService.update(ctx.from.id, { bed_time });
+      this.stateService.removeLastCallback();
+      this.onNotificationsSettings(ctx);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -89,6 +123,41 @@ export class SettingsScene extends SceneNavigation {
     }
   }
 
+  private async onSetWakeUpTime(ctx: SceneContext): Promise<void> {
+    try {
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
+      this.stateService.storeCallback(callbackData);
+      const buttons: InlineKeyboardButton.CallbackButton[] = range(6, 10).flatMap((hour: number): InlineKeyboardButton.CallbackButton[] =>
+        range(0, 60, 10).map((minute: number): InlineKeyboardButton.CallbackButton => {
+          const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+          return Markup.button.callback(time, `WAKE_UP_TIME_${time}`);
+        })
+      );
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([...buttons, backButton], { columns: 4 });
+      await ctx.editMessageText('Оберіть час прокидання:', keyboard);
+    } catch (error) {
+      this.logger.error(`${ctx.text}: ${error.message}`);
+    }
+  }
+
+
+  private async onSetBedTime(ctx: SceneContext): Promise<void> {
+    try {
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
+      this.stateService.storeCallback(callbackData);
+      const buttons: InlineKeyboardButton.CallbackButton[] = range(22, 24).flatMap((hour: number): InlineKeyboardButton.CallbackButton[] =>
+        range(0, 60, 10).map((minute: number): InlineKeyboardButton.CallbackButton => {
+          const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+          return Markup.button.callback(time, `BED_TIME_${time}`);
+        })
+      );
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([...buttons, backButton], { columns: 4 });
+      await ctx.editMessageText('Оберіть час сну:', keyboard);
+    } catch (error) {
+      this.logger.error(`${ctx.text}: ${error.message}`);
+    }
+  }
+
   private async onNotificationsSettings(ctx: SceneContext): Promise<void> {
     try {
       await ctx.answerCbQuery();
@@ -102,7 +171,7 @@ export class SettingsScene extends SceneNavigation {
       const parseValue: (value: string | number | boolean) => string = (value: string | boolean): string =>
         isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;
       const stringifiedUserDetails: string = Object.keys(localizationStrings)
-        .filter((key: keyof BotUser): boolean =>  !isNil(get(user, key)))
+        .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
         .map((key: keyof BotUser): string => `${get(localizationStrings, key)}: ${parseValue(get(user, key))}`)
         .join('\n');
       await ctx.editMessageText(
