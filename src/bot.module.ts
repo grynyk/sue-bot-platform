@@ -19,6 +19,9 @@ import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module'
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
 import { SettingsScene } from './scenes/settings/settings.scene';
 import { isDev, isStaging } from '@utils/env.util';
+import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
+import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
+import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -38,7 +41,7 @@ import { isDev, isStaging } from '@utils/env.util';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser],
+        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct],
         synchronize: true,
         logging: isDev() || isStaging(),
       }),
@@ -58,7 +61,8 @@ import { isDev, isStaging } from '@utils/env.util';
         };
       },
     }),
-    BotUserDataModule
+    BotUserDataModule,
+    SkinTypeTestDataModule
   ],
   controllers: [],
   providers: [BotUpdate, KeepAliveService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene],

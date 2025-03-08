@@ -6,8 +6,9 @@ import { BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { getDefinedBotCommands } from '@utils/command.utils';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
-import { BotUserDataService, BotUserStats } from '@modules/bot-user-data';
+import { BotUser, BotUserDataService, BotUserStats } from '@modules/bot-user-data';
 import { PARSE_MODE } from '@models/tg.model';
+import { isNil } from 'lodash';
 
 @Update()
 export class BotUpdate {
@@ -22,7 +23,10 @@ export class BotUpdate {
      */
     this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
       try {
-        await this.botUserDataService.update(ctx.from.id, { ...ctx.from });
+        const user: BotUser = await this.botUserDataService.findOne(ctx.from.id);
+        if (!isNil(user)) {
+          await this.botUserDataService.update(ctx.from.id, { ...ctx.from });
+        }
         await next();
       } catch (error) {
         this.logger.error(`update bot user: ${error.message}`);
