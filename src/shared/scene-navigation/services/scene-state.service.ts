@@ -50,6 +50,11 @@ export class SceneStateService {
     session.callbacksHistory = uniq([...session.callbacksHistory, step]);
   }
 
+  removeLastCallback(): void {
+    const session: GlobalStateItem = this.getSceneData();
+    session.callbacksHistory = dropRight(session.callbacksHistory);
+  }
+
   getPreviousCallback(): string | null {
     const session: GlobalStateItem = this.getSceneData();
     session.callbacksHistory = dropRight(session.callbacksHistory);
