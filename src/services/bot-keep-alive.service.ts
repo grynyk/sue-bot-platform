@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
-export class KeepAliveService {
+export class BotKeepAliveService {
   private readonly url: string | undefined = process.env.HEROKU_URL;
 
   constructor(@InjectPinoLogger() protected readonly logger: PinoLogger) {}
@@ -14,7 +14,7 @@ export class KeepAliveService {
    * every 25 minutes
    */
   @Interval(25 * 60 * 1000)
-  keepAlive(): void {
+  keepAwake(): void {
     this.logger.info(`Pinging ${this.url} to keep the dyno awake.`);
     axios
       .get(`${this.url}/bot-user`)

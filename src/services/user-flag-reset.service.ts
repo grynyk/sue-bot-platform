@@ -4,7 +4,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
-export class ResetFlagsService {
+export class UserFlagResetService {
   constructor(private readonly botUserDataService: BotUserDataService, @InjectPinoLogger() protected readonly logger: PinoLogger) {}
 
   /**
@@ -14,7 +14,7 @@ export class ResetFlagsService {
    * every day at midnight
    */
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-  resetUserFlags(): void {
+  resetUserActivityFlags(): void {
     try {
       this.botUserDataService.resetFlags();
     } catch (error) {
