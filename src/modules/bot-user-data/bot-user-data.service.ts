@@ -66,6 +66,10 @@ export class BotUserDataService {
     };
   }
 
+  async resetFlags(): Promise<void> {
+    await this.userRepository.update({}, { was_active_today: false, done_tasks_counter: 0 });
+  }
+
   remove(id: number): Promise<{ affected?: number }> {
     return this.userRepository.delete(id);
   }

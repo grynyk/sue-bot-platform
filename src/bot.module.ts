@@ -22,6 +22,8 @@ import { isDev, isStaging } from '@utils/env.util';
 import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
 import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
 import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
+import { ResetFlagsService } from './services/reset-flags.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -65,6 +67,6 @@ import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-t
     SkinTypeTestDataModule
   ],
   controllers: [],
-  providers: [BotUpdate, KeepAliveService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene],
+  providers: [BotUpdate, KeepAliveService, ResetFlagsService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene],
 })
 export class BotModule {}
