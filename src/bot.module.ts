@@ -11,7 +11,7 @@ import { TipsScene } from './scenes/tips/tips.scene';
 import { SkinTypeTestScene } from './scenes/skin-type-test/skin-type-test.scene';
 import { SceneStateService } from './shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { KeepAliveService } from './services/keep-alive.service';
+import { BotKeepAliveService } from './services/bot-keep-alive.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MessagingService } from './services/messaging.service';
 import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
@@ -22,7 +22,7 @@ import { isDev, isStaging } from '@utils/env.util';
 import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
 import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
 import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
-import { ResetFlagsService } from './services/reset-flags.service';
+import { UserFlagResetService } from './services/user-flag-reset.service';
 
 @Module({
   imports: [
@@ -64,9 +64,20 @@ import { ResetFlagsService } from './services/reset-flags.service';
       },
     }),
     BotUserDataModule,
-    SkinTypeTestDataModule
+    SkinTypeTestDataModule,
   ],
   controllers: [],
-  providers: [BotUpdate, KeepAliveService, ResetFlagsService, MessagingService, SceneStateService, RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene],
+  providers: [
+    BotUpdate,
+    BotKeepAliveService,
+    UserFlagResetService,
+    MessagingService,
+    SceneStateService,
+    RecipesScene,
+    TipsScene,
+    SkinTypeTestScene,
+    SubscriptionScene,
+    SettingsScene,
+  ],
 })
 export class BotModule {}
