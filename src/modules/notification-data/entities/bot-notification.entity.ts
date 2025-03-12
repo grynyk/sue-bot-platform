@@ -7,7 +7,7 @@ export class BotNotification {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'simple-array' })
+  @Column({ type: 'json' })
   captions: string[];
 
   @Column({ type: 'varchar', nullable: true })
