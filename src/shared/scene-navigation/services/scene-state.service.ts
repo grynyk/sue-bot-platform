@@ -8,11 +8,11 @@ import { SCENE_ID, SceneContext } from '@models/scenes.model';
 export class SceneStateService {
   private readonly userState: Map<number, Record<SCENE_ID, GlobalStateItem>> = new Map<number, Record<SCENE_ID, GlobalStateItem>>();
   private sceneId: SCENE_ID;
-  private userId: number;
+  private chatId: number;
 
   setContext(ctx: SceneContext, sceneId: SCENE_ID): void {
     this.sceneId = sceneId;
-    this.userId = ctx.from.id;
+    this.chatId = ctx.from.id;
   }
 
   getSceneData(): GlobalStateItem {
@@ -25,14 +25,14 @@ export class SceneStateService {
   }
 
   resetScene(): void {
-    if (!this.userState.has(this.userId)) {
+    if (!this.userState.has(this.chatId)) {
       return;
     }
-    this.userState.get(this.userId)[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
+    this.userState.get(this.chatId)[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
   }
 
   getAllScenes(): Record<SCENE_ID, GlobalStateItem> | undefined {
-    return this.userState.get(this.userId);
+    return this.userState.get(this.chatId);
   }
 
   setMessageId(messageId: number): void {
@@ -73,10 +73,10 @@ export class SceneStateService {
   }
 
   private ensureSceneData(): GlobalStateItem {
-    if (!this.userState.has(this.userId)) {
-      this.userState.set(this.userId, {} as Record<SCENE_ID, GlobalStateItem>);
+    if (!this.userState.has(this.chatId)) {
+      this.userState.set(this.chatId, {} as Record<SCENE_ID, GlobalStateItem>);
     }
-    const userScenes: Record<SCENE_ID, GlobalStateItem> = this.userState.get(this.userId);
+    const userScenes: Record<SCENE_ID, GlobalStateItem> = this.userState.get(this.chatId);
     if (isNil(userScenes[this.sceneId])) {
       userScenes[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
     }
