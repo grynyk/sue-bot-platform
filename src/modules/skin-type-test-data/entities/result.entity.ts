@@ -7,7 +7,7 @@ export class SkinTypeTestResult {
   id: string;
 
   @Column({ type: 'simple-array' })
-  answerIds: number[];
+  answer_ids: number[];
 
   @Column({ type: 'varchar' })
   title: string;

@@ -163,16 +163,16 @@ export class SettingsScene extends SceneNavigation {
       await ctx.answerCbQuery();
       const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
       const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationsKeyboard(user.notifications_enabled);
-      const localizationStrings: Partial<Record<keyof BotUser, string>> = {
+      const LOCALIZATION_STRINGS: Partial<Record<keyof BotUser, string>> = {
         notifications_enabled: 'Сповіщення',
         wake_up_time: 'Час прокидання',
         bed_time: 'Час сну',
       };
       const parseValue: (value: unknown) => string = (value: string | boolean): string =>
         isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;
-      const stringifiedUserDetails: string = Object.keys(localizationStrings)
+      const stringifiedUserDetails: string = Object.keys(LOCALIZATION_STRINGS)
         .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
-        .map((key: keyof BotUser): string => `${get(localizationStrings, key)}: ${parseValue(get(user, key))}`)
+        .map((key: keyof BotUser): string => `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`)
         .join('\n');
       await ctx.editMessageText(
         `<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${stringifiedUserDetails}</code>`,

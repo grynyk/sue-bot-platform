@@ -91,7 +91,7 @@ export class SkinTypeTestScene extends SceneNavigation {
     try {
       const question: TestQuestion = getQuestion(questionId);
       if (isNil(question)) {
-        await ctx.editMessageText(SKINCARE.LABELS.ERROR);
+        await ctx.editMessageText(SKINCARE.LOCALIZATION_STRINGS.ERROR);
         return;
       }
       const keyboard: ReturnType<typeof Markup.inlineKeyboard> = getQuestionKeyboard(question);
