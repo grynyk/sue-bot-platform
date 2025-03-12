@@ -7,55 +7,63 @@ import { UpdateBotUserDto } from './dto/update-bot-user.dto';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { BotUserStats } from './models/bot-user-stats.model';
 import { format } from 'date-fns';
+import { isNil } from 'lodash';
 @Injectable()
 export class BotUserDataService {
-  constructor(@InjectRepository(BotUser) private readonly userRepository: Repository<BotUser>,  @InjectPinoLogger() protected readonly logger: PinoLogger) {}
+  constructor(
+    @InjectRepository(BotUser) private readonly repository: Repository<BotUser>,
+    @InjectPinoLogger() protected readonly logger: PinoLogger
+  ) {}
 
-  create(createUserDto: Partial<CreateBotUserDto>): Promise<BotUser> {
-    const user: BotUser = new BotUser();
-    user.id = createUserDto.id;
-    user.first_name = createUserDto.first_name;
-    user.last_name = createUserDto.last_name;
-    user.username = createUserDto.username;
-    user.skin_type = createUserDto.skin_type;
-    user.wake_up_time = createUserDto.wake_up_time;
-    user.bed_time = createUserDto.bed_time;
-    user.done_tasks_counter = createUserDto.done_tasks_counter;
-    user.notifications_enabled = createUserDto.notifications_enabled;
-    user.was_active_today = createUserDto.was_active_today;
-    user.timestamp = createUserDto.timestamp;
-    return this.userRepository.save(user);
+  async create(dto: Partial<CreateBotUserDto>): Promise<BotUser> {
+    if (!dto.chat_id || !dto.username) {
+      throw new Error('chat_id and username are required');
+    }
+    const notification = this.repository.create(dto);
+    return this.repository.save(notification);
   }
 
-  findAll(): Promise<BotUser[]> {
-    return this.userRepository.find();
+  async findAll(): Promise<BotUser[]> {
+    return this.repository.find();
   }
 
-  findOne(id: number): Promise<BotUser> {
-    return this.userRepository.findOneBy({ id });
+  async findById(id: string): Promise<BotUser> {
+    return this.repository.findOneBy({ id });
   }
 
-  async update(id: number, updateUserDto: Partial<UpdateBotUserDto>): Promise<BotUser> {
+  async findByChatId(chat_id: number): Promise<BotUser> {
+    return this.repository.findOneBy({ chat_id });
+  }
+
+  async findWithEnabledNotifications(): Promise<BotUser[]> {
+    return this.repository.find({ where: { notifications_enabled: true } });
+  }
+
+  async update(chat_id: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {
     try {
-      const user: BotUser = await this.userRepository.findOneBy({ id });
-      if (!user) {
-        throw new NotFoundException(`User with id ${id} not found`);
+      const user: BotUser = await this.findByChatId(chat_id);
+      if (isNil(user)) {
+        throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
       }
-      Object.assign(user, {...updateUserDto, was_active_today: true });
-      return this.userRepository.save(user);
+      Object.assign(user, { ...dto, was_active_today: true });
+      return this.repository.save(user);
     } catch (error) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      this.logger.error(`Bot user repo update(...): ${error.message}`);
     }
   }
 
   async getStats(): Promise<BotUserStats> {
-    const total: number = await this.userRepository.count();
-    const active: number = await this.userRepository.count({ where: { was_active_today: true } });
+    const total: number = await this.repository.count();
+    const active: number = await this.repository.count({ where: { was_active_today: true } });
     const currentDate: string = format(new Date(), 'yyyy-MM-dd');
-    const newToday: number = await this.userRepository.count({ where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) } });
-    const notificationsDisabled = await this.userRepository.count({ where: { notifications_enabled: false } });
-    const changedNotificationTime: number = await this.userRepository.count({ where: [{ wake_up_time: Not('08:00') }, { bed_time: Not('23:00') }] });
-    const completedSkinTest: number = await this.userRepository.count({ where: { skin_type: Not(IsNull()) } });
+    const newToday: number = await this.repository.count({
+      where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) },
+    });
+    const notificationsDisabled = await this.repository.count({ where: { notifications_enabled: false } });
+    const changedNotificationTime: number = await this.repository.count({
+      where: [{ wake_up_time: Not('08:00') }, { bed_time: Not('23:00') }],
+    });
+    const completedSkinTest: number = await this.repository.count({ where: { skin_type: Not(IsNull()) } });
     return {
       total,
       active,
@@ -66,15 +74,11 @@ export class BotUserDataService {
     };
   }
 
-  async resetFlags(): Promise<void> {
-    await this.userRepository.update({}, { was_active_today: false, done_tasks_counter: 0 });
+  async resetFlagsCounters(): Promise<void> {
+    await this.repository.update({}, { was_active_today: false, done_tasks_counter: 0 });
   }
 
-  remove(id: number): Promise<{ affected?: number }> {
-    return this.userRepository.delete(id);
-  }
-
-  drop(): Promise<void> {
-    return this.userRepository.clear();
+  async remove(id: number): Promise<{ affected?: number }> {
+    return this.repository.delete(id);
   }
 }

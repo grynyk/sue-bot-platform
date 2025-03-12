@@ -13,7 +13,7 @@ import { SceneStateService } from './shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BotKeepAliveService } from './services/bot-keep-alive.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { MessagingService } from './services/messaging.service';
+import { NotificationsDeliveryService } from './services/notifications-delivery.service';
 import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
 import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
@@ -22,8 +22,11 @@ import { isDev, isStaging } from '@utils/env.util';
 import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
 import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
 import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
-import { UserFlagResetService } from './services/user-flag-reset.service';
-
+import { UserActivityResetService } from './services/user-activity-reset.service';
+import { NotificationDataModule } from './modules/notification-data/notification-data.module';
+import { NotificationsPrecomputeService } from './services/notifications-precompute.service';
+import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
+import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -43,7 +46,7 @@ import { UserFlagResetService } from './services/user-flag-reset.service';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct],
+        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, PendingUserNotification],
         synchronize: true,
         logging: isDev() || isStaging(),
       }),
@@ -65,13 +68,15 @@ import { UserFlagResetService } from './services/user-flag-reset.service';
     }),
     BotUserDataModule,
     SkinTypeTestDataModule,
+    NotificationDataModule
   ],
   controllers: [],
   providers: [
     BotUpdate,
     BotKeepAliveService,
-    UserFlagResetService,
-    MessagingService,
+    UserActivityResetService,
+    NotificationsDeliveryService,
+    NotificationsPrecomputeService,
     SceneStateService,
     RecipesScene,
     TipsScene,

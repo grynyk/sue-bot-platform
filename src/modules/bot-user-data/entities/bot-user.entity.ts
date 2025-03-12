@@ -3,10 +3,10 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class BotUser {
   @PrimaryGeneratedColumn('uuid')
-  uuid: string;
+  id: string;
 
   @Column({ type: 'bigint', unique: true })
-  id: number;
+  chat_id: number;
 
   @Column({ type: 'varchar', nullable: true })
   first_name: string;
@@ -19,6 +19,9 @@ export class BotUser {
 
   @Column({ type: 'varchar', nullable: true })
   skin_type: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  language_code: string;
 
   @Column({ type: 'varchar' })
   timestamp: string;

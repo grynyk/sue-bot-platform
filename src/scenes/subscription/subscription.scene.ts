@@ -2,9 +2,9 @@ import { Action, Ctx, InjectBot, Scene, SceneEnter } from 'nestjs-telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { BotCommand, Message, ReplyKeyboardMarkup } from 'typegram';
-import { compact, isNil } from 'lodash';
+import { compact, isNil, omit } from 'lodash';
 import { Markup, Telegraf } from 'telegraf';
-import { BotUser, BotUserDataService } from '@modules/bot-user-data';
+import { BotUser, BotUserDataService, UpdateBotUserDto } from '@modules/bot-user-data';
 import { toZonedTime } from 'date-fns-tz';
 import { format } from 'date-fns';
 import { PARSE_MODE } from '@models/tg.model';
@@ -34,7 +34,7 @@ export class SubscriptionScene {
         compact(commands.map((command: BotCommand) => Markup.button.text(`/${command.command}`)))
       ).resize();
       const name: string = ctx.from.first_name || ctx.from.username || '';
-      const user: BotUser = await this.botUserDataService.findOne(ctx.from.id);
+      const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
       if (!isNil(user)) {
         await ctx.reply(`Привіт, ${name}!\nВи вже насолоджуєтесь магією звички 😉`, {
           parse_mode,
@@ -42,8 +42,10 @@ export class SubscriptionScene {
         });
         return;
       }
+      const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
       await this.botUserDataService.create({
-        ...ctx.from,
+        ...updateBotUserDto,
+        chat_id: ctx.from.id,
         timestamp: format(this.date, `yyyy-MM-dd'T'HH:mm:ss`),
       });
       await ctx.reply(`Привіт, ${name}!\nЯ бот Sue(С'ю) і я буду про тебе піклуватись 😊`, {

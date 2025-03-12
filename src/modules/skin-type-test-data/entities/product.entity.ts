@@ -5,7 +5,7 @@ import { PRODUCT_SIZE, SEASON } from '../../../scenes/skin-type-test/enums/skin-
 @Entity()
 export class SkinTypeTestProduct {
   @PrimaryGeneratedColumn('uuid')
-  uuid: string;
+  id: string;
 
   @Column({ type: 'varchar' })
   title: string;
@@ -32,8 +32,8 @@ export class SkinTypeTestProduct {
   recommendations: string;
 
   @ManyToOne(() => SkinTypeTestResult, (result) => result.products)
-  @JoinColumn({ name: 'skinTypeTestResultId' })
-  skinTypeTestResult: SkinTypeTestResult;
+  @JoinColumn({ name: 'result_id' })
+  result_id: SkinTypeTestResult;
 
   @Column({ type: 'uuid' })
   resultId: string;

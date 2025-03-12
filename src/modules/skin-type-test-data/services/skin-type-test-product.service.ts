@@ -18,11 +18,11 @@ export class SkinTypeTestProductService {
   }
 
   async findAllProducts(): Promise<SkinTypeTestProduct[]> {
-    return this.productRepository.find({ relations: ['skinTypeTestResult'] });
+    return this.productRepository.find({ relations: ['result_id'] });
   }
 
   async findOneProduct(id: string): Promise<SkinTypeTestProduct> {
-    const product = await this.productRepository.findOne({ where: { uuid: id }, relations: ['skinTypeTestResult'] });
+    const product = await this.productRepository.findOne({ where: { id }, relations: ['result_id'] });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
@@ -31,7 +31,7 @@ export class SkinTypeTestProductService {
 
   async updateProduct(id: string, updateProductDto: UpdateSkinTypeTestProductDto): Promise<SkinTypeTestProduct> {
     const product = await this.productRepository.preload({
-      uuid: id,
+      id,
       ...updateProductDto,
     });
     if (!product) {
@@ -41,7 +41,7 @@ export class SkinTypeTestProductService {
   }
 
   async removeProduct(id: string): Promise<void> {
-    const product = await this.productRepository.findOne({ where: { uuid: id } });
+    const product = await this.productRepository.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }

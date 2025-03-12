@@ -6,16 +6,16 @@ import { BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { getDefinedBotCommands } from '@utils/command.utils';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
-import { BotUser, BotUserDataService, BotUserStats } from '@modules/bot-user-data';
+import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@modules/bot-user-data';
 import { PARSE_MODE } from '@models/tg.model';
-import { isNil } from 'lodash';
+import { isNil, omit } from 'lodash';
 
 @Update()
 export class BotUpdate {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
-    private readonly botUserDataService: BotUserDataService
+    private readonly botUserDataService: BotUserDataService,
   ) {
     /**
      * Listen to all bot actions.
@@ -23,9 +23,10 @@ export class BotUpdate {
      */
     this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
       try {
-        const user: BotUser = await this.botUserDataService.findOne(ctx.from.id);
+        const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
         if (!isNil(user)) {
-          await this.botUserDataService.update(ctx.from.id, { ...ctx.from });
+          const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
+          await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, });
         }
         await next();
       } catch (error) {

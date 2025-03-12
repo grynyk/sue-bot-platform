@@ -14,7 +14,7 @@ import {
 export class CreateBotUserDto {
   @IsNotEmpty()
   @IsNumber()
-  id: number;
+  chat_id: number;
 
   @IsString()
   @MinLength(2, { message: 'First name must have at least 2 characters.' })
@@ -50,6 +50,10 @@ export class CreateBotUserDto {
     message: 'Bed time must be in the format HH:MM.',
   })
   bed_time = '23:00';
+
+  @IsString()
+  @IsOptional()
+  language_code?: string;
 
   @IsInt()
   done_tasks_counter = 0;
