@@ -55,7 +55,9 @@ export class NotificationsDeliveryService {
       if (this.isLastNotification(notification)) {
         const totalTasksNumber: number = await this.botNotificationService.countWithConfirmButton();
         const doneTasksNumber = Number(user.done_tasks_counter);
-        const doneTasksCaption = `Ви виконали ${doneTasksNumber} з ${totalTasksNumber} завдань сьогодні ${this.getDoneTasksNumberEmoji(doneTasksNumber)}`;
+        const doneTasksCaption = `Ви виконали ${doneTasksNumber} з ${totalTasksNumber} завдань сьогодні ${this.getDoneTasksNumberEmoji(
+          doneTasksNumber
+        )}`;
         await this.bot.telegram.sendMessage(user.chat_id, doneTasksCaption);
       }
       return user.chat_id;
@@ -91,30 +93,22 @@ export class NotificationsDeliveryService {
   }
 
   private getDoneTasksNumberEmoji(doneTasksNumber: number): string {
-    let emoji = '';
     switch (doneTasksNumber) {
       case 0:
-        emoji = '😭';
-        break;
+        return '😭';
       case 1:
       case 2:
-        emoji = '😟';
-        break;
+        return '😟';
       case 3:
       case 4:
-        emoji = '😑';
-        break;
+        return '😑';
       case 5:
       case 6:
-        emoji = '😊';
-        break;
+        return '😊';
       case 7:
-        emoji = '🥰';
-        break;
+        return '🥰';
       default:
-        emoji = '🙂';
-        break;
+        return '🙂';
     }
-    return emoji;
   }
 }
