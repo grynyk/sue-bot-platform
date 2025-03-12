@@ -1,7 +1,9 @@
 import { PRODUCT_DETAILS, PRODUCT_SIZE, SEASON } from '../enums/skin-test.enum';
 
-export const SKINCARE = {
-  LABELS: {
+export const SKINCARE: {
+  LOCALIZATION_STRINGS: Record<string, string>;
+} = {
+  LOCALIZATION_STRINGS: {
     DEFAULT_QUESTION: 'Виберіть один з варіантів:',
     ERROR: 'Виникла помилка. Спробуйте ще раз.',
     ORDER: 'Замовити',

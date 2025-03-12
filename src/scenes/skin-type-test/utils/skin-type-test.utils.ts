@@ -18,5 +18,5 @@ export function getResultProductSizeCaption(result: string): string {
 }
 
 export function getResultProductCaption(result: TestResult, product: SkincareProduct): string {
-  return `<strong>${result.title}</strong>\nКомплекс <a href='${product.url}'><strong>${SKINCARE.LABELS[product.size].toLowerCase()}</strong></a> 💫`;
+  return `<strong>${result.title}</strong>\nКомплекс <a href='${product.url}'><strong>${SKINCARE.LOCALIZATION_STRINGS[product.size].toLowerCase()}</strong></a> 💫`;
 }

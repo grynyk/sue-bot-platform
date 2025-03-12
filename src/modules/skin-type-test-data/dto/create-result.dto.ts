@@ -2,7 +2,7 @@ import { IsArray, IsString } from 'class-validator';
 
 export class CreateSkinTypeTestResultDto {
   @IsArray()
-  answerIds: number[];
+  answer_ids: number[];
 
   @IsString()
   title: string;

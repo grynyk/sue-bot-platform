@@ -1,4 +1,4 @@
-import { IsEnum, IsString, IsUrl, IsUUID } from 'class-validator';
+import { IsEnum, IsString, IsUrl } from 'class-validator';
 import { PRODUCT_SIZE, SEASON } from '../../../scenes/skin-type-test/enums/skin-test.enum';
 
 export class CreateSkinTypeTestProductDto {
@@ -25,7 +25,4 @@ export class CreateSkinTypeTestProductDto {
 
   @IsString()
   recommendations: string;
-
-  @IsUUID()
-  resultId: string;
 }

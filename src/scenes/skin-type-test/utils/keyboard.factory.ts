@@ -17,8 +17,8 @@ export function getQuestionKeyboard(question: TestQuestion): ReturnType<typeof M
 
 export function getResultProductSizeKeyboard(answer: TestAnswer): ReturnType<typeof Markup.inlineKeyboard> {
   const buttons: InlineKeyboardButton.CallbackButton[] = [
-    Markup.button.callback(SKINCARE.LABELS.MINI, `RESULT_MINI_${answer.id}`),
-    Markup.button.callback(SKINCARE.LABELS.MAXI, `RESULT_MAXI_${answer.id}`),
+    Markup.button.callback(SKINCARE.LOCALIZATION_STRINGS.MINI, `RESULT_MINI_${answer.id}`),
+    Markup.button.callback(SKINCARE.LOCALIZATION_STRINGS.MAXI, `RESULT_MAXI_${answer.id}`),
     backButton,
   ];
   return Markup.inlineKeyboard(buttons, {
@@ -32,11 +32,11 @@ export function getResultProductKeyboard(
   PRODUCT_SIZE: PRODUCT_SIZE
 ): ReturnType<typeof Markup.inlineKeyboard> {
   const buttons: InlineKeyboardButton[] = [
-    Markup.button.url(SKINCARE.LABELS.ORDER, product.url),
-    Markup.button.callback(SKINCARE.LABELS.INGREDIENTS, `RESULT_${PRODUCT_SIZE}_INGREDIENTS_${answerId}`),
-    Markup.button.callback(SKINCARE.LABELS.ROUTINE, `RESULT_${PRODUCT_SIZE}_ROUTINE_${answerId}`),
-    Markup.button.callback(SKINCARE.LABELS.RECOMMENDATIONS, `RESULT_${PRODUCT_SIZE}_RECOMMENDATIONS_${answerId}`),
-    Markup.button.url(SKINCARE.LABELS.CONSULTATION, 'https://suemade.com/consultation/'),
+    Markup.button.url(SKINCARE.LOCALIZATION_STRINGS.ORDER, product.url),
+    Markup.button.callback(SKINCARE.LOCALIZATION_STRINGS.INGREDIENTS, `RESULT_${PRODUCT_SIZE}_INGREDIENTS_${answerId}`),
+    Markup.button.callback(SKINCARE.LOCALIZATION_STRINGS.ROUTINE, `RESULT_${PRODUCT_SIZE}_ROUTINE_${answerId}`),
+    Markup.button.callback(SKINCARE.LOCALIZATION_STRINGS.RECOMMENDATIONS, `RESULT_${PRODUCT_SIZE}_RECOMMENDATIONS_${answerId}`),
+    Markup.button.url(SKINCARE.LOCALIZATION_STRINGS.CONSULTATION, 'https://suemade.com/consultation/'),
     backButton,
     closeButton,
   ];

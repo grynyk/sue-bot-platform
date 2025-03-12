@@ -86,7 +86,7 @@ export class BotUpdate {
   async onStats(@Ctx() ctx: Context): Promise<void> {
     try {
       const statistics: BotUserStats = await this.botUserDataService.getStats();
-      const localizationStrings: Record<keyof BotUserStats, string> = {
+      const LOCALIZATION_STRINGS: Record<keyof BotUserStats, string> = {
         total: 'Всього користувачів',
         newToday: 'Нових сьогодні',
         active: 'Активних сьогодні',
@@ -95,7 +95,7 @@ export class BotUpdate {
         completedSkinTest: 'Пройшли тест на тип шкіри',
       };
       const stringifiedStatistics: string = Object.entries(statistics)
-        .map(([key, value]: [string, number]): string => `${localizationStrings[key]}: ${value}`)
+        .map(([key, value]: [string, number]): string => `${LOCALIZATION_STRINGS[key]}: ${value}`)
         .join('\n');
       await ctx.reply(`<strong>Статистика бота:</strong>\n\n<code>${stringifiedStatistics}</code>`, { parse_mode: PARSE_MODE.HTML });
     } catch (error) {
