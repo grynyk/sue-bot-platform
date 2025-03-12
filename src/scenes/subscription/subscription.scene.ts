@@ -11,7 +11,7 @@ import { PARSE_MODE } from '@models/tg.model';
 import { Observable, switchMap, tap, timer } from 'rxjs';
 import { SUBSCRIPTION_CALLBACK } from './enums/subscription.enum';
 import { confirmButtonKeyboard } from '@utils/keyboard.utils';
-import { NotificationsPrecomputeService } from 'src/services/notifications-precompute.service';
+import { NotificationsPrecomputeService } from '../../services/notifications-precompute.service';
 
 const parse_mode = PARSE_MODE.HTML;
 
