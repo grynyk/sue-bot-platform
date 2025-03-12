@@ -11,6 +11,7 @@ import { PARSE_MODE } from '@models/tg.model';
 import { Observable, switchMap, tap, timer } from 'rxjs';
 import { SUBSCRIPTION_CALLBACK } from './enums/subscription.enum';
 import { confirmButtonKeyboard } from '@utils/keyboard.utils';
+import { NotificationsPrecomputeService } from 'src/services/notifications-precompute.service';
 
 const parse_mode = PARSE_MODE.HTML;
 
@@ -21,7 +22,8 @@ export class SubscriptionScene {
   constructor(
     @InjectBot() protected readonly bot: Telegraf,
     @InjectPinoLogger() protected readonly logger: PinoLogger,
-    private readonly botUserDataService: BotUserDataService
+    private readonly botUserDataService: BotUserDataService,
+    private readonly notificationsPrecomputeService: NotificationsPrecomputeService
   ) {
     this.date = toZonedTime(new Date(), process.env.TZ);
   }
@@ -52,6 +54,7 @@ export class SubscriptionScene {
         parse_mode,
         ...Markup.inlineKeyboard([Markup.button.callback(`Натисни та розпочни 'Магію звички'`, SUBSCRIPTION_CALLBACK.SUBSCRIBE)]),
       });
+      await this.notificationsPrecomputeService.precomputePendingNotifications();
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
