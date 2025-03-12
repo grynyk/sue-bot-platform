@@ -22,7 +22,7 @@ export class SkinTypeTestResultService {
   }
 
   async findOneResult(id: string): Promise<SkinTypeTestResult> {
-    const result = await this.resultRepository.findOne({ where: { uuid: id }, relations: ['products'] });
+    const result = await this.resultRepository.findOne({ where: { id }, relations: ['products'] });
     if (!result) {
       throw new NotFoundException(`Result with ID ${id} not found`);
     }
@@ -31,7 +31,7 @@ export class SkinTypeTestResultService {
 
   async updateResult(id: string, updateResultDto: UpdateSkinTypeTestResultDto): Promise<SkinTypeTestResult> {
     const result = await this.resultRepository.preload({
-      uuid: id,
+      id,
       ...updateResultDto,
     });
     if (!result) {
@@ -41,7 +41,7 @@ export class SkinTypeTestResultService {
   }
 
   async removeResult(id: string): Promise<void> {
-    const result = await this.resultRepository.findOne({ where: { uuid: id } });
+    const result = await this.resultRepository.findOne({ where: { id } });
     if (!result) {
       throw new NotFoundException(`Result with ID ${id} not found`);
     }
