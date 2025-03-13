@@ -1,5 +1,6 @@
 import { PARSE_MODE } from '@models/tg.model';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
+import { GlobalStateDataService } from '@modules/global-state-data/global-state-data.service';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 import { SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
@@ -13,16 +14,17 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectBot } from 'nestjs-telegraf';
 import { concatMap, delay, from, Observable } from 'rxjs';
 import { Telegraf } from 'telegraf';
-import { InlineKeyboardButton } from 'typegram';
+import { InlineKeyboardButton, Message } from 'typegram';
 
 @Injectable()
 export class NotificationsDeliveryService {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
+    @InjectPinoLogger() private readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
     private readonly botNotificationService: BotNotificationService,
     private readonly pendingUserNotificationService: PendingUserNotificationService,
-    @InjectPinoLogger() private readonly logger: PinoLogger
+    private readonly globalStateDataService: GlobalStateDataService,
   ) {}
 
   /**
@@ -74,19 +76,21 @@ export class NotificationsDeliveryService {
     const caption: string = sample(notification.captions);
     const parse_mode: PARSE_MODE = PARSE_MODE.HTML;
     const inline_keyboard = (notification.buttons || []).map((button: InlineKeyboardButton): [InlineKeyboardButton] => [button]);
+    let message: Message;
     try {
       if (notification.image) {
-        await this.bot.telegram.sendPhoto(user.chat_id, notification.image, {
+        message = await this.bot.telegram.sendPhoto(user.chat_id, notification.image, {
           caption,
           parse_mode,
           ...(notification.buttons && { reply_markup: { inline_keyboard } }),
         });
         return;
       }
-      await this.bot.telegram.sendMessage(user.chat_id, caption, {
+      message = await this.bot.telegram.sendMessage(user.chat_id, caption, {
         parse_mode,
         ...(notification.buttons && { reply_markup: { inline_keyboard } }),
       });
+      this.globalStateDataService.addMessageToDeleteQueue(message.message_id, user.chat_id);
     } catch (error) {
       if (error.code === 403 && error.description.includes('blocked')) {
         await this.botUserDataService.update(user.chat_id, { blocked: true });

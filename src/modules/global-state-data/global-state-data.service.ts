@@ -21,12 +21,12 @@ export class GlobalStateDataService {
     return state[0];
   }
 
-  async addMessageToDelete(id: number): Promise<GlobalState> {
+  async addMessageToDeleteQueue(chat_id: number, message_id: number): Promise<GlobalState> {
     const currentState: GlobalState = await this.getCurrentState();
     if (isNil(currentState)) {
       await this.create();
     }
-    currentState.messages_to_delete = [...currentState.messages_to_delete, id];
+    currentState.messages_to_delete = [...currentState.messages_to_delete, { chat_id, message_id }];
     return this.repository.save(currentState);
   }
 

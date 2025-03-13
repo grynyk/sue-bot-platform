@@ -85,6 +85,8 @@ export class BotUpdate {
   @Command(BOT_COMMAND_NAME.STATS)
   async onStats(@Ctx() ctx: Context): Promise<void> {
     try {
+      // TODO: Send notification based on recurrence pattern
+      // TODO: Store skin type test results in database
       const statistics: BotUserStats = await this.botUserDataService.getStats();
       const LOCALIZATION_STRINGS: Record<keyof BotUserStats, string> = {
         total: 'Всього користувачів',
