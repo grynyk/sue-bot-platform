@@ -25,6 +25,10 @@ export class NotificationsDeliveryService {
     @InjectPinoLogger() private readonly logger: PinoLogger
   ) {}
 
+  /**
+   * Sends scheduled notifications to users.
+   * checks for pending notifications every 5 minutes
+   */
   @Cron(CronExpression.EVERY_5_MINUTES)
   async sendScheduledNotifications(): Promise<void> {
     const now: Date = new Date();

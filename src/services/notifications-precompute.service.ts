@@ -17,6 +17,10 @@ export class NotificationsPrecomputeService {
     private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
+  /**
+   * Computes full list of notifications to send to all users.
+   * every day at 4 AM
+   */
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
   async precomputeAllPendingNotifications(): Promise<void> {
     try {
