@@ -4,6 +4,7 @@ import { BotModule } from './bot.module';
 import { Logger } from 'nestjs-pino';
 import { INestApplication, INestApplicationContext } from '@nestjs/common';
 import axios from 'axios';
+import { isProd } from '@utils/env.util';
 
 async function setWebhook(): Promise<void> {
   const botToken: string | undefined = process.env.BOT_TOKEN;
@@ -22,7 +23,9 @@ async function setWebhook(): Promise<void> {
 }
 
 async function bootstrap(): Promise<INestApplicationContext> {
-  setWebhook();
+  if (isProd()) {
+    setWebhook();
+  }
   const app: INestApplication = await NestFactory.create(BotModule);
   app.useLogger(app.get(Logger));
   await app.listen(process.env.PORT || 3000);

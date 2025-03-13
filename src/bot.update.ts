@@ -24,9 +24,9 @@ export class BotUpdate {
     this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
       try {
         const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
-        if (!isNil(user)) {
+        if (!isNil(user) && !user.was_active_today) {
           const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
-          await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, });
+          await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, was_active_today: true });
         }
         await next();
       } catch (error) {
@@ -90,6 +90,7 @@ export class BotUpdate {
         total: 'Всього користувачів',
         newToday: 'Нових сьогодні',
         active: 'Активних сьогодні',
+        blocked: 'Заблокували бота',
         notificationsDisabled: 'З вимкненими сповіщеннями',
         changedNotificationTime: 'Змінили час сповіщень',
         completedSkinTest: 'Пройшли тест на тип шкіри',

@@ -84,6 +84,9 @@ export class NotificationsDeliveryService {
         ...(notification.buttons && { reply_markup: { inline_keyboard } }),
       });
     } catch (error) {
+      if (error.code === 403 && error.description.includes('blocked')) {
+        await this.botUserDataService.update(user.chat_id, { blocked: true });
+      }
       this.logger.error(`Failed to send message to user ${user.chat_id}: ${error.message}`);
     }
   }

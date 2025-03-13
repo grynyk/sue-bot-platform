@@ -43,6 +43,7 @@ export class SubscriptionScene {
           parse_mode,
           ...commandsKeyboard.resize(),
         });
+        await this.botUserDataService.update(chat_id, { blocked: false });
         return;
       }
       const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
@@ -57,14 +58,14 @@ export class SubscriptionScene {
       });
       await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onSceneEnter(...): ${error.message}`);
     }
   }
 
   @Action(SUBSCRIPTION_CALLBACK.SUBSCRIBE)
   async onSubscribe(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      await ctx.answerCbQuery();
+      ctx.answerCbQuery();
       await ctx.editMessageReplyMarkup(undefined);
       ctx.reply('Я буду надсилати тобі сповіщення протягом дня\n\n<i>*Налаштувати сповіщення можна за допомогою команди /settings</i>', {
         parse_mode,
@@ -86,7 +87,7 @@ export class SubscriptionScene {
         )
         .subscribe();
     } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
+      this.logger.error(`${ctx.text} onSubscribe(...): ${error.message}`);
     }
   }
 }
