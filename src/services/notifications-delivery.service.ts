@@ -48,7 +48,7 @@ export class NotificationsDeliveryService {
         )
       )
       .subscribe({
-        error: (error) => this.logger.error(`Failed to send message: ${error.message}`),
+        error: (error) => this.logger.error(`${error.message}`),
       });
   }
 
@@ -68,7 +68,7 @@ export class NotificationsDeliveryService {
       }
       return user.chat_id;
     } catch (error) {
-      throw new Error(`Failed to send message: ${error.message}`);
+      this.logger.error(`processNotification(...): ${error.message}`);
     }
   }
 
