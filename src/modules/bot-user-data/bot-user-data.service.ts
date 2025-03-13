@@ -16,8 +16,8 @@ export class BotUserDataService {
   ) {}
 
   async create(dto: Partial<CreateBotUserDto>): Promise<BotUser> {
-    if (!dto.chat_id || !dto.username) {
-      throw new Error('chat_id and username are required');
+    if (!dto.chat_id) {
+      throw new Error('chat_id is required');
     }
     const notification = this.repository.create(dto);
     return this.repository.save(notification);

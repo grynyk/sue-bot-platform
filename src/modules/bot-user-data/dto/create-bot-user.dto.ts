@@ -1,10 +1,8 @@
 import {
-  IsAlphanumeric,
   IsInt,
   IsNotEmpty,
   IsString,
   Matches,
-  MinLength,
   IsOptional,
   IsDateString,
   IsBoolean,
@@ -17,21 +15,16 @@ export class CreateBotUserDto {
   chat_id: number;
 
   @IsString()
-  @MinLength(2, { message: 'First name must have at least 2 characters.' })
   @IsOptional()
   first_name?: string;
 
   @IsString()
-  @MinLength(2, { message: 'Last name must have at least 2 characters.' })
   @IsOptional()
   last_name?: string;
 
-  @IsNotEmpty()
-  @MinLength(3, { message: 'Username must have at least 3 characters.' })
-  @IsAlphanumeric(null, {
-    message: 'Username does not allow other than alphanumeric characters.',
-  })
-  username: string;
+  @IsString()
+  @IsOptional()
+  username?: string;
 
   @IsString()
   @IsOptional()

@@ -14,7 +14,7 @@ export class BotUser {
   @Column({ type: 'varchar', nullable: true })
   last_name: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   username: string;
 
   @Column({ type: 'varchar', nullable: true })
