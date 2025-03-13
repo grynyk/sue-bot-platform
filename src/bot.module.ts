@@ -27,8 +27,6 @@ import { NotificationDataModule } from './modules/notification-data/notification
 import { NotificationsPrecomputeService } from './services/notifications-precompute.service';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
-import { GlobalStateDataModule } from '@modules/global-state-data/global-state-data.module';
-import { GlobalState } from '@modules/global-state-data/entities';
 
 @Module({
   imports: [
@@ -49,7 +47,7 @@ import { GlobalState } from '@modules/global-state-data/entities';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, PendingUserNotification, GlobalState],
+        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, PendingUserNotification],
         synchronize: true,
         logging: isDev() || isStaging(),
       }),
@@ -72,7 +70,6 @@ import { GlobalState } from '@modules/global-state-data/entities';
     BotUserDataModule,
     SkinTypeTestDataModule,
     NotificationDataModule,
-    GlobalStateDataModule
   ],
   controllers: [],
   providers: [
