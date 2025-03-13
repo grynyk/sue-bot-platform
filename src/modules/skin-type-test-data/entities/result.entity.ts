@@ -6,7 +6,7 @@ export class SkinTypeTestResult {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'simple-array' })
+  @Column('int', { array: true, default: [] })
   answer_ids: number[];
 
   @Column({ type: 'varchar' })
