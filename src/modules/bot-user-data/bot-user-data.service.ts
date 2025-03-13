@@ -52,6 +52,15 @@ export class BotUserDataService {
     }
   }
 
+  async incrementDoneTasksCounter(chat_id: number): Promise<BotUser> {
+    const user: BotUser = await this.findByChatId(chat_id);
+    if (isNil(user)) {
+      throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
+    }
+    user.done_tasks_counter = (user.done_tasks_counter || 0) + 1;
+    return this.repository.save(user);
+  }
+
   async getStats(): Promise<BotUserStats> {
     const total: number = await this.repository.count();
     const active: number = await this.repository.count({ where: { was_active_today: true } });
