@@ -26,7 +26,7 @@ export class NotificationsPrecomputeService {
     try {
       await this.pendingUserNotificationService.drop();
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
-      const notifications: BotNotification[] = await this.botNotificationService.findActive();
+      const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
       for (const user of users) {
         this.populatePendingNotifications(user, notifications);
       }
@@ -43,7 +43,7 @@ export class NotificationsPrecomputeService {
       }
       await this.pendingUserNotificationService.removeAllByUserId(user.id);
       if (user.notifications_enabled && !user.blocked) {
-        const notifications: BotNotification[] = await this.botNotificationService.findActive();
+        const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
         this.populatePendingNotifications(user, notifications);
         return;
       }

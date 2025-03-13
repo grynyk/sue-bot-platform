@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { SEASON } from '../models/global-state.model';
+import { MessageToDelete, SEASON } from '../models/global-state.model';
 
 @Entity()
 export class GlobalState {
@@ -13,6 +13,6 @@ export class GlobalState {
   })
   season: SEASON;
 
-  @Column('int', { array: true, default: [] })
-  messages_to_delete: number[];
+  @Column({ type: 'json', default: [] })
+  messages_to_delete: MessageToDelete[];
 }

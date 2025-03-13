@@ -27,7 +27,7 @@ export class BotNotificationService {
     return this.repository.findOneBy({ id });
   }
 
-  async findActive(): Promise<BotNotification[]> {
+  async findAllActive(): Promise<BotNotification[]> {
     return this.repository.find({ where: { active: true } });
   }
 
