@@ -39,5 +39,8 @@ export class BotUser {
   notifications_enabled: boolean;
 
   @Column({ type: 'boolean', default: false })
+  blocked: boolean;
+
+  @Column({ type: 'boolean', default: false })
   was_active_today: boolean;
 }

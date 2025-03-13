@@ -62,6 +62,9 @@ export class CreateBotUserDto {
   notifications_enabled = true;
 
   @IsBoolean()
+  blocked = false;
+
+  @IsBoolean()
   was_active_today = false;
 
   @IsDateString()

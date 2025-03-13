@@ -24,12 +24,7 @@ export class NotificationsPrecomputeService {
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
       const notifications: BotNotification[] = await this.botNotificationService.findActive();
       for (const user of users) {
-        for (const notification of notifications) {
-          const send_time: Date = this.calculateSendTime(user, notification);
-          if (!isNil(send_time)) {
-            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
-          }
-        }
+        this.populatePendingNotifications(user, notifications);
       }
     } catch (error) {
       this.logger.error(`Precompute All Pending Notifications: ${error.message}`);
@@ -43,18 +38,26 @@ export class NotificationsPrecomputeService {
         throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
       }
       await this.pendingUserNotificationService.removeAllByUserId(user.id);
-      if (user.notifications_enabled) {
+      if (user.notifications_enabled && !user.blocked) {
         const notifications: BotNotification[] = await this.botNotificationService.findActive();
-        for (const notification of notifications) {
-          const send_time: Date = this.calculateSendTime(user, notification);
-          if (!isNil(send_time)) {
-            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
-          }
-        }
+        this.populatePendingNotifications(user, notifications);
         return;
       }
     } catch (error) {
       this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
+    }
+  }
+
+  private async populatePendingNotifications(user: BotUser, notifications: BotNotification[]): Promise<void> {
+    try {
+      for (const notification of notifications) {
+        const send_time: Date = this.calculateSendTime(user, notification);
+        if (!isNil(send_time)) {
+          await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+        }
+      }
+    } catch (error) {
+      this.logger.error(`Populate Pending Notifications: ${error.message}`);
     }
   }
 

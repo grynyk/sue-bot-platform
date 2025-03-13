@@ -36,7 +36,7 @@ export class BotUserDataService {
   }
 
   async findWithEnabledNotifications(): Promise<BotUser[]> {
-    return this.repository.find({ where: { notifications_enabled: true } });
+    return this.repository.find({ where: { notifications_enabled: true, blocked: false } });
   }
 
   async update(chat_id: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {
@@ -45,7 +45,7 @@ export class BotUserDataService {
       if (isNil(user)) {
         throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
       }
-      Object.assign(user, { ...dto, was_active_today: true });
+      Object.assign(user, { ...dto });
       return this.repository.save(user);
     } catch (error) {
       this.logger.error(`Bot user repo update(...): ${error.message}`);
@@ -64,6 +64,7 @@ export class BotUserDataService {
   async getStats(): Promise<BotUserStats> {
     const total: number = await this.repository.count();
     const active: number = await this.repository.count({ where: { was_active_today: true } });
+    const blocked: number = await this.repository.count({ where: { blocked: true } });
     const currentDate: string = format(new Date(), 'yyyy-MM-dd');
     const newToday: number = await this.repository.count({
       where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) },
@@ -76,6 +77,7 @@ export class BotUserDataService {
     return {
       total,
       active,
+      blocked,
       newToday,
       notificationsDisabled,
       changedNotificationTime,
