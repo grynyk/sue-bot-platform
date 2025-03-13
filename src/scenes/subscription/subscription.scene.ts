@@ -36,7 +36,8 @@ export class SubscriptionScene {
         compact(commands.map((command: BotCommand) => Markup.button.text(`/${command.command}`)))
       ).resize();
       const name: string = ctx.from.first_name || ctx.from.username || '';
-      const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
+      const chat_id: number = ctx.from.id;
+      const user: BotUser = await this.botUserDataService.findByChatId(chat_id);
       if (!isNil(user)) {
         await ctx.reply(`Привіт, ${name}!\nВи вже насолоджуєтесь магією звички 😉`, {
           parse_mode,
@@ -47,14 +48,14 @@ export class SubscriptionScene {
       const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
       await this.botUserDataService.create({
         ...updateBotUserDto,
-        chat_id: ctx.from.id,
+        chat_id,
         timestamp: format(this.date, `yyyy-MM-dd'T'HH:mm:ss`),
       });
       await ctx.reply(`Привіт, ${name}!\nЯ бот Sue(С'ю) і я буду про тебе піклуватись 😊`, {
         parse_mode,
         ...Markup.inlineKeyboard([Markup.button.callback(`Натисни та розпочни 'Магію звички'`, SUBSCRIPTION_CALLBACK.SUBSCRIBE)]),
       });
-      await this.notificationsPrecomputeService.precomputePendingNotifications();
+      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }

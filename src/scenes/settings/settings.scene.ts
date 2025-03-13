@@ -7,13 +7,16 @@ import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { isBotCommand } from '@utils/command.utils';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
-import { getSettingsInitialKeyboard, getSettingsNotificationsKeyboard } from './utils/keyboard.factory';
+import {
+  getSettingsInitialKeyboard,
+  getSettingsNotificationsKeyboard,
+  getSettingsNotificationTimeKeyboard,
+} from './utils/keyboard.factory';
 import { SettingsSceneContextType } from './models/settings.model';
-import { get, isBoolean, isNil, range } from 'lodash';
+import { get, isBoolean, isNil } from 'lodash';
 import { SETTINGS } from './constants/settings.constant';
 import { PARSE_MODE } from '@models/tg.model';
-import { InlineKeyboardButton } from 'typegram';
-import { backButton } from '@utils/keyboard.utils';
+import { NotificationsPrecomputeService } from '../../services/notifications-precompute.service';
 
 @Scene(SCENE_ID.SETTINGS)
 export class SettingsScene extends SceneNavigation {
@@ -21,7 +24,8 @@ export class SettingsScene extends SceneNavigation {
     @InjectBot() protected readonly bot: Telegraf,
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     protected readonly stateService: SceneStateService,
-    private readonly botUserDataService: BotUserDataService
+    private readonly botUserDataService: BotUserDataService,
+    private readonly notificationsPrecomputeService: NotificationsPrecomputeService
   ) {
     super(bot, logger, stateService, SCENE_ID.SETTINGS);
   }
@@ -34,7 +38,7 @@ export class SettingsScene extends SceneNavigation {
         const message: Message.TextMessage = await ctx.reply('Доступні налаштування:', keyboard);
         this.stateService.setMessageId(message.message_id);
       } else {
-        await ctx.answerCbQuery();
+        ctx.answerCbQuery();
         await ctx.editMessageText('Доступні налаштування:', keyboard);
       }
     } catch (error) {
@@ -61,11 +65,11 @@ export class SettingsScene extends SceneNavigation {
     try {
       const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.DISABLE) {
-        this.onDisableNotifications(ctx);
+        this.onToggleNotifications(ctx, false);
         return;
       }
       if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.ENABLE) {
-        this.onEnableNotifications(ctx);
+        this.onToggleNotifications(ctx, true);
         return;
       }
       if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.WAKE_UP_TIME) {
@@ -105,19 +109,12 @@ export class SettingsScene extends SceneNavigation {
     }
   }
 
-  private async onDisableNotifications(ctx: SceneContext): Promise<void> {
+  private async onToggleNotifications(ctx: SceneContext, notifications_enabled = true): Promise<void> {
     try {
-      await this.botUserDataService.update(ctx.from.id, { notifications_enabled: false });
+      const chat_id: number = ctx.from.id;
+      await this.botUserDataService.update(chat_id, { notifications_enabled });   
       await this.onNotificationsSettings(ctx);
-    } catch (error) {
-      this.logger.error(`${ctx.text}: ${error.message}`);
-    }
-  }
-
-  private async onEnableNotifications(ctx: SceneContext): Promise<void> {
-    try {
-      await this.botUserDataService.update(ctx.from.id, { notifications_enabled: true });
-      await this.onNotificationsSettings(ctx);
+      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -127,31 +124,18 @@ export class SettingsScene extends SceneNavigation {
     try {
       const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       this.stateService.storeCallback(callbackData);
-      const buttons: InlineKeyboardButton.CallbackButton[] = range(6, 10).flatMap((hour: number): InlineKeyboardButton.CallbackButton[] =>
-        range(0, 60, 10).map((minute: number): InlineKeyboardButton.CallbackButton => {
-          const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-          return Markup.button.callback(time, `WAKE_UP_TIME_${time}`);
-        })
-      );
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([...buttons, backButton], { columns: 4 });
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationTimeKeyboard(6, 10, 'WAKE_UP_TIME');
       await ctx.editMessageText('Оберіть час прокидання:', keyboard);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
   }
 
-
   private async onSetBedTime(ctx: SceneContext): Promise<void> {
     try {
       const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       this.stateService.storeCallback(callbackData);
-      const buttons: InlineKeyboardButton.CallbackButton[] = range(22, 24).flatMap((hour: number): InlineKeyboardButton.CallbackButton[] =>
-        range(0, 60, 10).map((minute: number): InlineKeyboardButton.CallbackButton => {
-          const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-          return Markup.button.callback(time, `BED_TIME_${time}`);
-        })
-      );
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([...buttons, backButton], { columns: 4 });
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationTimeKeyboard(22, 24, 'BED_TIME');
       await ctx.editMessageText('Оберіть час сну:', keyboard);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
@@ -160,26 +144,31 @@ export class SettingsScene extends SceneNavigation {
 
   private async onNotificationsSettings(ctx: SceneContext): Promise<void> {
     try {
-      await ctx.answerCbQuery();
+      ctx.answerCbQuery();
       const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
       const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationsKeyboard(user.notifications_enabled);
-      const LOCALIZATION_STRINGS: Partial<Record<keyof BotUser, string>> = {
-        notifications_enabled: 'Сповіщення',
-        wake_up_time: 'Час прокидання',
-        bed_time: 'Час сну',
-      };
-      const parseValue: (value: unknown) => string = (value: string | boolean): string =>
-        isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;
-      const stringifiedUserDetails: string = Object.keys(LOCALIZATION_STRINGS)
-        .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
-        .map((key: keyof BotUser): string => `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`)
-        .join('\n');
+      const content: string = this.getUserNotificationSettingsDetails(user);
       await ctx.editMessageText(
-        `<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${stringifiedUserDetails}</code>`,
+        `<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${content}</code>`,
         { parse_mode: PARSE_MODE.HTML, ...keyboard }
       );
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
+  }
+
+  private getUserNotificationSettingsDetails(user: BotUser): string {
+    const LOCALIZATION_STRINGS: Partial<Record<keyof BotUser, string>> = {
+      notifications_enabled: 'Сповіщення',
+      wake_up_time: 'Час прокидання',
+      bed_time: 'Час сну',
+    };
+    const parseValue: (value: unknown) => string = (value: string | boolean): string =>
+      isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;
+    const stringifiedDetails: string = Object.keys(LOCALIZATION_STRINGS)
+      .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
+      .map((key: keyof BotUser): string => `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`)
+      .join('\n');
+    return stringifiedDetails;
   }
 }

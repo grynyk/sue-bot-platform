@@ -30,7 +30,7 @@ export class PendingUserNotificationService {
     });
   }
 
-  async findAllPerUser(user_id: string): Promise<PendingUserNotification[]> {
+  async findAllByUserId(user_id: string): Promise<PendingUserNotification[]> {
     return this.repository.find({
       where: { user_id }
     });
@@ -56,6 +56,10 @@ export class PendingUserNotificationService {
 
   async markAsSent(id: string): Promise<void> {
     await this.repository.update(id, { sent: true });
+  }
+
+  async removeAllByUserId(user_id: string): Promise<void> {
+    await this.repository.delete({ user_id });
   }
 
   async remove(id: string): Promise<void> {
