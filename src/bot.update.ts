@@ -113,6 +113,7 @@ export class BotUpdate {
       await ctx.answerCbQuery();
       try {
         await ctx.editMessageText(`✅ ${ctx.text || 'Зроблено'}`);
+        await this.botUserDataService.incrementDoneTasksCounter(ctx.from.id);
       } catch (error) {
         this.logger.error(`Failed to edit message: ${error.message}`);
         await ctx.reply('✅ Зроблено');
