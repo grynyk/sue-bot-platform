@@ -3,30 +3,58 @@ import { BotNotification } from '@modules/notification-data/entities/bot-notific
 import { SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
 import { BotNotificationService } from '@modules/notification-data/services/bot-notification.service';
 import { PendingUserNotificationService } from '@modules/notification-data/services/pending-user-notification.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { isNil, map } from 'lodash';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class NotificationsPrecomputeService {
   constructor(
+    @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
     private readonly botNotificationService: BotNotificationService,
-    private readonly pendingUserNotificationService: PendingUserNotificationService,
+    private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
-  async precomputePendingNotifications(): Promise<void> {
-    await this.pendingUserNotificationService.drop();
-    const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
-    const notifications: BotNotification[] = await this.botNotificationService.findActive();
-    for (const user of users) {
-      for (const notification of notifications) {
-        const send_time: Date = this.calculateSendTime(user, notification);
-        if (!isNil(send_time)) {
-          await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+  async precomputeAllPendingNotifications(): Promise<void> {
+    try {
+      await this.pendingUserNotificationService.drop();
+      const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
+      const notifications: BotNotification[] = await this.botNotificationService.findActive();
+      for (const user of users) {
+        for (const notification of notifications) {
+          const send_time: Date = this.calculateSendTime(user, notification);
+          if (!isNil(send_time)) {
+            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+          }
         }
       }
+    } catch (error) {
+      this.logger.error(`Precompute All Pending Notifications: ${error.message}`);
+    }
+  }
+
+  async precomputeUserPendingNotifications(chat_id: number): Promise<void> {
+    try {
+      const user: BotUser = await this.botUserDataService.findByChatId(chat_id);
+      if (isNil(user)) {
+        throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
+      }
+      await this.pendingUserNotificationService.removeAllByUserId(user.id);
+      if (user.notifications_enabled) {
+        const notifications: BotNotification[] = await this.botNotificationService.findActive();
+        for (const notification of notifications) {
+          const send_time: Date = this.calculateSendTime(user, notification);
+          if (!isNil(send_time)) {
+            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+          }
+        }
+        return;
+      }
+    } catch (error) {
+      this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
     }
   }
 
