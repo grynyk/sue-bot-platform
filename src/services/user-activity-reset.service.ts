@@ -2,13 +2,10 @@ import { BotUserDataService } from '@modules/bot-user-data';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { InjectBot } from 'nestjs-telegraf';
-import { Telegraf } from 'telegraf';
 
 @Injectable()
 export class UserActivityResetService {
   constructor(
-    @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
   ) {}

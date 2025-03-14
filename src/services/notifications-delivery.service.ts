@@ -42,10 +42,7 @@ export class NotificationsDeliveryService {
           (pendingNotification: PendingUserNotification): Observable<number> =>
             from(this.processNotification(pendingNotification)).pipe(
               delay(150),
-              catchError((error) => {
-                this.logger.error(`Failed to process notification: ${error.message}`);
-                return EMPTY;
-              })
+              catchError((): Observable<never> => EMPTY)
             )
         ),
       )
