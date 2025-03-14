@@ -92,7 +92,7 @@ export class BotUpdate {
         total: 'Всього користувачів',
         newToday: 'Нових сьогодні',
         active: 'Активних сьогодні',
-        blocked: 'Заблокували бота',
+        blocked: 'Заблокували/Недоступні',
         notificationsDisabled: 'З вимкненими сповіщеннями',
         changedNotificationTime: 'Змінили час сповіщень',
         completedSkinTest: 'Пройшли тест на тип шкіри',
