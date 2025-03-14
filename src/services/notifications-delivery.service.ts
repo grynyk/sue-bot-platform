@@ -11,12 +11,17 @@ import { addMinutes, subMinutes } from 'date-fns';
 import { sample } from 'lodash';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectBot } from 'nestjs-telegraf';
-import { catchError, concatMap, delay, EMPTY, from, Observable } from 'rxjs';
+import { catchError, delay, EMPTY, from, mergeMap, Observable, retry } from 'rxjs';
 import { Telegraf } from 'telegraf';
 import { InlineKeyboardButton } from 'typegram';
 
 @Injectable()
 export class NotificationsDeliveryService {
+  private readonly BATCH_SIZE = 100;
+  private readonly CONCURRENCY_LIMIT = 5;
+  private readonly MAX_RETRIES = 2;
+  private readonly RETRY_DELAY = 1000;
+
   constructor(
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
@@ -36,15 +41,34 @@ export class NotificationsDeliveryService {
       fourMinutesAgo,
       fourMinutesAhead
     );
-    from(pendingNotifications)
+    for (let i = 0; i < pendingNotifications.length; i += this.BATCH_SIZE) {
+      const batch = pendingNotifications.slice(i, i + this.BATCH_SIZE);
+      await this.processBatch(batch);
+    }
+  }
+
+  private async processBatch(batch: PendingUserNotification[]): Promise<void> {
+    from(batch)
       .pipe(
-        concatMap(
+        mergeMap(
           (pendingNotification: PendingUserNotification): Observable<number> =>
             from(this.processNotification(pendingNotification)).pipe(
               delay(150),
-              catchError((): Observable<never> => EMPTY)
-            )
-        ),
+              retry({
+                delay: (retryCount: number, error): Observable<never> => {
+                  if (retryCount >= this.MAX_RETRIES) {
+                    throw error;
+                  }
+                  return EMPTY.pipe(delay(this.RETRY_DELAY));
+                },
+              }),
+              catchError((error) => {
+                this.logger.error(`Failed to process notification ${pendingNotification.id}: ${error.message}`);
+                return EMPTY;
+              })
+            ),
+          this.CONCURRENCY_LIMIT
+        )
       )
       .subscribe({
         error: (error) => this.logger.error(`${error.message}`),
@@ -70,7 +94,7 @@ export class NotificationsDeliveryService {
       await this.pendingUserNotificationService.markAsSent(pendingNotification.id);
       if (this.isLastNotification(notification)) {
         const totalTasksNumber: number = await this.botNotificationService.countWithConfirmButton();
-        const doneTasksNumber = Number(user.done_tasks_counter);
+        const doneTasksNumber = Number(user.done_tasks_counter) >= totalTasksNumber ? totalTasksNumber : Number(user.done_tasks_counter);
         const doneTasksCaption = `Ви виконали ${doneTasksNumber} з ${totalTasksNumber} завдань сьогодні ${this.getDoneTasksNumberEmoji(
           doneTasksNumber
         )}`;
