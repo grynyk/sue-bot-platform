@@ -1,6 +1,6 @@
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
-import { SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
 import { BotNotificationService } from '@modules/notification-data/services/bot-notification.service';
 import { PendingUserNotificationService } from '@modules/notification-data/services/pending-user-notification.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -54,15 +54,43 @@ export class NotificationsPrecomputeService {
 
   private async populatePendingNotifications(user: BotUser, notifications: BotNotification[]): Promise<void> {
     try {
+      const currentDay: number = new Date().getDay();
+      const isWeekday: boolean = currentDay >= 1 && currentDay <= 5;
+      const isWeekend: boolean = currentDay === 0 || currentDay === 6;
       for (const notification of notifications) {
-        const send_time: Date = this.calculateSendTime(user, notification);
-        if (!isNil(send_time)) {
-          await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+        if (this.shouldSendNotificationToday(notification, currentDay, isWeekday, isWeekend)) {
+          const send_time: Date = this.calculateSendTime(user, notification);
+          if (!isNil(send_time)) {
+            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+          }
         }
       }
     } catch (error) {
       this.logger.error(`Populate Pending Notifications: ${error.message}`);
     }
+  }
+
+  private shouldSendNotificationToday(notification: BotNotification, currentDay: number, isWeekday: boolean, isWeekend: boolean): boolean {
+    const recurrencePatterns = notification.recurrence_pattern;
+    if (recurrencePatterns.includes(RECURRENCE_PATTERN.DAILY)) {
+      return true;
+    }
+    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKDAYS) && isWeekday) {
+      return true;
+    }
+    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKENDS) && isWeekend) {
+      return true;
+    }
+    const daysOfWeek: Record<number, RECURRENCE_PATTERN> = {
+      0: RECURRENCE_PATTERN.SUNDAY,
+      1: RECURRENCE_PATTERN.MONDAY,
+      2: RECURRENCE_PATTERN.TUESDAY,
+      3: RECURRENCE_PATTERN.WEDNESDAY,
+      4: RECURRENCE_PATTERN.THURSDAY,
+      5: RECURRENCE_PATTERN.FRIDAY,
+      6: RECURRENCE_PATTERN.SATURDAY,
+    };
+    return recurrencePatterns.includes(daysOfWeek[currentDay]);
   }
 
   private calculateSendTime(user: BotUser, notification: BotNotification): Date | null {

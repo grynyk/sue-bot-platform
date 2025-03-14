@@ -11,7 +11,7 @@ import { addMinutes, subMinutes } from 'date-fns';
 import { sample } from 'lodash';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InjectBot } from 'nestjs-telegraf';
-import { concatMap, delay, from, Observable } from 'rxjs';
+import { catchError, concatMap, delay, EMPTY, from, Observable } from 'rxjs';
 import { Telegraf } from 'telegraf';
 import { InlineKeyboardButton } from 'typegram';
 
@@ -31,9 +31,7 @@ export class NotificationsDeliveryService {
    */
   @Cron(CronExpression.EVERY_5_MINUTES)
   async sendScheduledNotifications(): Promise<void> {
-    const now: Date = new Date();
-    const fourMinutesAgo: Date = subMinutes(now, 4);
-    const fourMinutesAhead: Date = addMinutes(now, 4);
+    const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllUnsentInTimeRange(
       fourMinutesAgo,
       fourMinutesAhead
@@ -42,12 +40,29 @@ export class NotificationsDeliveryService {
       .pipe(
         concatMap(
           (pendingNotification: PendingUserNotification): Observable<number> =>
-            from(this.processNotification(pendingNotification)).pipe(delay(150))
-        )
+            from(this.processNotification(pendingNotification)).pipe(
+              delay(150),
+              catchError((error) => {
+                this.logger.error(`Failed to process notification: ${error.message}`);
+                return EMPTY;
+              })
+            )
+        ),
       )
       .subscribe({
         error: (error) => this.logger.error(`${error.message}`),
       });
+  }
+
+  /**
+   * Calculates the time range for retrieving pending notifications.
+   * @returns An object containing the 'fourMinutesAgo' and 'fourMinutesAhead' dates.
+   */
+  private getTimeRangeForNotifications(): Record<string, Date> {
+    const now: Date = new Date();
+    const fourMinutesAgo: Date = subMinutes(now, 4);
+    const fourMinutesAhead: Date = addMinutes(now, 4);
+    return { fourMinutesAgo, fourMinutesAhead };
   }
 
   private async processNotification(pendingNotification: PendingUserNotification): Promise<number> {
@@ -66,7 +81,8 @@ export class NotificationsDeliveryService {
       }
       return user.chat_id;
     } catch (error) {
-      this.logger.error(`processNotification(...): ${error.message}`);
+      this.logger.error(`Failed to process notification ${pendingNotification.id}: ${error.message}`);
+      throw error;
     }
   }
 
@@ -88,10 +104,12 @@ export class NotificationsDeliveryService {
         ...(notification.buttons && { reply_markup: { inline_keyboard } }),
       });
     } catch (error) {
-      if (error.code === 403 && error.description.includes('blocked')) {
+      const isBlocked = error.code === 403 && error.description.includes('blocked');
+      const isNotExisting = error.code === 400 && error.description.includes('chat not found');
+      if (isBlocked || isNotExisting) {
         await this.botUserDataService.update(user.chat_id, { blocked: true });
       }
-      this.logger.error(`Failed to send message to user ${user.chat_id}: ${error.message}`);
+      throw error;
     }
   }
 
