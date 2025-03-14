@@ -11,13 +11,13 @@ export class BotKeepAliveService {
 
   /**
    * Pings the Heroku app to keep the dyno awake.
-   * every 25 minutes
+   * every 29 minutes
    */
-  @Interval(25 * 60 * 1000)
+  @Interval(29 * 60 * 1000)
   keepAwake(): void {
     this.logger.info(`Pinging ${this.url} to keep the dyno awake.`);
     axios
-      .get(`${this.url}/bot-user`)
+      .get(`${this.url}/notifications`)
       .then((response: AxiosResponse): void => {
         this.logger.info(`Ping successful. Status: ${response.status}`);
       })
