@@ -31,7 +31,7 @@ export class NotificationWorkerService {
   @Cron(CronExpression.EVERY_5_MINUTES)
   async processNotifications(): Promise<void> {
     const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
-    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllUnsentInTimeRange(
+    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
       fourMinutesAgo,
       fourMinutesAhead
     );
@@ -83,7 +83,7 @@ export class NotificationWorkerService {
         throw new NotFoundException(`Notification with id ${notification.notification_id} not found`);
       }
       await this.sendTelegramMessage(user, notificationData);
-      await this.pendingUserNotificationService.markAsSent(notification.id);
+      await this.pendingUserNotificationService.markAsProcessed(notification.id);
     } catch (error) {
       this.logger.error(
         `Failed to send notification ${notification.id} to user ${notification.user_id}: ${error.message}`,

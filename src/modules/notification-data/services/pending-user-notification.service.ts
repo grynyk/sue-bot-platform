@@ -40,32 +40,32 @@ export class PendingUserNotificationService {
     return this.repository.find({
       where: {
         send_time: currentTime,
-        sent: false,
+        processed: false,
       },
     });
   }
 
-  async findAllUnsentInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
+  async findAllNotProcessedInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
     return this.repository.find({
       where: {
         send_time: Between(startTime, endTime),
-        sent: false,
+        processed: false,
         user_id
       },
     });
   }
 
-  async findAllUnsentInTimeRange(startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
+  async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
     return this.repository.find({
       where: {
         send_time: Between(startTime, endTime),
-        sent: false,
+        processed: false,
       },
     });
   }
 
-  async markAsSent(id: string): Promise<void> {
-    await this.repository.update(id, { sent: true });
+  async markAsProcessed(id: string): Promise<void> {
+    await this.repository.update(id, { processed: true });
   }
 
   async removeAllByUserId(user_id: string): Promise<void> {
