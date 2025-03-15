@@ -5,6 +5,7 @@ import { BotNotificationService } from '@modules/notification-data/services/bot-
 import { PendingUserNotificationService } from '@modules/notification-data/services/pending-user-notification.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { addMinutes, endOfToday, getDay, isWeekend, setHours, setMinutes, startOfToday, subMinutes } from 'date-fns';
 import { isNil, map } from 'lodash';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
@@ -45,7 +46,6 @@ export class NotificationsPrecomputeService {
       if (user.notifications_enabled && !user.blocked) {
         const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
         this.populatePendingNotifications(user, notifications);
-        return;
       }
     } catch (error) {
       this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
@@ -54,14 +54,16 @@ export class NotificationsPrecomputeService {
 
   private async populatePendingNotifications(user: BotUser, notifications: BotNotification[]): Promise<void> {
     try {
-      const currentDay: number = new Date().getDay();
-      const isWeekday: boolean = currentDay >= 1 && currentDay <= 5;
-      const isWeekend: boolean = currentDay === 0 || currentDay === 6;
       for (const notification of notifications) {
-        if (this.shouldSendNotificationToday(notification, currentDay, isWeekday, isWeekend)) {
+        if (this.shouldSendNotificationToday(notification)) {
           const send_time: Date = this.calculateSendTime(user, notification);
           if (!isNil(send_time)) {
-            await this.pendingUserNotificationService.create({ user_id: user.id, notification_id: notification.id, send_time, sent: false });
+            await this.pendingUserNotificationService.create({
+              user_id: user.id,
+              notification_id: notification.id,
+              send_time,
+              sent: false,
+            });
           }
         }
       }
@@ -70,15 +72,17 @@ export class NotificationsPrecomputeService {
     }
   }
 
-  private shouldSendNotificationToday(notification: BotNotification, currentDay: number, isWeekday: boolean, isWeekend: boolean): boolean {
+  private shouldSendNotificationToday(notification: BotNotification): boolean {
+    const date: Date = endOfToday();
+    const day: number = getDay(date);
     const recurrencePatterns = notification.recurrence_pattern;
     if (recurrencePatterns.includes(RECURRENCE_PATTERN.DAILY)) {
       return true;
     }
-    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKDAYS) && isWeekday) {
+    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKDAYS) && !isWeekend(date)) {
       return true;
     }
-    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKENDS) && isWeekend) {
+    if (recurrencePatterns.includes(RECURRENCE_PATTERN.WEEKENDS) && isWeekend(date)) {
       return true;
     }
     const daysOfWeek: Record<number, RECURRENCE_PATTERN> = {
@@ -90,27 +94,32 @@ export class NotificationsPrecomputeService {
       5: RECURRENCE_PATTERN.FRIDAY,
       6: RECURRENCE_PATTERN.SATURDAY,
     };
-    return recurrencePatterns.includes(daysOfWeek[currentDay]);
+    return recurrencePatterns.includes(daysOfWeek[day]);
   }
 
   private calculateSendTime(user: BotUser, notification: BotNotification): Date | null {
-    const currentDate: Date = new Date();
     if (notification.schedule_type === SCHEDULE_TYPE.EXACT_TIME && notification.time) {
-      const [hours, minutes] = map(notification.time.split(':'), Number);
-      currentDate.setHours(hours, minutes, 0);
-      return currentDate;
+      const [hours, minutes]: number[] = map(notification.time.split(':'), Number);
+      let date: Date = startOfToday();
+      date = setHours(date, hours);
+      date = setMinutes(date, minutes);
+      return date;
     }
     if (notification.schedule_type === SCHEDULE_TYPE.WAKE_UP_OFFSET && user.wake_up_time) {
-      const [wakeHours, wakeMinutes] = map(user.wake_up_time.split(':'), Number);
-      currentDate.setHours(wakeHours, wakeMinutes, 0);
-      currentDate.setMinutes(currentDate.getMinutes() + notification.offset);
-      return currentDate;
+      const [hours, minutes]: number[] = map(user.wake_up_time.split(':'), Number);
+      let date: Date = startOfToday();
+      date = setHours(date, hours);
+      date = setMinutes(date, minutes);
+      date = addMinutes(date, notification.offset);
+      return date;
     }
     if (notification.schedule_type === SCHEDULE_TYPE.BED_TIME_OFFSET && user.bed_time) {
-      const [bedHours, bedMinutes] = map(user.bed_time.split(':'), Number);
-      currentDate.setHours(bedHours, bedMinutes, 0);
-      currentDate.setMinutes(currentDate.getMinutes() - notification.offset);
-      return currentDate;
+      const [hours, minutes]: number[] = map(user.bed_time.split(':'), Number);
+      let date: Date = startOfToday();
+      date = setHours(date, hours);
+      date = setMinutes(date, minutes);
+      date = subMinutes(date, notification.offset);
+      return date;
     }
     return null;
   }

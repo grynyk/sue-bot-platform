@@ -45,6 +45,16 @@ export class PendingUserNotificationService {
     });
   }
 
+  async findAllUnsentInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
+    return this.repository.find({
+      where: {
+        send_time: Between(startTime, endTime),
+        sent: false,
+        user_id
+      },
+    });
+  }
+
   async findAllUnsentInTimeRange(startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
     return this.repository.find({
       where: {
