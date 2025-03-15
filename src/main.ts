@@ -32,4 +32,6 @@ async function bootstrap(): Promise<INestApplicationContext> {
   return app;
 }
 
-bootstrap();
+bootstrap().catch((): void => {
+  process.exit(1);
+});

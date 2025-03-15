@@ -5,8 +5,7 @@ import { BotCommand, Message, ReplyKeyboardMarkup } from 'typegram';
 import { compact, isNil, omit } from 'lodash';
 import { Markup, Telegraf } from 'telegraf';
 import { BotUser, BotUserDataService, UpdateBotUserDto } from '@modules/bot-user-data';
-import { toZonedTime } from 'date-fns-tz';
-import { format } from 'date-fns';
+import { format, startOfToday } from 'date-fns';
 import { PARSE_MODE } from '@models/tg.model';
 import { Observable, switchMap, tap, timer } from 'rxjs';
 import { SUBSCRIPTION_CALLBACK } from './enums/subscription.enum';
@@ -25,7 +24,7 @@ export class SubscriptionScene {
     private readonly botUserDataService: BotUserDataService,
     private readonly notificationsPrecomputeService: NotificationsPrecomputeService
   ) {
-    this.date = toZonedTime(new Date(), process.env.TZ);
+    this.date = startOfToday();
   }
 
   @SceneEnter()

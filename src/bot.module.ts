@@ -13,7 +13,6 @@ import { SceneStateService } from './shared';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BotKeepAliveService } from './services/bot-keep-alive.service';
 import { ScheduleModule } from '@nestjs/schedule';
-import { NotificationsDeliveryService } from './services/notifications-delivery.service';
 import { BotUser } from './modules/bot-user-data/entities/bot-user.entity';
 import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
@@ -27,6 +26,7 @@ import { NotificationDataModule } from './modules/notification-data/notification
 import { NotificationsPrecomputeService } from './services/notifications-precompute.service';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
+import { NotificationWorkerService } from './services/notifications-worker.service';
 
 @Module({
   imports: [
@@ -76,7 +76,7 @@ import { PendingUserNotification } from '@modules/notification-data/entities/pen
     BotUpdate,
     BotKeepAliveService,
     UserActivityResetService,
-    NotificationsDeliveryService,
+    NotificationWorkerService,
     NotificationsPrecomputeService,
     SceneStateService,
     RecipesScene,
