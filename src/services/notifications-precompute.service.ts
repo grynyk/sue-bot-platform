@@ -62,7 +62,7 @@ export class NotificationsPrecomputeService {
               user_id: user.id,
               notification_id: notification.id,
               send_time,
-              sent: false,
+              processed: false,
             });
           }
         }

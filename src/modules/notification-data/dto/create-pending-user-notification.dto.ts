@@ -11,5 +11,5 @@ export class CreatePendingUserNotificationsDto {
   send_time: Date;
 
   @IsBoolean()
-  sent: boolean;
+  processed: boolean;
 }

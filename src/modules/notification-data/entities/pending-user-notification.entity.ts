@@ -15,5 +15,5 @@ export class PendingUserNotification {
   send_time: Date;
 
   @Column({ default: false })
-  sent: boolean;
+  processed: boolean;
 }
