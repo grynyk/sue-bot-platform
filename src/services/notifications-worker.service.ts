@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { from, catchError, EMPTY, Observable, mergeMap, retry, delay } from 'rxjs';
+import { from, catchError, EMPTY, Observable, mergeMap } from 'rxjs';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { BotNotificationService, PendingUserNotificationService, SCHEDULE_TYPE } from '@modules/notification-data';
 import { addMinutes, startOfToday, subMinutes } from 'date-fns';
@@ -13,10 +13,7 @@ import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 
-const BATCH_SIZE = 100;
 const CONCURRENCY_LIMIT = 15;
-const MAX_RETRIES = 2;
-const RETRY_DELAY = 500;
 
 @Injectable()
 export class NotificationWorkerService {
@@ -28,7 +25,7 @@ export class NotificationWorkerService {
     private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_10_MINUTES)
   async processNotifications(): Promise<void> {
     const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
@@ -38,38 +35,22 @@ export class NotificationWorkerService {
     if (!pendingNotifications.length) {
       return;
     }
-    for (let i = 0; i < pendingNotifications.length; i += BATCH_SIZE) {
-      const batch: PendingUserNotification[] = pendingNotifications.slice(i, i + BATCH_SIZE);
-      await this.processBatch(batch);
-    }
-  }
-
-  private async processBatch(batch: PendingUserNotification[]): Promise<void> {
-    from(batch)
-      .pipe(
-        mergeMap(
-          (notification: PendingUserNotification): Observable<void> =>
-            from(this.sendNotification(notification)).pipe(
-              retry({
-                delay: (retryCount: number, error): Observable<never> => {
-                  if (retryCount >= MAX_RETRIES) {
-                    this.logger.error(`Notification ${notification.id} failed after ${MAX_RETRIES} retries`);
-                    throw error;
-                  }
-                  return EMPTY.pipe(delay(RETRY_DELAY));
-                },
-              }),
-              catchError((error) => {
-                this.logger.error(`Failed to process notification ${notification.id}: ${error.message}`, error.stack);
-                return EMPTY;
-              })
-            ),
-          CONCURRENCY_LIMIT
-        )
+    from(pendingNotifications)
+    .pipe(
+      mergeMap(
+        (notification: PendingUserNotification): Observable<void> =>
+          from(this.sendNotification(notification)).pipe(
+            catchError((error) => {
+              this.logger.error(`Failed to process notification ${notification.id}: ${error.message}`, error.stack);
+              return EMPTY;
+            })
+          ),
+        CONCURRENCY_LIMIT
       )
-      .subscribe({
-        error: (error): void => this.logger.error(`Error in processBatch: ${error.message}`, error.stack),
-      });
+    )
+    .subscribe({
+      error: (error): void => this.logger.error(`Error in processBatch: ${error.message}`, error.stack),
+    });
   }
 
   private async sendNotification(notification: PendingUserNotification) {

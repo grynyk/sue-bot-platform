@@ -10,6 +10,7 @@ import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@mo
 import { PARSE_MODE } from '@models/tg.model';
 import { get, isNil, omit } from 'lodash';
 import { OnModuleInit } from '@nestjs/common';
+import { Pool } from 'pg';
 
 @Update()
 export class BotUpdate implements OnModuleInit {
