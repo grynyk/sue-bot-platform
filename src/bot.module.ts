@@ -56,12 +56,14 @@ import { NotificationWorkerService } from './services/notifications-worker.servi
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const token: string = configService.getOrThrow<string>(GLOBAL_VARIABLES.BOT_TOKEN);
+        const domain: string = configService.get<string>(GLOBAL_VARIABLES.HEROKU_URL);
+        const hookPath = `/bot${token}`;
         return {
           token,
           middlewares: [session()],
           webhook: {
-            domain: configService.get<string>(GLOBAL_VARIABLES.HEROKU_URL),
-            hookPath: '/webhook',
+            domain,
+            hookPath,
             port: process.env.PORT || 3000,
           },
         };
