@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { from, catchError, EMPTY, Observable, mergeMap } from 'rxjs';
+import { from, catchError, EMPTY, Observable, mergeMap, delay } from 'rxjs';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { BotNotificationService, PendingUserNotificationService, SCHEDULE_TYPE } from '@modules/notification-data';
 import { addMinutes, startOfToday, subMinutes } from 'date-fns';
@@ -14,6 +14,7 @@ import { InjectBot } from 'nestjs-telegraf';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 
 const CONCURRENCY_LIMIT = 15;
+const DELAY_TIME = 100;
 
 @Injectable()
 export class NotificationWorkerService {
@@ -27,19 +28,20 @@ export class NotificationWorkerService {
 
   @Cron(CronExpression.EVERY_10_MINUTES)
   async processNotifications(): Promise<void> {
-    const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
+    const { fiveMinutesAgo, fiveMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
-      fourMinutesAgo,
-      fourMinutesAhead
+      fiveMinutesAgo,
+      fiveMinutesAhead
     );
     if (pendingNotifications.length) {
-      this.logger.info(`Processing ${pendingNotifications.length} pending notifications ${fourMinutesAgo} - ${fourMinutesAhead}`);
+      this.logger.info(`Processing ${pendingNotifications.length} pending notifications ${fiveMinutesAgo} - ${fiveMinutesAhead}`);
       from(pendingNotifications)
       .pipe(
         mergeMap(
           (notification: PendingUserNotification): Observable<void> =>
             from(this.sendNotification(notification)).pipe(
-              catchError((error) => {
+              delay(DELAY_TIME),
+              catchError((error): Observable<never> => {
                 this.logger.error(`Failed to process notification ${notification.id}: ${error.message}`, error.stack);
                 return EMPTY;
               })
@@ -49,7 +51,7 @@ export class NotificationWorkerService {
       )
       .subscribe({
         error: (error): void => this.logger.error(`Error in processNotifications: ${error.message}`, error.stack),
-        complete: (): void => this.logger.info(`Processed successfully: pending notifications ${fourMinutesAgo} - ${fourMinutesAhead}`),
+        complete: (): void => this.logger.info(`Processed successfully: pending notifications ${fiveMinutesAgo} - ${fiveMinutesAhead}`),
       });
     }
   }
@@ -126,9 +128,9 @@ export class NotificationWorkerService {
    */
   private getTimeRangeForNotifications(): Record<string, Date> {
     const date: Date = startOfToday();
-    const fourMinutesAgo: Date = subMinutes(date, 4);
-    const fourMinutesAhead: Date = addMinutes(date, 4);
-    return { fourMinutesAgo, fourMinutesAhead };
+    const fiveMinutesAgo: Date = subMinutes(date, 5);
+    const fiveMinutesAhead: Date = addMinutes(date, 5);
+    return { fiveMinutesAgo, fiveMinutesAhead };
   }
 
   private isLastNotification(notification: BotNotification): boolean {
