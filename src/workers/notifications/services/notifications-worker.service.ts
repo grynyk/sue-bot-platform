@@ -30,11 +30,12 @@ export class NotificationWorkerService {
 
   @Cron(CronExpression.EVERY_5_MINUTES)
   async processNotifications(): Promise<void> {
-    const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
-    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
-      fourMinutesAgo,
-      fourMinutesAhead
-    );
+    // const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
+    // const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
+    //   fourMinutesAgo,
+    //   fourMinutesAhead
+    // );
+    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAll();
     if (!pendingNotifications.length) {
       return;
     }
