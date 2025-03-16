@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, LessThan, MoreThanOrEqual, Not, Repository } from 'typeorm';
+import { In, IsNull, LessThan, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { BotUser } from './entities/bot-user.entity';
 import { CreateBotUserDto } from './dto/create-bot-user.dto';
 import { UpdateBotUserDto } from './dto/update-bot-user.dto';
@@ -37,6 +37,10 @@ export class BotUserDataService {
 
   async findWithEnabledNotifications(): Promise<BotUser[]> {
     return this.repository.find({ where: { notifications_enabled: true, blocked: false } });
+  }
+
+  async markUsersAsBlocked(userIds: number[]): Promise<void> {
+    await this.repository.update({ chat_id: In(userIds) }, { blocked: true });
   }
 
   async update(chat_id: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {
