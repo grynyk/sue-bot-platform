@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { BotModule } from './bot.module';
+import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@models/global.model';
 
 async function bootstrap(): Promise<void> {
-  const app: INestApplication = await NestFactory.create(BotModule);
+  const app: INestApplication = await NestFactory.create(AppModule);
   app.useLogger(app.get(Logger));
   const configService = app.get(ConfigService);
   const port: number = configService.get<number>(GLOBAL_VARIABLES.PORT) || 3000;
