@@ -11,7 +11,7 @@ import { SettingsScene } from './scenes/settings/settings.scene';
 import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
 import { UserActivityResetService } from './services/user-activity-reset.service';
 import { NotificationDataModule } from './modules/notification-data/notification-data.module';
-import { NotificationsPrecomputeService } from './services/notifications-precompute.service';
+import { NotificationsQueueService } from './services/notifications-queue.service';
 import { NotificationWorkerService } from './services/notifications-worker.service';
 
 @Module({
@@ -25,7 +25,7 @@ import { NotificationWorkerService } from './services/notifications-worker.servi
     BotUpdate,
     BotKeepAliveService,
     UserActivityResetService,
-    NotificationsPrecomputeService,
+    NotificationsQueueService,
     NotificationWorkerService,
     SceneStateService,
     RecipesScene,

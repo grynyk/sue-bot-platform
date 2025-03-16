@@ -1,45 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, In, Repository } from 'typeorm';
-import { CreatePendingUserNotificationsDto } from '../dto/create-pending-user-notification.dto';
-import { PendingUserNotification } from '../entities/pending-user-notification.entity';
+import { QueuedNotification } from '../entities/queued-notification';
+import { CreateQueuedNotificationDto } from '../dto/create-queued-notification.dto';
 
 @Injectable()
-export class PendingUserNotificationService {
+export class QueuedNotificationDataService {
   constructor(
-    @InjectRepository(PendingUserNotification)
-    private repository: Repository<PendingUserNotification>
+    @InjectRepository(QueuedNotification)
+    private repository: Repository<QueuedNotification>
   ) {}
 
-  async bulkInsert(notifications: Partial<PendingUserNotification>[]) {
+  async bulkInsert(notifications: Partial<QueuedNotification>[]) {
     await this.repository.insert(notifications);
   }
 
-  async create(dto: CreatePendingUserNotificationsDto): Promise<PendingUserNotification> {
+  async create(dto: CreateQueuedNotificationDto): Promise<QueuedNotification> {
     if (!dto.user_id || !dto.notification_id) {
       throw new Error('user_id and notification_id are required');
     }
-    const notification: PendingUserNotification = this.repository.create(dto);
+    const notification: QueuedNotification = this.repository.create(dto);
     return this.repository.save(notification);
   }
 
-  async findAll(): Promise<PendingUserNotification[]> {
+  async findAll(): Promise<QueuedNotification[]> {
     return this.repository.find({});
   }
 
-  async findOne(id: string): Promise<PendingUserNotification> {
+  async findOne(id: string): Promise<QueuedNotification> {
     return this.repository.findOne({
       where: { id },
     });
   }
 
-  async findAllByUserId(user_id: string): Promise<PendingUserNotification[]> {
+  async findAllByUserId(user_id: string): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: { user_id },
     });
   }
 
-  async findAllScheduledForExactTime(currentTime: Date): Promise<PendingUserNotification[]> {
+  async findAllScheduledForExactTime(currentTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         send_time: currentTime,
@@ -48,7 +48,7 @@ export class PendingUserNotificationService {
     });
   }
 
-  async findAllNotProcessedInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
+  async findAllNotProcessedInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         send_time: Between(startTime, endTime),
@@ -62,7 +62,7 @@ export class PendingUserNotificationService {
     await this.repository.delete({ user_id: In(userIds) });
   }
 
-  async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
+  async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         send_time: Between(startTime, endTime),

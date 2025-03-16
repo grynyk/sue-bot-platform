@@ -1,5 +1,5 @@
 import { InlineKeyboardButton } from 'typegram';
-import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '../models/notifications-data.model';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '../models/notifications.model';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateBotNotificationDto {

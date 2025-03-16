@@ -16,7 +16,7 @@ import { SettingsSceneContextType } from './models/settings.model';
 import { get, isBoolean, isNil } from 'lodash';
 import { SETTINGS } from './constants/settings.constant';
 import { PARSE_MODE } from '@models/tg.model';
-import { NotificationsPrecomputeService } from '../../services/notifications-precompute.service';
+import { NotificationsQueueService } from '../../services/notifications-queue.service';
 
 @Scene(SCENE_ID.SETTINGS)
 export class SettingsScene extends SceneNavigation {
@@ -25,7 +25,7 @@ export class SettingsScene extends SceneNavigation {
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     protected readonly stateService: SceneStateService,
     private readonly botUserDataService: BotUserDataService,
-    private readonly notificationsPrecomputeService: NotificationsPrecomputeService,
+    private readonly notificationsQueueService: NotificationsQueueService,
   ) {
     super(bot, logger, stateService, SCENE_ID.SETTINGS);
   }
@@ -34,6 +34,7 @@ export class SettingsScene extends SceneNavigation {
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
     try {
       const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsInitialKeyboard();
+      this.notificationsQueueService.precomputeAllPendingNotifications();
       if (isBotCommand(ctx.text)) {
         const message: Message.TextMessage = await ctx.reply('Доступні налаштування:', keyboard);
         this.stateService.setMessageId(message.message_id);
@@ -93,7 +94,7 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { wake_up_time });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -107,7 +108,7 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { bed_time });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -118,7 +119,7 @@ export class SettingsScene extends SceneNavigation {
       const chat_id: number = ctx.from.id;
       await this.botUserDataService.update(chat_id, { notifications_enabled });   
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }

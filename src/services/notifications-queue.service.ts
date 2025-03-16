@@ -1,26 +1,24 @@
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
-import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
-import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
-import { BotNotificationService } from '@modules/notification-data/services/bot-notification.service';
-import { PendingUserNotificationService } from '@modules/notification-data/services/pending-user-notification.service';
+import { QueuedNotification } from '@modules/notification-data/entities/queued-notification';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@modules/notification-data/models/notifications.model';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { addMinutes, endOfToday, getDay, isWeekend, setHours, setMinutes, startOfToday, subMinutes } from 'date-fns';
 import { isNil, map } from 'lodash';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { NotificationDataService, QueuedNotificationDataService } from '@modules/notification-data';
 
 @Injectable()
-export class NotificationsPrecomputeService {
-  private computedNotifications: Partial<PendingUserNotification>[];
-
+export class NotificationsQueueService {
+  private notificationsQueue: Partial<QueuedNotification>[];
   constructor(
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
-    private readonly botNotificationService: BotNotificationService,
-    private readonly pendingUserNotificationService: PendingUserNotificationService
+    private readonly notificationDataService: NotificationDataService,
+    private readonly queuedNotificationDataService: QueuedNotificationDataService
   ) {
-    this.computedNotifications = [];
+    this.notificationsQueue = [];
   }
 
   /**
@@ -30,16 +28,16 @@ export class NotificationsPrecomputeService {
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
   async precomputeAllPendingNotifications(): Promise<void> {
     try {
-      await this.pendingUserNotificationService.drop();
-      this.computedNotifications = [];
+      await this.queuedNotificationDataService.drop();
+      this.notificationsQueue = [];
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
-      const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
+      const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
       for (const user of users) {
         this.processPendingNotifications(user, notifications);
       }
-      for (let i = 0; i < this.computedNotifications.length; i += 1000) {
-        const batch: Partial<PendingUserNotification>[] = this.computedNotifications.slice(i, i + 1000);
-        await this.pendingUserNotificationService.bulkInsert(batch);
+      for (let i = 0; i < this.notificationsQueue.length; i += 1000) {
+        const batch: Partial<QueuedNotification>[] = this.notificationsQueue.slice(i, i + 1000);
+        await this.queuedNotificationDataService.bulkInsert(batch);
       }
     } catch (error) {
       this.logger.error(`Precompute All Pending Notifications: ${error.message}`);
@@ -52,9 +50,9 @@ export class NotificationsPrecomputeService {
       if (isNil(user)) {
         throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
       }
-      await this.pendingUserNotificationService.removeAllByUserId(user.id);
+      await this.queuedNotificationDataService.removeAllByUserId(user.id);
       if (user.notifications_enabled && !user.blocked) {
-        const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
+        const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
         this.processPendingNotifications(user, notifications);
       }
     } catch (error) {
@@ -67,7 +65,7 @@ export class NotificationsPrecomputeService {
       if (this.shouldSendNotificationToday(notification)) {
         const send_time: Date = this.calculateSendTime(user, notification);
         if (!isNil(send_time)) {
-          this.computedNotifications.push({
+          this.notificationsQueue.push({
             user_id: user.id,
             notification_id: notification.id,
             send_time,
