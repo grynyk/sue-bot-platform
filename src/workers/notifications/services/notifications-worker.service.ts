@@ -13,13 +13,13 @@ import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 
+const BATCH_SIZE = 100;
+const CONCURRENCY_LIMIT = 15;
+const MAX_RETRIES = 2;
+const RETRY_DELAY = 500;
+
 @Injectable()
 export class NotificationWorkerService {
-  private readonly BATCH_SIZE = 100;
-  private readonly CONCURRENCY_LIMIT = 15;
-  private readonly MAX_RETRIES = 2;
-  private readonly RETRY_DELAY = 500;
-
   constructor(
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
@@ -28,7 +28,7 @@ export class NotificationWorkerService {
     private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_MINUTE)
   async processNotifications(): Promise<void> {
     // const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     // const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
@@ -39,8 +39,8 @@ export class NotificationWorkerService {
     if (!pendingNotifications.length) {
       return;
     }
-    for (let i = 0; i < pendingNotifications.length; i += this.BATCH_SIZE) {
-      const batch: PendingUserNotification[] = pendingNotifications.slice(i, i + this.BATCH_SIZE);
+    for (let i = 0; i < pendingNotifications.length; i += BATCH_SIZE) {
+      const batch: PendingUserNotification[] = pendingNotifications.slice(i, i + BATCH_SIZE);
       await this.processBatch(batch);
     }
   }
@@ -53,11 +53,11 @@ export class NotificationWorkerService {
             from(this.sendNotification(notification)).pipe(
               retry({
                 delay: (retryCount: number, error): Observable<never> => {
-                  if (retryCount >= this.MAX_RETRIES) {
-                    this.logger.error(`Notification ${notification.id} failed after ${this.MAX_RETRIES} retries`);
+                  if (retryCount >= MAX_RETRIES) {
+                    this.logger.error(`Notification ${notification.id} failed after ${MAX_RETRIES} retries`);
                     throw error;
                   }
-                  return EMPTY.pipe(delay(this.RETRY_DELAY));
+                  return EMPTY.pipe(delay(RETRY_DELAY));
                 },
               }),
               catchError((error) => {
@@ -65,7 +65,7 @@ export class NotificationWorkerService {
                 return EMPTY;
               })
             ),
-          this.CONCURRENCY_LIMIT
+          CONCURRENCY_LIMIT
         )
       )
       .subscribe({
