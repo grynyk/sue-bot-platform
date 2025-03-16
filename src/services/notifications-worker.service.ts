@@ -32,12 +32,10 @@ export class NotificationWorkerService {
   @Cron(CronExpression.EVERY_10_MINUTES)
   async processNotifications(): Promise<void> {
     const { fiveMinutesAgo, fiveMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
-    // const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
-    //   fiveMinutesAgo,
-    //   fiveMinutesAhead
-    // );
-
-    const pendingNotifications: QueuedNotification[] = await this.queuedNotificationDataService.findAll();
+    const pendingNotifications: QueuedNotification[] = await this.queuedNotificationDataService.findAllNotProcessedInTimeRange(
+      fiveMinutesAgo,
+      fiveMinutesAhead
+    );
     if (!pendingNotifications.length) {
       this.logger.info('No pending notifications to process.');
       return;
