@@ -23,11 +23,11 @@ async function setWebhook(): Promise<void> {
 }
 
 async function bootstrap(): Promise<INestApplicationContext> {
-  const app: INestApplication = await NestFactory.create(BotModule);
-  app.useLogger(app.get(Logger));
   if (isProd()) {
     await setWebhook();
   }
+  const app: INestApplication = await NestFactory.create(BotModule);
+  app.useLogger(app.get(Logger));
   await app.listen(process.env.PORT || 3000);
   return app;
 }
