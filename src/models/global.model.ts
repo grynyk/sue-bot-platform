@@ -6,6 +6,8 @@ export enum GLOBAL_VARIABLES {
   DB_PASSWORD = 'DB_PASSWORD',
   DB_NAME = 'DB_NAME',
   DATABASE_URL = 'DATABASE_URL',
+  PORT = 'PORT',
+  HEROKU_URL = 'HEROKU_URL',
 }
 
 export enum ENV {

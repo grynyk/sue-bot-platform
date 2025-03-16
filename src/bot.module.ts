@@ -59,8 +59,8 @@ import { PendingUserNotification } from '@modules/notification-data/entities/pen
           token,
           middlewares: [session()],
           webhook: {
-            domain: process.env.HEROKU_URL,
-            path: '/bot',
+            domain: configService.get<string>(GLOBAL_VARIABLES.HEROKU_URL),
+            hookPath: '/webhook',
             port: process.env.PORT || 3000,
           },
         };
