@@ -26,6 +26,7 @@ import { NotificationDataModule } from './modules/notification-data/notification
 import { NotificationsPrecomputeService } from './services/notifications-precompute.service';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
 import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
+import { NotificationWorkerService } from './services/notifications-worker.service';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { PendingUserNotification } from '@modules/notification-data/entities/pen
     BotKeepAliveService,
     UserActivityResetService,
     NotificationsPrecomputeService,
+    NotificationWorkerService,
     SceneStateService,
     RecipesScene,
     TipsScene,
