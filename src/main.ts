@@ -1,9 +1,28 @@
+/* eslint-disable no-console */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@models/global.model';
+import axios from 'axios';
+
+async function sendCrashNotification(): Promise<void> {
+  const BOT_TOKEN = process.env.BOT_TOKEN;
+  const CHAT_ID = process.env.ADMIN_CHAT_ID;
+  if (!BOT_TOKEN || !CHAT_ID) {
+    return;
+  }
+  const message = `🚨 *App Crashed!*`;
+  try {
+    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      chat_id: CHAT_ID,
+      text: message,
+    });
+  } catch {
+    console.error('Failed to send crash notification');
+  }
+}
 
 async function bootstrap(): Promise<void> {
   const app: INestApplication = await NestFactory.create(AppModule);
@@ -13,6 +32,17 @@ async function bootstrap(): Promise<void> {
   await app.listen(port);
 }
 
-bootstrap().catch((): void => {
+process.on('uncaughtException', async (): Promise<void>  => {
+  await sendCrashNotification();
+  process.exit(1);
+});
+
+process.on('unhandledRejection', async (): Promise<void>  => {
+  await sendCrashNotification();
+  process.exit(1);
+});
+
+bootstrap().catch(async (): Promise<void> => {
+  await sendCrashNotification();
   process.exit(1);
 });

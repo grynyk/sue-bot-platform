@@ -25,7 +25,7 @@ export class SettingsScene extends SceneNavigation {
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     protected readonly stateService: SceneStateService,
     private readonly botUserDataService: BotUserDataService,
-    private readonly notificationsPrecomputeService: NotificationsPrecomputeService
+    private readonly notificationsPrecomputeService: NotificationsPrecomputeService,
   ) {
     super(bot, logger, stateService, SCENE_ID.SETTINGS);
   }

@@ -1,5 +1,6 @@
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
+import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
 import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@modules/notification-data/models/notifications-data.model';
 import { BotNotificationService } from '@modules/notification-data/services/bot-notification.service';
 import { PendingUserNotificationService } from '@modules/notification-data/services/pending-user-notification.service';
@@ -11,12 +12,16 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class NotificationsPrecomputeService {
+  private computedNotifications: Partial<PendingUserNotification>[];
+
   constructor(
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
     private readonly botNotificationService: BotNotificationService,
     private readonly pendingUserNotificationService: PendingUserNotificationService
-  ) {}
+  ) {
+    this.computedNotifications = [];
+  }
 
   /**
    * Computes full list of notifications to send to all users.
@@ -26,10 +31,15 @@ export class NotificationsPrecomputeService {
   async precomputeAllPendingNotifications(): Promise<void> {
     try {
       await this.pendingUserNotificationService.drop();
+      this.computedNotifications = [];
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
       const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
       for (const user of users) {
-        this.populatePendingNotifications(user, notifications);
+        this.processPendingNotifications(user, notifications);
+      }
+      for (let i = 0; i < this.computedNotifications.length; i += 1000) {
+        const batch: Partial<PendingUserNotification>[] = this.computedNotifications.slice(i, i + 1000);
+        await this.pendingUserNotificationService.bulkInsert(batch);
       }
     } catch (error) {
       this.logger.error(`Precompute All Pending Notifications: ${error.message}`);
@@ -45,30 +55,26 @@ export class NotificationsPrecomputeService {
       await this.pendingUserNotificationService.removeAllByUserId(user.id);
       if (user.notifications_enabled && !user.blocked) {
         const notifications: BotNotification[] = await this.botNotificationService.findAllActive();
-        this.populatePendingNotifications(user, notifications);
+        this.processPendingNotifications(user, notifications);
       }
     } catch (error) {
       this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
     }
   }
 
-  private async populatePendingNotifications(user: BotUser, notifications: BotNotification[]): Promise<void> {
-    try {
-      for (const notification of notifications) {
-        if (this.shouldSendNotificationToday(notification)) {
-          const send_time: Date = this.calculateSendTime(user, notification);
-          if (!isNil(send_time)) {
-            await this.pendingUserNotificationService.create({
-              user_id: user.id,
-              notification_id: notification.id,
-              send_time,
-              processed: false,
-            });
-          }
+  private processPendingNotifications(user: BotUser, notifications: BotNotification[]): void {
+    for (const notification of notifications) {
+      if (this.shouldSendNotificationToday(notification)) {
+        const send_time: Date = this.calculateSendTime(user, notification);
+        if (!isNil(send_time)) {
+          this.computedNotifications.push({
+            user_id: user.id,
+            notification_id: notification.id,
+            send_time,
+            processed: false,
+          });
         }
       }
-    } catch (error) {
-      this.logger.error(`Populate Pending Notifications: ${error.message}`);
     }
   }
 
