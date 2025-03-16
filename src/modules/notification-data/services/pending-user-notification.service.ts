@@ -8,17 +8,20 @@ import { PendingUserNotification } from '../entities/pending-user-notification.e
 export class PendingUserNotificationService {
   constructor(
     @InjectRepository(PendingUserNotification)
-    private repository: Repository<PendingUserNotification>,
+    private repository: Repository<PendingUserNotification>
   ) {}
+
+  async bulkInsert(notifications: Partial<PendingUserNotification>[]) {
+    await this.repository.insert(notifications);
+  }
 
   async create(dto: CreatePendingUserNotificationsDto): Promise<PendingUserNotification> {
     if (!dto.user_id || !dto.notification_id) {
       throw new Error('user_id and notification_id are required');
     }
-    const notification = this.repository.create(dto);
+    const notification: PendingUserNotification = this.repository.create(dto);
     return this.repository.save(notification);
   }
-  
 
   async findAll(): Promise<PendingUserNotification[]> {
     return this.repository.find({});
@@ -32,7 +35,7 @@ export class PendingUserNotificationService {
 
   async findAllByUserId(user_id: string): Promise<PendingUserNotification[]> {
     return this.repository.find({
-      where: { user_id }
+      where: { user_id },
     });
   }
 
@@ -50,7 +53,7 @@ export class PendingUserNotificationService {
       where: {
         send_time: Between(startTime, endTime),
         processed: false,
-        user_id
+        user_id,
       },
     });
   }
