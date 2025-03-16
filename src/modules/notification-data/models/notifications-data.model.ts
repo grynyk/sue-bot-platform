@@ -168,6 +168,16 @@ export const NOTIFICATIONS: Partial<BotNotification>[] = [
     ]
   },
   {
+    captions: ['Освіжи себе склянкою води 💧'],
+    active: true,
+    recurrence_pattern: [RECURRENCE_PATTERN.DAILY],
+    schedule_type: SCHEDULE_TYPE.WAKE_UP_OFFSET,
+    offset: 720,
+    buttons: [
+      confirmButton
+    ]
+  },
+  {
     schedule_type: SCHEDULE_TYPE.BED_TIME_OFFSET,
     offset: 200,
     captions: ['Відпочинь від соцмереж. Приділи час собі 😊', 'Телефон в сторону, час для себе настав.', 'Час відкласти телефон'],
