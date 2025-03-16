@@ -1,21 +1,21 @@
 import { Action, Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
-import { Context, Telegraf } from 'telegraf';
+import { Context, Markup, Telegraf } from 'telegraf';
 import { BotCommand } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { BOT_COMMAND_NAME } from '@models/commands.model';
+import { BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 import { getDefinedBotCommands } from '@utils/command.utils';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@modules/bot-user-data';
 import { PARSE_MODE } from '@models/tg.model';
-import { isNil, omit } from 'lodash';
+import { get, isNil, omit } from 'lodash';
 
 @Update()
 export class BotUpdate {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
-    private readonly botUserDataService: BotUserDataService,
+    private readonly botUserDataService: BotUserDataService
   ) {
     /**
      * Listen to all bot actions.
@@ -24,11 +24,15 @@ export class BotUpdate {
     this.bot.use(async (ctx: Context, next: () => Promise<void>): Promise<void> => {
       try {
         const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
-        if (!isNil(user) && !user.was_active_today) {
-          const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
-          await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, was_active_today: true });
+        const isStartCommand: boolean = ctx.text === '/start' || get(ctx.callbackQuery, 'data') === BOT_COMMAND_NAME.START;
+        if (!isNil(user)) {
+          await this.updateUserActivity(user, ctx);
+          await next();
+        } else if (isStartCommand) {
+          await next();
+        } else {
+          await this.promptUserRegistration(ctx);
         }
-        await next();
       } catch (error) {
         this.logger.error(`update bot user: ${error.message}`);
       }
@@ -36,8 +40,10 @@ export class BotUpdate {
   }
 
   @Start()
+  @Action(BOT_COMMAND_NAME.START)
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
     try {
+      await ctx.deleteMessage();
       const definedBotCommands: BotCommand[] = getDefinedBotCommands();
       await this.bot.telegram.setMyCommands(definedBotCommands);
       await ctx.scene.enter(SCENE_ID.SUBSCRIPTION);
@@ -124,5 +130,19 @@ export class BotUpdate {
     } catch (error) {
       this.logger.error(`${ctx.text} onConfirm(...): ${error.message}`);
     }
+  }
+
+  private async updateUserActivity(user: BotUser, ctx: Context): Promise<void> {
+    if (!user.was_active_today) {
+      const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
+      await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, was_active_today: true });
+    }
+  }
+
+  private async promptUserRegistration(ctx: Context): Promise<void> {
+    await ctx.reply(
+      '❌ Ви не зареєстровані! Будь ласка, натисніть кнопку нижче або введіть команду /start для реєстрації.',
+      Markup.inlineKeyboard([Markup.button.callback(BOT_COMMAND_DESCRIPTION.start, BOT_COMMAND_NAME.START)])
+    );
   }
 }
