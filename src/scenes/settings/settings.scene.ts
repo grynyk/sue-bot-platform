@@ -89,9 +89,11 @@ export class SettingsScene extends SceneNavigation {
   async onSetWakeUpTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
       const wake_up_time: string = ctx.match[1];
+      const chat_id: number = ctx.from.id;
       await this.botUserDataService.update(ctx.from.id, { wake_up_time });
       this.stateService.removeLastCallback();
-      this.onNotificationsSettings(ctx);
+      await this.onNotificationsSettings(ctx);
+      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -101,9 +103,11 @@ export class SettingsScene extends SceneNavigation {
   async onSetBedTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
       const bed_time: string = ctx.match[1];
+      const chat_id: number = ctx.from.id;
       await this.botUserDataService.update(ctx.from.id, { bed_time });
       this.stateService.removeLastCallback();
-      this.onNotificationsSettings(ctx);
+      await this.onNotificationsSettings(ctx);
+      await this.notificationsPrecomputeService.precomputeUserPendingNotifications(chat_id);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
