@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { isDev, isStaging } from '@utils/env.util';
-import { LoggerOptions } from 'src/config/logger.options';
+import { LoggerOptions } from '../../config/logger.options';
 
 @Module({
   imports: [
