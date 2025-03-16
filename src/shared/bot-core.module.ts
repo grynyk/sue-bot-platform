@@ -9,7 +9,7 @@ import { isDev, isStaging } from '@utils/env.util';
 import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
 import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
-import { PendingUserNotification } from '@modules/notification-data/entities/pending-user-notification.entity';
+import { QueuedNotification } from '@modules/notification-data/entities/queued-notification';
 import { LoggerOptions } from '../config/logger.options';
 import { GLOBAL_VARIABLES } from '@models/global.model';
 import { BotUser } from '@modules/bot-user-data';
@@ -34,7 +34,7 @@ import { BotUser } from '@modules/bot-user-data';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, PendingUserNotification],
+        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, QueuedNotification],
         synchronize: true,
         logging: isDev() || isStaging(),
       }),

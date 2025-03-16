@@ -1,10 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
-import { BotNotificationService } from './services';
+import { NotificationDataService } from './services';
 import { BotNotification } from './entities/bot-notification.entity';
 
 @Controller('notifications')
 export class NotificationDataController {
-  constructor(private readonly service: BotNotificationService) {}
+  constructor(private readonly service: NotificationDataService) {}
 
   @Get()
   findAll(): Promise<BotNotification[]> {

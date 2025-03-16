@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BotNotification } from './entities/bot-notification.entity';
-import { PendingUserNotification } from './entities/pending-user-notification.entity';
-import { PendingUserNotificationService } from './services/pending-user-notification.service';
-import { BotNotificationService } from './services/bot-notification.service';
+import { QueuedNotification } from './entities/queued-notification';
+import { QueuedNotificationDataService } from './services/queued-notification-data.service';
+import { NotificationDataService } from './services/notification-data.service';
 import { NotificationDataController } from './notification-data.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BotNotification, PendingUserNotification])],
+  imports: [TypeOrmModule.forFeature([BotNotification, QueuedNotification])],
   controllers: [NotificationDataController],
-  providers: [BotNotificationService, PendingUserNotificationService],
-  exports: [BotNotificationService, PendingUserNotificationService],
+  providers: [NotificationDataService, QueuedNotificationDataService],
+  exports: [NotificationDataService, QueuedNotificationDataService],
 })
 export class NotificationDataModule {}

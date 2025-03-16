@@ -1,6 +1,6 @@
 import { IsBoolean, IsDate, IsUUID } from 'class-validator';
 
-export class CreatePendingUserNotificationsDto {
+export class CreateQueuedNotificationDto {
   @IsUUID()
   user_id: string;
 

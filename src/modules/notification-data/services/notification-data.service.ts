@@ -8,14 +8,14 @@ import { InlineKeyboardButton } from 'typegram';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 
 @Injectable()
-export class BotNotificationService {
+export class NotificationDataService {
   constructor(
     @InjectRepository(BotNotification)
     private repository: Repository<BotNotification>,
   ) {}
 
-  async create(createBotNotificationDto: CreateBotNotificationDto): Promise<BotNotification> {
-    const notification: BotNotification = this.repository.create(createBotNotificationDto);
+  async create(dto: CreateBotNotificationDto): Promise<BotNotification> {
+    const notification: BotNotification = this.repository.create(dto);
     return this.repository.save(notification);
   }
 
