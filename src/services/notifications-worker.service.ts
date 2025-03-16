@@ -32,25 +32,26 @@ export class NotificationWorkerService {
       fourMinutesAgo,
       fourMinutesAhead
     );
-    if (!pendingNotifications.length) {
-      return;
-    }
-    from(pendingNotifications)
-    .pipe(
-      mergeMap(
-        (notification: PendingUserNotification): Observable<void> =>
-          from(this.sendNotification(notification)).pipe(
-            catchError((error) => {
-              this.logger.error(`Failed to process notification ${notification.id}: ${error.message}`, error.stack);
-              return EMPTY;
-            })
-          ),
-        CONCURRENCY_LIMIT
+    if (pendingNotifications.length) {
+      this.logger.info(`Processing ${pendingNotifications.length} pending notifications ${fourMinutesAgo} - ${fourMinutesAhead}`);
+      from(pendingNotifications)
+      .pipe(
+        mergeMap(
+          (notification: PendingUserNotification): Observable<void> =>
+            from(this.sendNotification(notification)).pipe(
+              catchError((error) => {
+                this.logger.error(`Failed to process notification ${notification.id}: ${error.message}`, error.stack);
+                return EMPTY;
+              })
+            ),
+          CONCURRENCY_LIMIT
+        )
       )
-    )
-    .subscribe({
-      error: (error): void => this.logger.error(`Error in processBatch: ${error.message}`, error.stack),
-    });
+      .subscribe({
+        error: (error): void => this.logger.error(`Error in processNotifications: ${error.message}`, error.stack),
+        complete: (): void => this.logger.info(`Processed successfully: pending notifications ${fourMinutesAgo} - ${fourMinutesAhead}`),
+      });
+    }
   }
 
   private async sendNotification(notification: PendingUserNotification) {
