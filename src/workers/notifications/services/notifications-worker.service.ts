@@ -28,14 +28,13 @@ export class NotificationWorkerService {
     private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async processNotifications(): Promise<void> {
-    // const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
-    // const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
-    //   fourMinutesAgo,
-    //   fourMinutesAhead
-    // );
-    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAll();
+    const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
+    const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(
+      fourMinutesAgo,
+      fourMinutesAhead
+    );
     if (!pendingNotifications.length) {
       return;
     }

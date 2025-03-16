@@ -1,6 +1,6 @@
-import { Action, Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
+import { Action, Command, Ctx, InjectBot, On, Start, Update } from 'nestjs-telegraf';
 import { Context, Markup, Telegraf } from 'telegraf';
-import { BotCommand } from 'typegram';
+import { BotCommand, WebhookInfo } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from '@models/commands.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
@@ -9,9 +9,10 @@ import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@modules/bot-user-data';
 import { PARSE_MODE } from '@models/tg.model';
 import { get, isNil, omit } from 'lodash';
+import { OnModuleInit } from '@nestjs/common';
 
 @Update()
-export class BotUpdate {
+export class BotUpdate implements OnModuleInit {
   constructor(
     @InjectBot() private readonly bot: Telegraf,
     @InjectPinoLogger() private readonly logger: PinoLogger,
@@ -37,6 +38,11 @@ export class BotUpdate {
         this.logger.error(`update bot user: ${error.message}`);
       }
     });
+  }
+
+  async onModuleInit(): Promise<void> {
+    const webhookInfo: WebhookInfo = await this.bot.telegram.getWebhookInfo();
+    this.logger.info(`Webhook Info: ${JSON.stringify(webhookInfo)}`);
   }
 
   @Start()
