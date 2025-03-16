@@ -13,7 +13,7 @@ async function setWebhook(): Promise<void> {
     console.error('BOT_TOKEN and HEROKU_URL must be defined');
     return;
   }
-  const url = `https://api.telegram.org/bot${botToken}/setWebhook?url=${herokuUrl}/bot`;
+  const url = `https://api.telegram.org/bot${botToken}/setWebhook?url=${herokuUrl}/bot${botToken}`;
   try {
     const response = await axios.get(url);
     console.log('Webhook set successfully:', response.data);
@@ -24,7 +24,7 @@ async function setWebhook(): Promise<void> {
 
 async function bootstrap(): Promise<INestApplicationContext> {
   if (isProd()) {
-    setWebhook();
+    await setWebhook();
   }
   const app: INestApplication = await NestFactory.create(BotModule);
   app.useLogger(app.get(Logger));
