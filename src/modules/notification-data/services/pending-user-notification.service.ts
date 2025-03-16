@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 import { CreatePendingUserNotificationsDto } from '../dto/create-pending-user-notification.dto';
 import { PendingUserNotification } from '../entities/pending-user-notification.entity';
 
@@ -53,6 +53,10 @@ export class PendingUserNotificationService {
         user_id
       },
     });
+  }
+
+  async removeAllByUserIds(userIds: number[]): Promise<void> {
+    await this.repository.delete({ user_id: In(userIds) });
   }
 
   async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<PendingUserNotification[]> {
