@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
-import { BotModule } from '../bot.module';
-import { NotificationWorkerService } from '../services/notifications-worker.service';
+import { NotificationsWorkerModule } from './notifications-worker.module';
+import { NotificationWorkerService } from './services/notifications-worker.service';
 
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(BotModule);
+  const app = await NestFactory.createApplicationContext(NotificationsWorkerModule);
   const logger = app.get(Logger);
   app.useLogger(logger);
   const workerService = app.get(NotificationWorkerService);
