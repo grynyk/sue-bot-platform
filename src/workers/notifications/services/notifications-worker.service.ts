@@ -28,7 +28,7 @@ export class NotificationWorkerService {
     private readonly pendingUserNotificationService: PendingUserNotificationService
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_MINUTE)
   async processNotifications(): Promise<void> {
     const { fourMinutesAgo, fourMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: PendingUserNotification[] = await this.pendingUserNotificationService.findAllNotProcessedInTimeRange(

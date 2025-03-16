@@ -12,10 +12,16 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { isDev, isStaging } from '@utils/env.util';
 import { LoggerOptions } from '../../config/logger.options';
-
 @Module({
   imports: [
-    TelegrafModule.forRoot({ token: process.env.BOT_TOKEN }),
+    TelegrafModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        token: configService.get<string>(GLOBAL_VARIABLES.BOT_TOKEN),
+        launchOptions: undefined,
+      }),
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     LoggerModule.forRoot(LoggerOptions),
     ScheduleModule.forRoot(),
