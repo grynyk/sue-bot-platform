@@ -44,8 +44,8 @@ export class BotUserDataService {
     return this.repository.find({ where: { notifications_enabled: true, blocked: false } });
   }
 
-  async markUsersAsBlocked(userIds: number[]): Promise<void> {
-    await this.repository.update({ chat_id: In(userIds) }, { blocked: true });
+  async markUsersAsBlocked(userIds: string[]): Promise<void> {
+    await this.repository.update({ id: In(userIds) }, { blocked: true });
   }
 
   async update(chat_id: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {

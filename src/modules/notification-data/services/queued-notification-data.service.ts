@@ -58,7 +58,7 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async removeAllByUserIds(userIds: number[]): Promise<void> {
+  async removeAllByUserIds(userIds: string[]): Promise<void> {
     await this.repository.delete({ user_id: In(userIds) });
   }
 

@@ -17,7 +17,7 @@ const DELAY_TIME = 250;
 
 @Injectable()
 export class NotificationWorkerService {
-  private failedUserIds: Set<number>;
+  private failedUserIds: Set<string>;
 
   constructor(
     @InjectBot() private readonly bot: Telegraf,
@@ -26,7 +26,7 @@ export class NotificationWorkerService {
     private readonly notificationDataService: NotificationDataService,
     private readonly queuedNotificationDataService: QueuedNotificationDataService
   ) {
-    this.failedUserIds = new Set<number>();
+    this.failedUserIds = new Set<string>();
   }
 
   @Cron(CronExpression.EVERY_10_MINUTES)
@@ -113,7 +113,7 @@ export class NotificationWorkerService {
       const isBlocked: boolean = error.code === 403 && error.description.includes('blocked');
       const isNotExisting: boolean = error.code === 400 && error.description.includes('chat not found');
       if (isBlocked || isNotExisting) {
-        this.failedUserIds.add(user.chat_id);
+        this.failedUserIds.add(user.id);
       }
     }
   }
