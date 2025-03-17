@@ -140,7 +140,7 @@ export class NotificationWorkerService {
 
   private async sendDoneTasksSummary(user: BotUser): Promise<void> {
     const totalTasksNumber: number = await this.notificationDataService.countWithConfirmButton();
-    const doneTasksNumber = Number(user.done_tasks_counter) >= totalTasksNumber ? totalTasksNumber : Number(user.done_tasks_counter);
+    const doneTasksNumber = user.done_tasks_counter >= totalTasksNumber ? totalTasksNumber : user.done_tasks_counter;
     const doneTasksCaption = `Ви виконали ${doneTasksNumber} з ${totalTasksNumber} завдань сьогодні ${this.getDoneTasksNumberEmoji(
       doneTasksNumber
     )}`;
