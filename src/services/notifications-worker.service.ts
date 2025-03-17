@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { from, catchError, EMPTY, Observable, delay, concatMap } from 'rxjs';
+import { Cron } from '@nestjs/schedule';
+import { from, catchError, EMPTY, Observable, delay, mergeMap, retry } from 'rxjs';
 import { BotUser, BotUserDataService } from '@modules/bot-user-data';
 import { NotificationDataService, QueuedNotificationDataService, SCHEDULE_TYPE } from '@modules/notification-data';
 import { addMinutes, subMinutes } from 'date-fns';
@@ -13,7 +13,9 @@ import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { QueuedNotification } from '@modules/notification-data/entities/queued-notification';
 
-const DELAY_TIME = 250;
+const DELAY_TIME = 100;
+const MAX_RETRIES = 2;
+const MAX_CONCURRENT_REQUESTS = 20;
 
 @Injectable()
 export class NotificationWorkerService {
@@ -48,25 +50,27 @@ export class NotificationWorkerService {
     this.logger.info(`Processing ${pendingNotifications.length} pending notifications ${fiveMinutesAgo} - ${fiveMinutesAhead}`);
     from(pendingNotifications)
       .pipe(
-        concatMap(
+        mergeMap(
           (notification: QueuedNotification): Observable<void> =>
             from(this.sendNotification(notification)).pipe(
               delay(DELAY_TIME),
+              retry({
+                count: MAX_RETRIES,
+                delay: (error, retryCount) => {
+                  const increasedDelay: number = Math.pow(2, retryCount) * 100;
+                  this.logger.warn(`Retrying notification ${notification.id}, attempt ${retryCount}, next try in ${increasedDelay}ms`);
+                  return EMPTY.pipe(delay(increasedDelay));
+                }
+              }),
               catchError((error): Observable<never> => {
                 this.logger.error(`Error in processNotifications: ${error.message}`, error.stack);
                 return EMPTY;
               })
-            )
+            ), MAX_CONCURRENT_REQUESTS
         )
       )
       .subscribe({
-        complete: async () => {
-          if (this.failedUserIds.size > 0) {
-            await this.botUserDataService.markUsersAsBlocked([...this.failedUserIds]);
-            await this.queuedNotificationDataService.removeAllByUserIds([...this.failedUserIds]);
-          }
-          this.logger.info(`Processed successfully: ${pendingNotifications.length} notifications`);
-        },
+        complete: async (): Promise<void> => this.handleProcessingComplete(pendingNotifications),
       });
   }
 
@@ -84,6 +88,7 @@ export class NotificationWorkerService {
       await this.queuedNotificationDataService.markAsProcessed(notification.id);
     } catch (error) {
       this.logger.error(`Failed to send notification ${notification.id} to user ${notification.user_id}: ${error.message}`, error.stack);
+      throw error;
     }
   }
 
@@ -119,6 +124,7 @@ export class NotificationWorkerService {
       if (isBlocked || isNotExisting) {
         this.failedUserIds.add(user.id);
       }
+      throw error;
     }
   }
 
@@ -149,5 +155,13 @@ export class NotificationWorkerService {
       doneTasksNumber
     )}`;
     await this.bot.telegram.sendMessage(user.chat_id, doneTasksCaption);
+  }
+
+  private async handleProcessingComplete(pendingNotifications: QueuedNotification[]): Promise<void> {
+    if (this.failedUserIds.size > 0) {
+      await this.botUserDataService.markUsersAsBlocked([...this.failedUserIds]);
+      await this.queuedNotificationDataService.removeAllByUserIds([...this.failedUserIds]);
+    }
+    this.logger.info(`Processed ${pendingNotifications.length} notifications successfully`);
   }
 }
