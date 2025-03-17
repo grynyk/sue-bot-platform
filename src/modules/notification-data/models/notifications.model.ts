@@ -20,6 +20,7 @@ export enum SCHEDULE_TYPE {
   BED_TIME_OFFSET = 'BED_TIME_OFFSET'
 }
 
+// Sample data to populate database
 export const NOTIFICATIONS: Partial<BotNotification>[] = [
   {
     scheduleType: SCHEDULE_TYPE.WAKE_UP_OFFSET,
