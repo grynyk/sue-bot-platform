@@ -13,6 +13,7 @@ import { UserActivityResetService } from './services/user-activity-reset.service
 import { NotificationDataModule } from './modules/notification-data/notification-data.module';
 import { NotificationsQueueService } from './services/notifications-queue.service';
 import { NotificationWorkerService } from './services/notifications-worker.service';
+import { PlatformContextDataModule } from '@modules/platform-context';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NotificationWorkerService } from './services/notifications-worker.servi
     BotUserDataModule,
     SkinTypeTestDataModule,
     NotificationDataModule,
+    PlatformContextDataModule,
   ],
   providers: [
     BotUpdate,
