@@ -13,6 +13,7 @@ import { QueuedNotification } from '@modules/notification-data/entities/queued-n
 import { LoggerOptions } from '../config/logger.options';
 import { GLOBAL_VARIABLES } from '@models/global.model';
 import { BotUser } from '@modules/bot-user-data';
+import { PlatformContext } from '@modules/platform-context';
 
 @Global()
 @Module({
@@ -34,7 +35,7 @@ import { BotUser } from '@modules/bot-user-data';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, QueuedNotification],
+        entities: [BotUser, SkinTypeTestResult, SkinTypeTestProduct, BotNotification, QueuedNotification, PlatformContext],
         synchronize: true,
         logging: isDev() || isStaging(),
       }),

@@ -12,6 +12,7 @@ import { InlineKeyboardButton } from 'typegram';
 import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { QueuedNotification } from '@modules/notification-data/entities/queued-notification';
+import { PlatformContextDataService } from '@modules/platform-context';
 
 const DELAY_TIME = 100;
 const MAX_RETRIES = 2;
@@ -26,7 +27,8 @@ export class NotificationWorkerService {
     @InjectPinoLogger() private readonly logger: PinoLogger,
     private readonly botUserDataService: BotUserDataService,
     private readonly notificationDataService: NotificationDataService,
-    private readonly queuedNotificationDataService: QueuedNotificationDataService
+    private readonly queuedNotificationDataService: QueuedNotificationDataService,
+    private readonly platformContextDataService: PlatformContextDataService
   ) {
     this.failedUserIds = new Set<string>();
   }
@@ -37,6 +39,11 @@ export class NotificationWorkerService {
    */
   @Cron('0,10,20,30,40,50 * * * *')
   async processNotifications(): Promise<void> {
+    const platformContext = await this.platformContextDataService.getContext();
+    if (!platformContext.notifications_enabled) {
+      this.logger.info('Notifications are globally disabled');
+      return;
+    }
     const { fiveMinutesAgo, fiveMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: QueuedNotification[] = await this.queuedNotificationDataService.findAllNotProcessedInTimeRange(
       fiveMinutesAgo,
