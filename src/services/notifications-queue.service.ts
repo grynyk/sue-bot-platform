@@ -44,14 +44,14 @@ export class NotificationsQueueService {
     }
   }
 
-  async precomputeUserPendingNotifications(chat_id: number): Promise<void> {
+  async precomputeUserPendingNotifications(chatId: number): Promise<void> {
     try {
-      const user: BotUser = await this.botUserDataService.findByChatId(chat_id);
+      const user: BotUser = await this.botUserDataService.findByChatId(chatId);
       if (isNil(user)) {
-        throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
+        throw new NotFoundException(`User with chatId: ${chatId} not found`);
       }
       await this.queuedNotificationDataService.removeAllByUserId(user.id);
-      if (user.notifications_enabled && !user.blocked) {
+      if (user.notificationsEnabled && !user.blocked) {
         const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
         this.processPendingNotifications(user, notifications);
       }
@@ -63,12 +63,12 @@ export class NotificationsQueueService {
   private processPendingNotifications(user: BotUser, notifications: BotNotification[]): void {
     for (const notification of notifications) {
       if (this.shouldSendNotificationToday(notification)) {
-        const send_time: Date = this.calculateSendTime(user, notification);
-        if (!isNil(send_time)) {
+        const sendTime: Date = this.calculateSendTime(user, notification);
+        if (!isNil(sendTime)) {
           this.notificationsQueue.push({
-            user_id: user.id,
-            notification_id: notification.id,
-            send_time,
+            userId: user.id,
+            notificationId: notification.id,
+            sendTime,
             processed: false,
           });
         }
@@ -79,7 +79,7 @@ export class NotificationsQueueService {
   private shouldSendNotificationToday(notification: BotNotification): boolean {
     const date: Date = endOfToday();
     const day: number = getDay(date);
-    const recurrencePatterns = notification.recurrence_pattern;
+    const recurrencePatterns = notification.recurrencePattern;
     if (recurrencePatterns.includes(RECURRENCE_PATTERN.DAILY)) {
       return true;
     }
@@ -102,23 +102,23 @@ export class NotificationsQueueService {
   }
 
   private calculateSendTime(user: BotUser, notification: BotNotification): Date | null {
-    if (notification.schedule_type === SCHEDULE_TYPE.EXACT_TIME && notification.time) {
+    if (notification.scheduleType === SCHEDULE_TYPE.EXACT_TIME && notification.time) {
       const [hours, minutes]: number[] = map(notification.time.split(':'), Number);
       let date: Date = startOfToday();
       date = setHours(date, hours);
       date = setMinutes(date, minutes);
       return date;
     }
-    if (notification.schedule_type === SCHEDULE_TYPE.WAKE_UP_OFFSET && user.wake_up_time) {
-      const [hours, minutes]: number[] = map(user.wake_up_time.split(':'), Number);
+    if (notification.scheduleType === SCHEDULE_TYPE.WAKE_UP_OFFSET && user.wakeUpTime) {
+      const [hours, minutes]: number[] = map(user.wakeUpTime.split(':'), Number);
       let date: Date = startOfToday();
       date = setHours(date, hours);
       date = setMinutes(date, minutes);
       date = addMinutes(date, notification.offset);
       return date;
     }
-    if (notification.schedule_type === SCHEDULE_TYPE.BED_TIME_OFFSET && user.bed_time) {
-      const [hours, minutes]: number[] = map(user.bed_time.split(':'), Number);
+    if (notification.scheduleType === SCHEDULE_TYPE.BED_TIME_OFFSET && user.bedTime) {
+      const [hours, minutes]: number[] = map(user.bedTime.split(':'), Number);
       let date: Date = startOfToday();
       date = setHours(date, hours);
       date = setMinutes(date, minutes);

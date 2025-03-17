@@ -16,8 +16,8 @@ export class BotNotification {
   @Column({ type: 'json', nullable: true })
   buttons?: InlineKeyboardButton[];
 
-  @Column({ type: 'enum', enum: SCHEDULE_TYPE })
-  schedule_type: SCHEDULE_TYPE;
+  @Column({ name: 'schedule_type', type: 'enum', enum: SCHEDULE_TYPE })
+  scheduleType: SCHEDULE_TYPE;
 
   @Column({ type: 'time', nullable: true })
   time?: string;
@@ -25,8 +25,8 @@ export class BotNotification {
   @Column({ type: 'bigint', nullable: true })
   offset?: number;
 
-  @Column({ type: 'enum', enum: RECURRENCE_PATTERN })
-  recurrence_pattern?: RECURRENCE_PATTERN[];
+  @Column({ name: 'recurrence_pattern', type: 'enum', enum: RECURRENCE_PATTERN })
+  recurrencePattern?: RECURRENCE_PATTERN[];
 
   @Column({ default: true })
   active: boolean;

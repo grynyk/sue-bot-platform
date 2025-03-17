@@ -88,12 +88,12 @@ export class SettingsScene extends SceneNavigation {
   @Action(/^WAKE_UP_TIME_(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])/)
   async onSetWakeUpTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      const wake_up_time: string = ctx.match[1];
-      const chat_id: number = ctx.from.id;
-      await this.botUserDataService.update(ctx.from.id, { wake_up_time });
+      const wakeUpTime: string = ctx.match[1];
+      const chatId: number = ctx.from.id;
+      await this.botUserDataService.update(ctx.from.id, { wakeUpTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -102,23 +102,23 @@ export class SettingsScene extends SceneNavigation {
   @Action(/^BED_TIME_(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])/)
   async onSetBedTimeCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      const bed_time: string = ctx.match[1];
-      const chat_id: number = ctx.from.id;
-      await this.botUserDataService.update(ctx.from.id, { bed_time });
+      const bedTime: string = ctx.match[1];
+      const chatId: number = ctx.from.id;
+      await this.botUserDataService.update(ctx.from.id, { bedTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
   }
 
-  private async onToggleNotifications(ctx: SceneContext, notifications_enabled = true): Promise<void> {
+  private async onToggleNotifications(ctx: SceneContext, notificationsEnabled = true): Promise<void> {
     try {
-      const chat_id: number = ctx.from.id;
-      await this.botUserDataService.update(chat_id, { notifications_enabled });   
+      const chatId: number = ctx.from.id;
+      await this.botUserDataService.update(chatId, { notificationsEnabled });   
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chat_id);
+      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -150,7 +150,7 @@ export class SettingsScene extends SceneNavigation {
     try {
       ctx.answerCbQuery();
       const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationsKeyboard(user.notifications_enabled);
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationsKeyboard(user.notificationsEnabled);
       const content: string = this.getUserNotificationSettingsDetails(user);
       await ctx.editMessageText(
         `<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${content}</code>`,
@@ -163,9 +163,9 @@ export class SettingsScene extends SceneNavigation {
 
   private getUserNotificationSettingsDetails(user: BotUser): string {
     const LOCALIZATION_STRINGS: Partial<Record<keyof BotUser, string>> = {
-      notifications_enabled: 'Сповіщення',
-      wake_up_time: 'Час прокидання',
-      bed_time: 'Час сну',
+      notificationsEnabled: 'Сповіщення',
+      wakeUpTime: 'Час прокидання',
+      bedTime: 'Час сну',
     };
     const parseValue: (value: unknown) => string = (value: string | boolean): string =>
       isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;

@@ -1,14 +1,18 @@
+import { Expose } from 'class-transformer';
 import { IsBoolean, IsDate, IsUUID } from 'class-validator';
 
 export class CreateQueuedNotificationDto {
   @IsUUID()
-  user_id: string;
+  @Expose({ name: 'user_id' })
+  userId: string;
 
   @IsUUID()
-  notification_id: string;
+  @Expose({ name: 'notification_id' })
+  notificationId: string;
 
   @IsDate()
-  send_time: Date;
+  @Expose({ name: 'send_time' })
+  sendTime: Date;
 
   @IsBoolean()
   processed: boolean;

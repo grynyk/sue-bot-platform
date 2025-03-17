@@ -19,7 +19,7 @@ export class PlatformContextDataService {
       const context: PlatformContext = this.repository.create({
         id: 1,
         season: SEASON.SUMMER,
-        notifications_enabled: true,
+        notificationsEnabled: true,
       });
       return this.repository.save(context);
     }
@@ -30,8 +30,8 @@ export class PlatformContextDataService {
     await this.repository.update({}, { season });
   }
 
-  async updateNotificationsStatus(notifications_enabled: boolean): Promise<void> {
-    await this.repository.update({}, { notifications_enabled });
+  async updateNotificationsStatus(notificationsEnabled: boolean): Promise<void> {
+    await this.repository.update({}, { notificationsEnabled });
   }
 
   async getContext(): Promise<PlatformContext> {

@@ -33,5 +33,5 @@ export class SkinTypeTestProduct {
 
   @ManyToOne(() => SkinTypeTestResult, (result) => result.products)
   @JoinColumn({ name: 'result_id' })
-  result_id: SkinTypeTestResult;
+  resultId: SkinTypeTestResult;
 }

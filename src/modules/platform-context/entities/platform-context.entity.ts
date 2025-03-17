@@ -9,6 +9,6 @@ export class PlatformContext {
   @Column({ type: 'enum', enum: SEASON })
   season: SEASON;
 
-  @Column({ type: 'boolean', default: true })
-  notifications_enabled: boolean;
+  @Column({ name: 'notifications_enabled', type: 'boolean', default: true })
+  notificationsEnabled: boolean;
 }

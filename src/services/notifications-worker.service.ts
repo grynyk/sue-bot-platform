@@ -40,7 +40,7 @@ export class NotificationWorkerService {
   @Cron('0,10,20,30,40,50 * * * *')
   async processNotifications(): Promise<void> {
     const platformContext = await this.platformContextDataService.getContext();
-    if (!platformContext.notifications_enabled) {
+    if (!platformContext.notificationsEnabled) {
       this.logger.info('Notifications are globally disabled');
       return;
     }
@@ -81,20 +81,20 @@ export class NotificationWorkerService {
       });
   }
 
-  private async sendNotification(notification: QueuedNotification) {
+  private async sendNotification(data: QueuedNotification) {
     try {
-      const user: BotUser = await this.botUserDataService.findById(notification.user_id);
+      const user: BotUser = await this.botUserDataService.findById(data.userId);
       if (!user) {
-        throw new NotFoundException(`User with id ${notification.user_id} not found`);
+        throw new NotFoundException(`User with id ${data.userId} not found`);
       }
-      const notificationData: BotNotification = await this.notificationDataService.findOne(notification.notification_id);
+      const notificationData: BotNotification = await this.notificationDataService.findOne(data.notificationId);
       if (!notificationData) {
-        throw new NotFoundException(`Notification with id ${notification.notification_id} not found`);
+        throw new NotFoundException(`Notification with id ${data.notificationId} not found`);
       }
       await this.sendTelegramMessage(user, notificationData);
-      await this.queuedNotificationDataService.markAsProcessed(notification.id);
+      await this.queuedNotificationDataService.markAsProcessed(data.id);
     } catch (error) {
-      this.logger.error(`Failed to send notification ${notification.id} to user ${notification.user_id}: ${error.message}`, error.stack);
+      this.logger.error(`Failed to send notification ${data.id} to user ${data.userId}: ${error.message}`, error.stack);
       throw error;
     }
   }
@@ -111,13 +111,13 @@ export class NotificationWorkerService {
     const inline_keyboard = (notification.buttons || []).map((button: InlineKeyboardButton): [InlineKeyboardButton] => [button]);
     try {
       if (!isNil(notification.image)) {
-        await this.bot.telegram.sendPhoto(user.chat_id, notification.image, {
+        await this.bot.telegram.sendPhoto(user.chatId, notification.image, {
           caption,
           parse_mode,
           ...(notification.buttons && { reply_markup: { inline_keyboard } }),
         });
       } else {
-        await this.bot.telegram.sendMessage(user.chat_id, caption, {
+        await this.bot.telegram.sendMessage(user.chatId, caption, {
           parse_mode,
           ...(notification.buttons && { reply_markup: { inline_keyboard } }),
         });
@@ -147,7 +147,7 @@ export class NotificationWorkerService {
   }
 
   private isLastNotification(notification: BotNotification): boolean {
-    return notification.schedule_type === SCHEDULE_TYPE.BED_TIME_OFFSET && Number(notification.offset) === 0;
+    return notification.scheduleType === SCHEDULE_TYPE.BED_TIME_OFFSET && Number(notification.offset) === 0;
   }
 
   private getDoneTasksNumberEmoji(doneTasksNumber: number): string {
@@ -157,11 +157,11 @@ export class NotificationWorkerService {
 
   private async sendDoneTasksSummary(user: BotUser): Promise<void> {
     const totalTasksNumber: number = await this.notificationDataService.countWithConfirmButton();
-    const doneTasksNumber = user.done_tasks_counter >= totalTasksNumber ? totalTasksNumber : user.done_tasks_counter;
+    const doneTasksNumber = user.doneTasksCounter >= totalTasksNumber ? totalTasksNumber : user.doneTasksCounter;
     const doneTasksCaption = `Ви виконали ${doneTasksNumber} з ${totalTasksNumber} завдань сьогодні ${this.getDoneTasksNumberEmoji(
       doneTasksNumber
     )}`;
-    await this.bot.telegram.sendMessage(user.chat_id, doneTasksCaption);
+    await this.bot.telegram.sendMessage(user.chatId, doneTasksCaption);
   }
 
   private async handleProcessingComplete(pendingNotifications: QueuedNotification[]): Promise<void> {

@@ -5,14 +5,14 @@ export class QueuedNotification {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('uuid', { nullable: false })
-  user_id: string;
+  @Column('uuid', { name: 'user_id', nullable: false })
+  userId: string;
 
-  @Column('uuid', { nullable: false })
-  notification_id: string;
+  @Column('uuid', { name: 'notification_id', nullable: false })
+  notificationId: string;
 
-  @Column({ type: 'timestamp' })
-  send_time: Date;
+  @Column({ name: 'send_time', type: 'timestamp' })
+  sendTime: Date;
 
   @Column({ default: false })
   processed: boolean;
