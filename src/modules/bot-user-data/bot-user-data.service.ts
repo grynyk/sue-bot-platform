@@ -76,7 +76,9 @@ export class BotUserDataService {
     const blocked: number = await this.repository.count({ where: { blocked: true } });
     const currentDate: string = format(new Date(), 'yyyy-MM-dd');
     const newToday: number = await this.repository.count({
-      where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) },
+      where: {
+        timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`),
+      },
     });
     const notificationsDisabled = await this.repository.count({ where: { notificationsEnabled: false } });
     const changedNotificationTime: number = await this.repository.count({
