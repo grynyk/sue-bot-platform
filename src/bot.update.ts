@@ -1,4 +1,4 @@
-import { Action, Command, Ctx, InjectBot, On, Start, Update } from 'nestjs-telegraf';
+import { Action, Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf';
 import { Context, Markup, Telegraf } from 'telegraf';
 import { BotCommand, WebhookInfo } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -139,9 +139,9 @@ export class BotUpdate implements OnModuleInit {
   }
 
   private async updateUserActivity(user: BotUser, ctx: Context): Promise<void> {
-    if (!user.was_active_today) {
+    if (!user.wasActiveToday) {
       const updateBotUserDto: UpdateBotUserDto = omit(ctx.from, 'id');
-      await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chat_id: ctx.from.id, was_active_today: true });
+      await this.botUserDataService.update(ctx.from.id, { ...updateBotUserDto, chatId: ctx.from.id, wasActiveToday: true });
     }
   }
 

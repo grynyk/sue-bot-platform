@@ -8,19 +8,23 @@ import {
   IsBoolean,
   IsNumber,
 } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class CreateBotUserDto {
   @IsNotEmpty()
   @IsNumber()
-  chat_id: number;
+  @Expose({ name: 'chat_id' })
+  chatId: number;
 
   @IsString()
   @IsOptional()
-  first_name?: string;
+  @Expose({ name: 'first_name' })
+  firstName?: string;
 
   @IsString()
   @IsOptional()
-  last_name?: string;
+  @Expose({ name: 'last_name' })
+  lastName?: string;
 
   @IsString()
   @IsOptional()
@@ -28,37 +32,44 @@ export class CreateBotUserDto {
 
   @IsString()
   @IsOptional()
-  skin_type?: string;
+  @Expose({ name: 'skin_type' })
+  skinType?: string;
 
   @IsString()
   @IsOptional()
   @Matches(/^(?:0[1-9]|1[0-9]|2[0-3]):([0-5][0-9])$/, {
     message: 'Wake-up time must be in the format HH:MM.',
   })
-  wake_up_time = '08:00';
+  @Expose({ name: 'wake_up_time' })
+  wakeUpTime = '08:00';
 
   @IsString()
   @IsOptional()
   @Matches(/^(?:0[1-9]|1[0-9]|2[0-3]):([0-5][0-9])$/, {
     message: 'Bed time must be in the format HH:MM.',
   })
-  bed_time = '23:00';
+  @Expose({ name: 'bed_time' })
+  bedTime = '23:00';
 
   @IsString()
   @IsOptional()
-  language_code?: string;
+  @Expose({ name: 'language_code' })
+  languageCode?: string;
 
   @IsInt()
-  done_tasks_counter = 0;
+  @Expose({ name: 'done_tasks_counter' })
+  doneTasksCounter = 0;
 
   @IsBoolean()
-  notifications_enabled = true;
+  @Expose({ name: 'notifications_enabled' })
+  notificationsEnabled = true;
 
   @IsBoolean()
   blocked = false;
 
   @IsBoolean()
-  was_active_today = false;
+  @Expose({ name: 'was_active_today' })
+  wasActiveToday = false;
 
   @IsDateString()
   timestamp: string;

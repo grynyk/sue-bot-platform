@@ -8,16 +8,16 @@ import { GLOBAL_VARIABLES } from '@models/global.model';
 import axios from 'axios';
 
 async function sendCrashNotification(error): Promise<void> {
-  const BOT_TOKEN = process.env.BOT_TOKEN;
-  const CHAT_ID = process.env.ADMIN_CHAT_ID;
-  if (!BOT_TOKEN || !CHAT_ID) {
+  const token = process.env.BOT_TOKEN;
+  const chat_id = process.env.ADMIN_CHAT_ID;
+  if (!token || !chat_id) {
     return;
   }
-  const message = `🚨 *App Crashed!*\n\n${error.message}\n\n\n${error.stack}`;
+  const text = `🚨 *App Crashed!*\n\n${error.message}\n\n\n${error.stack}`;
   try {
-    await axios.post(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      chat_id: CHAT_ID,
-      text: message,
+    await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+      chat_id,
+      text
     });
   } catch {
     console.error('Failed to send crash notification');

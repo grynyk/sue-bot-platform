@@ -16,8 +16,8 @@ export class QueuedNotificationDataService {
   }
 
   async create(dto: CreateQueuedNotificationDto): Promise<QueuedNotification> {
-    if (!dto.user_id || !dto.notification_id) {
-      throw new Error('user_id and notification_id are required');
+    if (!dto.userId || !dto.notificationId) {
+      throw new Error('userId and notificationId are required');
     }
     const notification: QueuedNotification = this.repository.create(dto);
     return this.repository.save(notification);
@@ -33,39 +33,39 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async findAllByUserId(user_id: string): Promise<QueuedNotification[]> {
+  async findAllByUserId(userId: string): Promise<QueuedNotification[]> {
     return this.repository.find({
-      where: { user_id },
+      where: { userId },
     });
   }
 
   async findAllScheduledForExactTime(currentTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
-        send_time: currentTime,
+        sendTime: currentTime,
         processed: false,
       },
     });
   }
 
-  async findAllNotProcessedInTimeRangeByUserId(user_id: string, startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
+  async findAllNotProcessedInTimeRangeByUserId(userId: string, startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
-        send_time: Between(startTime, endTime),
+        sendTime: Between(startTime, endTime),
         processed: false,
-        user_id,
+        userId,
       },
     });
   }
 
   async removeAllByUserIds(userIds: string[]): Promise<void> {
-    await this.repository.delete({ user_id: In(userIds) });
+    await this.repository.delete({ userId: In(userIds) });
   }
 
   async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
-        send_time: Between(startTime, endTime),
+        sendTime: Between(startTime, endTime),
         processed: false,
       },
     });
@@ -75,8 +75,8 @@ export class QueuedNotificationDataService {
     await this.repository.update(id, { processed: true });
   }
 
-  async removeAllByUserId(user_id: string): Promise<void> {
-    await this.repository.delete({ user_id });
+  async removeAllByUserId(userId: string): Promise<void> {
+    await this.repository.delete({ userId });
   }
 
   async remove(id: string): Promise<void> {

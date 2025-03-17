@@ -5,42 +5,42 @@ export class BotUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'bigint', unique: true })
-  chat_id: number;
+  @Column({ name: 'chat_id', type: 'bigint', unique: true })
+  chatId: number;
 
-  @Column({ type: 'varchar', nullable: true })
-  first_name: string;
+  @Column({ name: 'first_name', type: 'varchar', nullable: true })
+  firstName: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  last_name: string;
+  @Column({ name: 'last_name', type: 'varchar', nullable: true })
+  lastName: string;
 
   @Column({ type: 'varchar', nullable: true })
   username: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  skin_type: string;
+  @Column({ name: 'skin_type', type: 'varchar', nullable: true })
+  skinType: string;
 
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ name: 'language_code', type: 'varchar', nullable: true })
   language_code: string;
 
   @Column({ type: 'varchar' })
   timestamp: string;
 
-  @Column({ type: 'varchar', default: '08:00' })
-  wake_up_time: string;
+  @Column({ name: 'wake_up_time', type: 'varchar', default: '08:00' })
+  wakeUpTime: string;
 
-  @Column({ type: 'varchar', default: '23:00' })
-  bed_time: string;
+  @Column({ name: 'bed_time', type: 'varchar', default: '23:00' })
+  bedTime: string;
 
-  @Column({ type: 'bigint', default: 0 })
-  done_tasks_counter: number;
+  @Column({ name: 'done_tasks_counter', type: 'bigint', default: 0 })
+  doneTasksCounter: number;
 
-  @Column({ type: 'boolean', default: true })
-  notifications_enabled: boolean;
+  @Column({ name: 'notifications_enabled', type: 'boolean', default: true })
+  notificationsEnabled: boolean;
 
   @Column({ type: 'boolean', default: false })
   blocked: boolean;
 
-  @Column({ type: 'boolean', default: false })
-  was_active_today: boolean;
+  @Column({ name: 'was_active_today', type: 'boolean', default: false })
+  wasActiveToday: boolean;
 }

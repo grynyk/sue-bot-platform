@@ -6,12 +6,12 @@ export class SkinTypeTestResult {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('int', { array: true, default: [] })
-  answer_ids: number[];
+  @Column('int', { name: 'answer_ids', array: true, default: [] })
+  answerIds: number[];
 
   @Column({ type: 'varchar' })
   title: string;
 
-  @OneToMany(() => SkinTypeTestProduct, (product: SkinTypeTestProduct): SkinTypeTestResult => product.result_id)
+  @OneToMany(() => SkinTypeTestProduct, (product: SkinTypeTestProduct): SkinTypeTestResult => product.resultId)
   products: SkinTypeTestProduct[];
 }

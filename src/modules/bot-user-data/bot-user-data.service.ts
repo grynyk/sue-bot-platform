@@ -16,8 +16,8 @@ export class BotUserDataService {
   ) {}
 
   async create(dto: Partial<CreateBotUserDto>): Promise<BotUser> {
-    if (!dto.chat_id) {
-      throw new Error('chat_id is required');
+    if (!dto.chatId) {
+      throw new Error('chatId is required');
     }
     const notification = this.repository.create(dto);
     return this.repository.save(notification);
@@ -31,28 +31,28 @@ export class BotUserDataService {
     const user: BotUser = await this.repository.findOneBy({ id });
     return {
       ...user,
-      chat_id: Number(user.chat_id),
-      done_tasks_counter: Number(user.done_tasks_counter),
+      chatId: Number(user.chatId),
+      doneTasksCounter: Number(user.doneTasksCounter),
     }
   }
 
-  async findByChatId(chat_id: number): Promise<BotUser> {
-    return this.repository.findOneBy({ chat_id });
+  async findByChatId(chatId: number): Promise<BotUser> {
+    return this.repository.findOneBy({ chatId });
   }
 
   async findWithEnabledNotifications(): Promise<BotUser[]> {
-    return this.repository.find({ where: { notifications_enabled: true, blocked: false } });
+    return this.repository.find({ where: { notificationsEnabled: true, blocked: false } });
   }
 
   async markUsersAsBlocked(userIds: string[]): Promise<void> {
     await this.repository.update({ id: In(userIds) }, { blocked: true });
   }
 
-  async update(chat_id: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {
+  async update(chatId: number, dto: Partial<UpdateBotUserDto>): Promise<BotUser> {
     try {
-      const user: BotUser = await this.findByChatId(chat_id);
+      const user: BotUser = await this.findByChatId(chatId);
       if (isNil(user)) {
-        throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
+        throw new NotFoundException(`User with chatId: ${chatId} not found`);
       }
       Object.assign(user, { ...dto });
       return this.repository.save(user);
@@ -61,28 +61,28 @@ export class BotUserDataService {
     }
   }
 
-  async incrementDoneTasksCounter(chat_id: number): Promise<BotUser> {
-    const user: BotUser = await this.findByChatId(chat_id);
+  async incrementDoneTasksCounter(chatId: number): Promise<BotUser> {
+    const user: BotUser = await this.findByChatId(chatId);
     if (isNil(user)) {
-      throw new NotFoundException(`User with chat_id: ${chat_id} not found`);
+      throw new NotFoundException(`User with chatId: ${chatId} not found`);
     }
-    user.done_tasks_counter = (user.done_tasks_counter || 0) + 1;
+    user.doneTasksCounter = (user.doneTasksCounter || 0) + 1;
     return this.repository.save(user);
   }
 
   async getStats(): Promise<BotUserStats> {
     const total: number = await this.repository.count();
-    const active: number = await this.repository.count({ where: { was_active_today: true } });
+    const active: number = await this.repository.count({ where: { wasActiveToday: true } });
     const blocked: number = await this.repository.count({ where: { blocked: true } });
     const currentDate: string = format(new Date(), 'yyyy-MM-dd');
     const newToday: number = await this.repository.count({
       where: { timestamp: MoreThanOrEqual(`${currentDate}T00:00:00`) && LessThan(`${currentDate}T23:59:59`) },
     });
-    const notificationsDisabled = await this.repository.count({ where: { notifications_enabled: false } });
+    const notificationsDisabled = await this.repository.count({ where: { notificationsEnabled: false } });
     const changedNotificationTime: number = await this.repository.count({
-      where: [{ wake_up_time: Not('08:00') }, { bed_time: Not('23:00') }],
+      where: [{ wakeUpTime: Not('08:00') }, { bedTime: Not('23:00') }],
     });
-    const completedSkinTest: number = await this.repository.count({ where: { skin_type: Not(IsNull()) } });
+    const completedSkinTest: number = await this.repository.count({ where: { skinType: Not(IsNull()) } });
     return {
       total,
       active,
@@ -95,7 +95,7 @@ export class BotUserDataService {
   }
 
   async resetFlagsCounters(): Promise<void> {
-    await this.repository.update({}, { was_active_today: false, done_tasks_counter: 0 });
+    await this.repository.update({}, { wasActiveToday: false, doneTasksCounter: 0 });
   }
 
   async remove(id: number): Promise<{ affected?: number }> {

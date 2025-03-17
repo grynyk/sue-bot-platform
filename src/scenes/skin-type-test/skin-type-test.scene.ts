@@ -65,7 +65,7 @@ export class SkinTypeTestScene extends SceneNavigation {
       const keyboard: ReturnType<typeof Markup.inlineKeyboard> = getResultProductKeyboard(product, answerId, productSize);
       const caption: string = getResultProductCaption(result, product);
       this.deleteAndReply(ctx, caption, keyboard, { image: product.image });
-      await this.botUserDataService.update(ctx.from.id, { skin_type: result.title }); 
+      await this.botUserDataService.update(ctx.from.id, { skinType: result.title }); 
     } catch (error) {
       this.logger.error(`${ctx.text} handleResult(...): ${error.message}`);
     }
