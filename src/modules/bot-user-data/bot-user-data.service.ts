@@ -28,7 +28,12 @@ export class BotUserDataService {
   }
 
   async findById(id: string): Promise<BotUser> {
-    return this.repository.findOneBy({ id });
+    const user: BotUser = await this.repository.findOneBy({ id });
+    return {
+      ...user,
+      chat_id: Number(user.chat_id),
+      done_tasks_counter: Number(user.done_tasks_counter),
+    }
   }
 
   async findByChatId(chat_id: number): Promise<BotUser> {
