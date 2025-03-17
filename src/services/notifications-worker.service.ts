@@ -29,7 +29,11 @@ export class NotificationWorkerService {
     this.failedUserIds = new Set<string>();
   }
 
-  @Cron(CronExpression.EVERY_10_MINUTES)
+  /**
+   * The bot will check for notifications every 10 minutes.
+   * I.e: 13:10, 13:20, 13:30 etc
+   */
+  @Cron('0,10,20,30,40,50 * * * *')
   async processNotifications(): Promise<void> {
     const { fiveMinutesAgo, fiveMinutesAhead }: Record<string, Date> = this.getTimeRangeForNotifications();
     const pendingNotifications: QueuedNotification[] = await this.queuedNotificationDataService.findAllNotProcessedInTimeRange(
