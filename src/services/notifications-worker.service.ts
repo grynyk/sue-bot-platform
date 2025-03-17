@@ -58,7 +58,7 @@ export class NotificationWorkerService {
                 count: MAX_RETRIES,
                 delay: (error, retryCount) => {
                   const increasedDelay: number = Math.pow(2, retryCount) * 100;
-                  this.logger.warn(`Retrying notification ${notification.id}, attempt ${retryCount}, next try in ${increasedDelay}ms`);
+                  this.logger.warn(`Retrying notification ${notification.id}`);
                   return EMPTY.pipe(delay(increasedDelay));
                 }
               }),

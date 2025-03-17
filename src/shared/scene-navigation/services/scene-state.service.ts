@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { dropRight, isNil, last, uniq } from 'lodash';
-import { GlobalStateItem } from '../models/scene-state.model';
+import { SceneStateItem } from '../models/scene-state.model';
 import { NAVIGATION_CALLBACK } from '@models/navigation.model';
 import { SCENE_ID, SceneContext } from '@models/scenes.model';
 
 @Injectable()
 export class SceneStateService {
-  private readonly userState: Map<number, Record<SCENE_ID, GlobalStateItem>> = new Map<number, Record<SCENE_ID, GlobalStateItem>>();
+  private readonly userState: Map<number, Record<SCENE_ID, SceneStateItem>> = new Map<number, Record<SCENE_ID, SceneStateItem>>();
   private sceneId: SCENE_ID;
   private chatId: number;
 
@@ -15,11 +15,11 @@ export class SceneStateService {
     this.chatId = ctx.from.id;
   }
 
-  getSceneData(): GlobalStateItem {
+  getSceneData(): SceneStateItem {
     return this.ensureSceneData();
   }
 
-  setSceneData(data: Partial<GlobalStateItem>): void {
+  setSceneData(data: Partial<SceneStateItem>): void {
     const session = this.ensureSceneData();
     Object.assign(session, data);
   }
@@ -31,52 +31,52 @@ export class SceneStateService {
     this.userState.get(this.chatId)[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
   }
 
-  getAllScenes(): Record<SCENE_ID, GlobalStateItem> | undefined {
+  getAllScenes(): Record<SCENE_ID, SceneStateItem> | undefined {
     return this.userState.get(this.chatId);
   }
 
   setMessageId(messageId: number): void {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     session.messageId = messageId;
   }
 
   getMessageId(): number | undefined {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     return session.messageId;
   }
 
   storeCallback(step: string): void {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     session.callbacksHistory = uniq([...session.callbacksHistory, step]);
   }
 
   removeLastCallback(): void {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     session.callbacksHistory = dropRight(session.callbacksHistory);
   }
 
   getPreviousCallback(): string | null {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     session.callbacksHistory = dropRight(session.callbacksHistory);
     return last(session.callbacksHistory) ?? null;
   }
 
   getHistory(): string[] {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     return session.callbacksHistory;
   }
 
   clearHistory(): void {
-    const session: GlobalStateItem = this.getSceneData();
+    const session: SceneStateItem = this.getSceneData();
     session.callbacksHistory = [];
     session.messageId = undefined;
   }
 
-  private ensureSceneData(): GlobalStateItem {
+  private ensureSceneData(): SceneStateItem {
     if (!this.userState.has(this.chatId)) {
-      this.userState.set(this.chatId, {} as Record<SCENE_ID, GlobalStateItem>);
+      this.userState.set(this.chatId, {} as Record<SCENE_ID, SceneStateItem>);
     }
-    const userScenes: Record<SCENE_ID, GlobalStateItem> = this.userState.get(this.chatId);
+    const userScenes: Record<SCENE_ID, SceneStateItem> = this.userState.get(this.chatId);
     if (isNil(userScenes[this.sceneId])) {
       userScenes[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
     }
