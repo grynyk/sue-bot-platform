@@ -34,7 +34,6 @@ export class SettingsScene extends SceneNavigation {
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
     try {
       const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsInitialKeyboard();
-      this.notificationsQueueService.precomputeAllPendingNotifications();
       if (isBotCommand(ctx.text)) {
         const message: Message.TextMessage = await ctx.reply('Доступні налаштування:', keyboard);
         this.stateService.setMessageId(message.message_id);
