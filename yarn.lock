@@ -7005,9 +7005,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sue-bot-nestjs@workspace:.":
+"sue-bot-platform@workspace:.":
   version: 0.0.0-use.local
-  resolution: "sue-bot-nestjs@workspace:."
+  resolution: "sue-bot-platform@workspace:."
   dependencies:
     "@nestjs/cli": "npm:^11.0.0"
     "@nestjs/common": "npm:^11.0.0"
