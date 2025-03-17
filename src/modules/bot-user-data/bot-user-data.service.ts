@@ -80,7 +80,7 @@ export class BotUserDataService {
     });
     const notificationsDisabled = await this.repository.count({ where: { notificationsEnabled: false } });
     const changedNotificationTime: number = await this.repository.count({
-      where: [{ wakeUpTime: Not('08:00') }, { bedTime: Not('23:00') }],
+      where: [{ wakeUpTime: Not('07:00') }, { bedTime: Not('22:10') }],
     });
     const completedSkinTest: number = await this.repository.count({ where: { skinType: Not(IsNull()) } });
     return {
