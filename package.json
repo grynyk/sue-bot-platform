@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-prebuild": "yarn global add nx",
+    "heroku-prebuild": "yarn add nx",
     "heroku-postbuild": "yarn nx run-many --target=build --projects=bot --parallel",
     "start:bot": "yarn nx serve bot",
     "start:prod": "node dist/apps/bot/main.js"
