@@ -4,11 +4,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start:bot": "yarn nx serve bot",
+    "start:bot": "yarn exec nx serve bot",
     "start:bot-prod": "node dist/apps/bot/main.js",
     "start:prod": "yarn build:all && concurrently \"yarn start:bot-prod\"",
-    "build:bot": "yarn nx build bot",
-    "build:all": "yarn nx run-many --target=build --projects=bot --parallel",
+    "build:bot": "yarn exec nx build bot",
+    "build:all": "yarn exec nx run-many --target=build --projects=bot --parallel",
     "heroku-postbuild": "yarn build:all"
   },
   "devDependencies": {
@@ -26,17 +26,15 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
-    "@types/node": "~18.16.9",
+    "@types/node": "^22.13.10",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.0.0",
-    "nx": "^20.6.1",
     "prettier": "^2.6.2",
     "tslib": "^2.3.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.19.0",
     "webpack-cli": "^5.1.4"
   },
-  "packageManager": "yarn@4.6.0",
   "dependencies": {
     "@nestjs/common": "^10.0.2",
     "@nestjs/config": "^4.0.1",
@@ -52,6 +50,7 @@
     "dotenv": "^16.4.7",
     "nestjs-pino": "^4.3.1",
     "nestjs-telegraf": "^2.8.1",
+    "nx": "^20.6.1",
     "pg": "^8.14.1",
     "pino-http": "^10.4.0",
     "pino-pretty": "^13.0.0",
@@ -60,5 +59,10 @@
     "telegraf": "^4.16.3",
     "typegram": "^5.2.0",
     "typeorm": "^0.3.21"
-  }
+  },
+  "engines": {
+    "node": "22.x",
+    "yarn": ">=4.6.0"
+  },
+  "packageManager": "yarn@4.6.0"
 }
