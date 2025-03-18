@@ -2419,7 +2419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/webpack@npm:20.6.1":
+"@nx/webpack@npm:^20.6.1":
   version: 20.6.1
   resolution: "@nx/webpack@npm:20.6.1"
   dependencies:
@@ -2695,7 +2695,7 @@ __metadata:
     "@nx/nest": "npm:^20.6.1"
     "@nx/node": "npm:20.6.1"
     "@nx/web": "npm:20.6.1"
-    "@nx/webpack": "npm:20.6.1"
+    "@nx/webpack": "npm:^20.6.1"
     "@nx/workspace": "npm:20.6.1"
     "@swc-node/register": "npm:~1.9.1"
     "@swc/core": "npm:~1.5.7"
