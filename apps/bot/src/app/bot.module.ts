@@ -37,4 +37,4 @@ import { PlatformContextDataModule } from '@modules/platform-context';
     SettingsScene,
   ],
 })
-export class AppModule {}
+export class BotModule {}

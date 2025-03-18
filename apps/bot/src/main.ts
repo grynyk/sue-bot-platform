@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger } from 'nestjs-pino';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@models/global.model';
 import axios from 'axios';
+import { BotModule } from './app/bot.module';
 
 async function sendCrashNotification(error): Promise<void> {
   const token = process.env.BOT_TOKEN;
@@ -25,7 +25,7 @@ async function sendCrashNotification(error): Promise<void> {
 }
 
 async function bootstrap(): Promise<void> {
-  const app: INestApplication = await NestFactory.create(AppModule);
+  const app: INestApplication = await NestFactory.create(BotModule);
   app.useLogger(app.get(Logger));
   const configService = app.get(ConfigService);
   const port: number = configService.get<number>(GLOBAL_VARIABLES.PORT) || 3000;
