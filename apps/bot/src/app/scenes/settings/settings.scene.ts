@@ -168,7 +168,7 @@ export class SettingsScene extends SceneNavigation {
       bedTime: 'Час сну',
     };
     const parseValue: (value: unknown) => string = (value: string | boolean): string =>
-      isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : value;
+      isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : `${value}`;
     const stringifiedDetails: string = Object.keys(LOCALIZATION_STRINGS)
       .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
       .map((key: keyof BotUser): string => `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`)

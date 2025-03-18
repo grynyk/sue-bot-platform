@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@models/*": ["src/app/models/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@utils/*": ["src/app/utils/*"],
+      "@modules/*": ["src/app/modules/*"],
+    },
+  }
+}
