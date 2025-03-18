@@ -4,10 +4,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "heroku-prebuild": "yarn install",
-    "heroku-postbuild": "nx build bot --configuration production",
-    "start": "node dist/apps/bot/main.js",
-    "build:prod": "nx build bot --configuration production"
+    "start:bot": "nx serve bot",
+    "build:bot": "nx build bot",
+    "build:all": "node node_modules/.bin/nx run-many --target=build --projects=bot --parallel",
+    "start:prod": "node node_modules/.bin/nx build bot && node dist/apps/bot/main.js",
+    "heroku-postbuild": "yarn build:all"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
