@@ -5,7 +5,7 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { BotModule } from './app/bot.module';
-import { GLOBAL_VARIABLES } from '@core/config';
+import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 
 async function sendCrashNotification(error): Promise<void> {
   const token = process.env.BOT_TOKEN;

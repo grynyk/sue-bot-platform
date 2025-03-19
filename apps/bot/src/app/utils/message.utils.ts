@@ -1,8 +1,8 @@
 import { isNil } from 'lodash';
 import { Markup } from 'telegraf';
 import { Message } from '@telegraf/types';
-import { SceneContext } from '@models/scenes.model';
-import { DeleteAndReplyOptions, PARSE_MODE } from '@models/tg.model';
+import { SceneContext } from '../models/scenes.model';
+import { DeleteAndReplyOptions, PARSE_MODE } from '../models/tg.model';
 
 export async function deleteAndReply<T extends SceneContext>(
   ctx: T,

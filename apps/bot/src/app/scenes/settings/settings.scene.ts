@@ -2,11 +2,10 @@ import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InlineKeyboardMarkup, Message } from '@telegraf/types';
-import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
-import { NAVIGATION_CALLBACK } from '@models/navigation.model';
-import { SCENE_ID, SceneContext } from '@models/scenes.model';
-import { isBotCommand } from '@utils/command.utils';
-import { BotUser, BotUserDataService } from '@modules/bot-user-data';
+import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
+import { NAVIGATION_CALLBACK, SCENE_ID, SceneContext, PARSE_MODE } from '../../models';
+import { isBotCommand } from '../../utils/command.utils';
+import { BotUser, BotUserDataService } from '@sue-bot-platform/api';
 import {
   getSettingsInitialKeyboard,
   getSettingsNotificationsKeyboard,
@@ -15,7 +14,6 @@ import {
 import { SettingsSceneContextType } from './models/settings.model';
 import { get, isBoolean, isNil } from 'lodash';
 import { SETTINGS } from './constants/settings.constant';
-import { PARSE_MODE } from '@models/tg.model';
 import { NotificationsPreprocessorCronService } from '../../crons/notifications-preprocessor-cron.service';
 
 @Scene(SCENE_ID.SETTINGS)

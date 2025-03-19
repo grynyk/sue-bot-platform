@@ -3,9 +3,9 @@ import { Action, Ctx, InjectBot, SceneEnter, SceneLeave } from 'nestjs-telegraf'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SceneStateService } from './services';
 import { SceneStateItem } from './models';
-import { NAVIGATION_CALLBACK } from '@models/navigation.model';
-import { SCENE_ID, SceneContext } from '@models/scenes.model';
-import { triggerCallback } from '@utils/callback.utils';
+import { NAVIGATION_CALLBACK } from '../../models/navigation.model';
+import { SCENE_ID, SceneContext } from '../../models/scenes.model';
+import { triggerCallback } from '../../utils/callback.utils';
 
 export abstract class SceneNavigation {
   constructor(

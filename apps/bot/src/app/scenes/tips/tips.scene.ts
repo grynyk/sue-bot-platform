@@ -8,11 +8,11 @@ import { TIPS } from './constants/tips.constant';
 import { getTipsDynamicAffirmationKeyboard, getTipsInitialKeyboard, getTipsMusicAffirmationKeyboard } from './utils/keyboard.factory';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
-import { SceneNavigation, SceneStateService } from '@shared/scene-navigation';
-import { SCENE_ID, SceneContext } from '@models/scenes.model';
-import { PARSE_MODE } from '@models/tg.model';
-import { isBotCommand } from '@utils/command.utils';
-import { backButtonKeyboard } from '@utils/keyboard.utils';
+import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
+import { SCENE_ID, SceneContext } from '../../models/scenes.model';
+import { PARSE_MODE } from '../../models/tg.model';
+import { isBotCommand } from '../../utils/command.utils';
+import { backButtonKeyboard } from '../../utils/keyboard.utils';
 
 @Scene(SCENE_ID.TIPS)
 export class TipsScene extends SceneNavigation {

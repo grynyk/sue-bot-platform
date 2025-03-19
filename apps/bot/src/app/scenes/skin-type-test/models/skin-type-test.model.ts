@@ -1,5 +1,5 @@
-import { BINARY_ANSWER, PRODUCT_SIZE, SEASON } from '../enums/skin-test.enum';
-
+import { BINARY_ANSWER } from '../enums/skin-test.enum';
+import { PRODUCT_SIZE, SEASON } from '@sue-bot-platform/api';
 export interface TestAnswer {
   id: number;
   text: BINARY_ANSWER | string;

@@ -1,4 +1,4 @@
-import { NAVIGATION_CALLBACK } from '@models/navigation.model';
+import { NAVIGATION_CALLBACK } from '../../../models/navigation.model';
 
 export type CallbacksHistoryType = NAVIGATION_CALLBACK | string;
 
