@@ -14,10 +14,6 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-      "@sue-bot-platform/api": ["libs/api/src/index.ts"],
-      "@sue-bot-platform/bot/*": ["apps/bot/src/*"]
-    }
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -11,13 +11,16 @@ import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-t
 import { NotificationDataModule } from './modules/notification-data/notification-data.module';
 import { PlatformContextDataModule } from '@modules/platform-context';
 import { ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService } from './crons';
-import { CoreModule } from './core';
+import { CoreModule } from '@core/core.module';
+import { ApiModule } from '@sue-bot-platform/api';
 
 const SCENES = [RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene, SceneStateService];
 const CRONS = [ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService];
+
 @Module({
   imports: [
     CoreModule,
+    ApiModule,
     BotUserDataModule,
     SkinTypeTestDataModule,
     NotificationDataModule,
