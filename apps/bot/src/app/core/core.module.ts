@@ -5,15 +5,15 @@ import { LoggerModule } from 'nestjs-pino';
 import { session } from 'telegraf';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { isDev, isStaging } from '@utils/env.util';
 import { SkinTypeTestResult } from '@modules/skin-type-test-data/entities/result.entity';
 import { SkinTypeTestProduct } from '@modules/skin-type-test-data/entities/product.entity';
 import { BotNotification } from '@modules/notification-data/entities/bot-notification.entity';
 import { QueuedNotification } from '@modules/notification-data/entities/queued-notification';
-import { LoggerOptions } from '../config/logger.options';
-import { GLOBAL_VARIABLES } from '@models/global.model';
+import { LoggerOptions } from './config/logger.options';
 import { BotUser } from '@modules/bot-user-data';
 import { PlatformContext } from '@modules/platform-context';
+import { GLOBAL_VARIABLES } from './config/config-keys';
+import { isDev, isStaging } from './utils/environment.util';
 
 @Global()
 @Module({
@@ -60,4 +60,4 @@ import { PlatformContext } from '@modules/platform-context';
   ],
   exports: [ConfigModule, LoggerModule, ScheduleModule, TypeOrmModule, TelegrafModule],
 })
-export class BotCoreModule {}
+export class CoreModule {}
