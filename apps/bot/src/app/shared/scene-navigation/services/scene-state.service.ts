@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { dropRight, isNil, last, uniq } from 'lodash';
 import { SceneStateItem } from '../models/scene-state.model';
-import { NAVIGATION_CALLBACK } from '@models/navigation.model';
-import { SCENE_ID, SceneContext } from '@models/scenes.model';
+import { NAVIGATION_CALLBACK } from '../../../models/navigation.model';
+import { SCENE_ID, SceneContext } from '../../../models/scenes.model';
 
 @Injectable()
 export class SceneStateService {
@@ -28,7 +28,10 @@ export class SceneStateService {
     if (!this.userState.has(this.chatId)) {
       return;
     }
-    this.userState.get(this.chatId)[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
+    const userScenes: Record<SCENE_ID, SceneStateItem> = this.userState.get(this.chatId);
+    if (userScenes[this.sceneId]) {
+      userScenes[this.sceneId] = { callbacksHistory: [NAVIGATION_CALLBACK.START], messageId: null };
+    }
   }
 
   getAllScenes(): Record<SCENE_ID, SceneStateItem> | undefined {
@@ -68,7 +71,7 @@ export class SceneStateService {
 
   clearHistory(): void {
     const session: SceneStateItem = this.getSceneData();
-    session.callbacksHistory = [];
+    session.callbacksHistory = [NAVIGATION_CALLBACK.START];
     session.messageId = undefined;
   }
 

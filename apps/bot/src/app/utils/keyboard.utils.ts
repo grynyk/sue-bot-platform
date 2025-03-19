@@ -1,4 +1,4 @@
-import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '@models/navigation.model';
+import { NAVIGATION_CALLBACK, NAVIGATION_ICON } from '../models/navigation.model';
 import { Markup } from 'telegraf';
 import { InlineKeyboardButton, InlineKeyboardMarkup } from 'typegram';
 

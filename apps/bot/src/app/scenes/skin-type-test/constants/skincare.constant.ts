@@ -1,4 +1,5 @@
-import { PRODUCT_DETAILS, PRODUCT_SIZE, SEASON } from '../enums/skin-test.enum';
+import { PRODUCT_DETAILS } from '../enums/skin-test.enum';
+import { PRODUCT_SIZE, SEASON } from '@sue-bot-platform/api';
 
 export const SKINCARE: {
   LOCALIZATION_STRINGS: Record<string, string>;

@@ -1,15 +1,15 @@
 import { Action, Ctx, InjectBot, Scene, SceneEnter } from 'nestjs-telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { SCENE_ID, SceneContext } from '@models/scenes.model';
+import { SCENE_ID, SceneContext } from '../../models/scenes.model';
 import { BotCommand, Message, ReplyKeyboardMarkup } from 'typegram';
 import { compact, isNil, omit } from 'lodash';
 import { Markup, Telegraf } from 'telegraf';
-import { BotUser, BotUserDataService, UpdateBotUserDto } from '@modules/bot-user-data';
+import { BotUser, BotUserDataService, UpdateBotUserDto } from '@sue-bot-platform/api';
 import { format, startOfToday } from 'date-fns';
-import { PARSE_MODE } from '@models/tg.model';
+import { PARSE_MODE } from '../../models/tg.model';
 import { Observable, switchMap, tap, timer } from 'rxjs';
 import { SUBSCRIPTION_CALLBACK } from './enums/subscription.enum';
-import { confirmButtonKeyboard } from '@utils/keyboard.utils';
+import { confirmButtonKeyboard } from '../../utils/keyboard.utils';
 import { NotificationsPreprocessorCronService } from '../../crons/notifications-preprocessor-cron.service';
 
 const parse_mode = PARSE_MODE.HTML;

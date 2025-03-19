@@ -1,4 +1,4 @@
-import { BotUserDataService } from '@modules/bot-user-data';
+import { BotUserDataService } from '@sue-bot-platform/api';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';

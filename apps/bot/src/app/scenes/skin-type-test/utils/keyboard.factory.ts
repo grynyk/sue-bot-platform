@@ -1,9 +1,9 @@
 import { Markup } from 'telegraf';
 import { SkincareProduct, TestAnswer, TestQuestion } from '../models/skin-type-test.model';
 import { InlineKeyboardButton } from 'typegram';
-import { PRODUCT_SIZE } from '../enums/skin-test.enum';
+import { PRODUCT_SIZE } from '@sue-bot-platform/api';
 import { SKINCARE } from '../constants/skincare.constant';
-import { backButton, closeButton } from '@utils/keyboard.utils';
+import { backButton, closeButton } from '../../../utils/keyboard.utils';
 
 export function getQuestionKeyboard(question: TestQuestion): ReturnType<typeof Markup.inlineKeyboard> {
   const navigationButton: InlineKeyboardButton.CallbackButton = question.id === 1 ? closeButton : backButton;

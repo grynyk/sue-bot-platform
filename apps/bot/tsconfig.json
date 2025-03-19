@@ -9,14 +9,5 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "@models/*": ["src/app/models/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@utils/*": ["src/app/utils/*"],
-      "@modules/*": ["src/app/modules/*"],
-      "@core/*": ["src/app/core/*"],
-      "@sue-bot-platform/api": ["../../libs/api/src/index.ts"],
-    },
   }
 }

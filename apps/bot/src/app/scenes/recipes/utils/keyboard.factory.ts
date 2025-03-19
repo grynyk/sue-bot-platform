@@ -1,7 +1,7 @@
 import { Markup } from 'telegraf';
 import { InlineKeyboardButton } from 'typegram';
 import { RECIPES } from '../constants/recipes.constant';
-import { closeButton, createButtons } from '@utils/keyboard.utils';
+import { closeButton, createButtons } from '../../../utils/keyboard.utils';
 
 export function getRecipesInitialKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
   const callbacks: string[] = Object.values(RECIPES.CALLBACKS.MAIN);

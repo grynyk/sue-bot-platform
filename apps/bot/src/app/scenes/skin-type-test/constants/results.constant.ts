@@ -1,4 +1,4 @@
-import { PRODUCT_SIZE, SEASON } from '../enums/skin-test.enum';
+import { PRODUCT_SIZE, SEASON } from '@sue-bot-platform/api';
 import { TestResult } from '../models/skin-type-test.model';
 
 export const RESULTS: TestResult[] = [
