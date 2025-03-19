@@ -10,7 +10,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { NotificationDataService, QueuedNotificationDataService } from '@modules/notification-data';
 
 @Injectable()
-export class NotificationsQueueService {
+export class NotificationsPreprocessorCronService {
   private notificationsQueue: Partial<QueuedNotification>[];
   constructor(
     @InjectPinoLogger() protected readonly logger: PinoLogger,
@@ -26,14 +26,14 @@ export class NotificationsQueueService {
    * every day at 4 AM
    */
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
-  async precomputeAllPendingNotifications(): Promise<void> {
+  async processAllNotifications(): Promise<void> {
     try {
       await this.queuedNotificationDataService.drop();
       this.notificationsQueue = [];
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
       const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
       for (const user of users) {
-        this.processPendingNotifications(user, notifications);
+        this.addToQueue(user, notifications);
       }
       for (let i = 0; i < this.notificationsQueue.length; i += 1000) {
         const batch: Partial<QueuedNotification>[] = this.notificationsQueue.slice(i, i + 1000);
@@ -44,7 +44,7 @@ export class NotificationsQueueService {
     }
   }
 
-  async precomputeUserPendingNotifications(chatId: number): Promise<void> {
+  async processNotificationsByUserChatId(chatId: number): Promise<void> {
     try {
       const user: BotUser = await this.botUserDataService.findByChatId(chatId);
       if (isNil(user)) {
@@ -53,14 +53,14 @@ export class NotificationsQueueService {
       await this.queuedNotificationDataService.removeAllByUserId(user.id);
       if (user.notificationsEnabled && !user.blocked) {
         const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
-        this.processPendingNotifications(user, notifications);
+        this.addToQueue(user, notifications);
       }
     } catch (error) {
       this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
     }
   }
 
-  private processPendingNotifications(user: BotUser, notifications: BotNotification[]): void {
+  private addToQueue(user: BotUser, notifications: BotNotification[]): void {
     for (const notification of notifications) {
       if (this.shouldSendNotificationToday(notification)) {
         const sendTime: Date = this.calculateSendTime(user, notification);

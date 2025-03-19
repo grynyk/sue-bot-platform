@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
-export class BotKeepAliveService {
+export class ServerPingCronService {
   private readonly url: string | undefined = process.env.HEROKU_URL;
 
   constructor(@InjectPinoLogger() protected readonly logger: PinoLogger) {}

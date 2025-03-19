@@ -16,7 +16,7 @@ import { SettingsSceneContextType } from './models/settings.model';
 import { get, isBoolean, isNil } from 'lodash';
 import { SETTINGS } from './constants/settings.constant';
 import { PARSE_MODE } from '@models/tg.model';
-import { NotificationsQueueService } from '../../services/notifications-queue.service';
+import { NotificationsPreprocessorCronService } from '../../crons/notifications-preprocessor-cron.service';
 
 @Scene(SCENE_ID.SETTINGS)
 export class SettingsScene extends SceneNavigation {
@@ -25,7 +25,7 @@ export class SettingsScene extends SceneNavigation {
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     protected readonly stateService: SceneStateService,
     private readonly botUserDataService: BotUserDataService,
-    private readonly notificationsQueueService: NotificationsQueueService,
+    private readonly notificationsPreprocessorCronService: NotificationsPreprocessorCronService,
   ) {
     super(bot, logger, stateService, SCENE_ID.SETTINGS);
   }
@@ -93,7 +93,7 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { wakeUpTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -107,7 +107,7 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { bedTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -118,7 +118,7 @@ export class SettingsScene extends SceneNavigation {
       const chatId: number = ctx.from.id;
       await this.botUserDataService.update(chatId, { notificationsEnabled });   
       await this.onNotificationsSettings(ctx);
-      await this.notificationsQueueService.precomputeUserPendingNotifications(chatId);
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }

@@ -19,7 +19,7 @@ const MAX_RETRIES = 2;
 const MAX_CONCURRENT_REQUESTS = 20;
 
 @Injectable()
-export class NotificationWorkerService {
+export class NotificationDeliveryCronService {
   private failedUserIds: Set<string>;
 
   constructor(

@@ -1,4 +1,4 @@
-import { ENV } from '@models/global.model';
+import { ENV } from "../config/config-keys";
 
 export function isDev(): boolean {
   return String(process.env.NODE_ENV) === ENV.DEV;

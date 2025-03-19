@@ -3,21 +3,21 @@ import { BotUpdate } from './bot.update';
 import { RecipesScene } from './scenes/recipes/recipes.scene';
 import { TipsScene } from './scenes/tips/tips.scene';
 import { SkinTypeTestScene } from './scenes/skin-type-test/skin-type-test.scene';
-import { BotCoreModule, SceneStateService } from './shared';
-import { BotKeepAliveService } from './services/bot-keep-alive.service';
+import { SceneStateService } from './shared';
 import { BotUserDataModule } from './modules/bot-user-data/bot-user-data.module';
 import { SubscriptionScene } from './scenes/subscription/subscription.scene';
 import { SettingsScene } from './scenes/settings/settings.scene';
 import { SkinTypeTestDataModule } from '@modules/skin-type-test-data/skin-type-test-data.module';
-import { UserActivityResetService } from './services/user-activity-reset.service';
 import { NotificationDataModule } from './modules/notification-data/notification-data.module';
-import { NotificationsQueueService } from './services/notifications-queue.service';
-import { NotificationWorkerService } from './services/notifications-worker.service';
 import { PlatformContextDataModule } from '@modules/platform-context';
+import { ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService } from './crons';
+import { CoreModule } from './core';
 
+const SCENES = [RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene, SceneStateService];
+const CRONS = [ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService];
 @Module({
   imports: [
-    BotCoreModule,
+    CoreModule,
     BotUserDataModule,
     SkinTypeTestDataModule,
     NotificationDataModule,
@@ -25,16 +25,8 @@ import { PlatformContextDataModule } from '@modules/platform-context';
   ],
   providers: [
     BotUpdate,
-    BotKeepAliveService,
-    UserActivityResetService,
-    NotificationsQueueService,
-    NotificationWorkerService,
-    SceneStateService,
-    RecipesScene,
-    TipsScene,
-    SkinTypeTestScene,
-    SubscriptionScene,
-    SettingsScene,
+    ...CRONS,
+    ...SCENES,
   ],
 })
 export class BotModule {}

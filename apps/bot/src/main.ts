@@ -3,9 +3,9 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GLOBAL_VARIABLES } from '@models/global.model';
 import axios from 'axios';
 import { BotModule } from './app/bot.module';
+import { GLOBAL_VARIABLES } from './app/core';
 
 async function sendCrashNotification(error): Promise<void> {
   const token = process.env.BOT_TOKEN;

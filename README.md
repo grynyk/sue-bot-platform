@@ -9,24 +9,29 @@ Sue bot is a Telegram bot for a Ukrainian cosmetics company [Sue](https://suemad
 -   **Telegram Bot Library:** Telegraf
 -   **Database:** PostgreSQL
 -   **ORM:** TypeORM
--   **Architecture:** Modular
+-   **Architecture:** Monorepo
 
 ## 📌 Project Structure
 
 ```
-src/
-├── core/                      # Core functionalities and configurations
-├── shared/                    # Shared modules and utilities
-├── modules/                   # Data Management modules
-├── scenes/                    # Telegram bot scenes
-├── app.module.ts              # Root module
-├── main.ts                    # Entry point
-└── ...
+apps/
+├── bot/                       # Telegram bot application
+    ├── src/                   
+    │   ├── core/              
+    │   ├── shared/           
+    │   ├── scenes/           
+    │   ├── app.module.ts      
+    │   ├── main.ts            
+    │   └── ...
+    └── ...
+libs/
+└── api/                       # Shared API library
+    ├── src/                   
+    └── ...
 ```
 
 ## 📝 TODO
 
--   [ ] Create a core module for core functionalities and configurations.
 -   [ ] Implement database-based storage and retrieval for skin type test results.
--   [ ] Migrate to an Nx workspace with separate bot and API projects for better scalability and maintainability.
+-   [ ] Finalize migration to an Nx workspace with separate bot and API projects for better scalability and maintainability.
 
