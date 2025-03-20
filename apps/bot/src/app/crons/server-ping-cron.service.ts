@@ -1,13 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Interval } from '@nestjs/schedule';
+import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 import axios, { AxiosResponse } from 'axios';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class ServerPingCronService {
-  private readonly url: string | undefined = process.env.HEROKU_URL;
+  private readonly baseUrl: string;
 
-  constructor(@InjectPinoLogger() protected readonly logger: PinoLogger) {}
+  constructor(
+    @InjectPinoLogger() protected readonly logger: PinoLogger,
+    private readonly configService: ConfigService
+  ) {
+    this.baseUrl = this.configService.getOrThrow<string>(
+      GLOBAL_VARIABLES.HEROKU_URL
+    );
+  }
 
   /**
    * Pings the Heroku app to keep the dyno awake.
@@ -15,9 +24,9 @@ export class ServerPingCronService {
    */
   @Interval(29 * 60 * 1000)
   keepAwake(): void {
-    this.logger.info(`Pinging ${this.url} to keep the dyno awake.`);
+    this.logger.info(`Pinging ${this.baseUrl} to keep the dyno awake.`);
     axios
-      .get(`${this.url}/notifications`)
+      .get(`${this.baseUrl}/api/notifications`)
       .then((response: AxiosResponse): void => {
         this.logger.info(`Ping successful. Status: ${response.status}`);
       })

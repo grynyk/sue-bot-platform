@@ -8,15 +8,16 @@ import { BotModule } from './app/bot.module';
 import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 
 async function sendCrashReport(error): Promise<void> {
-  const token = process.env.BOT_TOKEN;
-  const chat_id = process.env.ADMIN_CHAT_ID;
-  if (!token || !chat_id) {
+  const token: string = process.env.BOT_TOKEN;
+  const chatId: string = process.env.ADMIN_CHAT_ID;
+  const baseUrl: string = process.env.BOT_API_URL
+  if (!token || !chatId) {
     return;
   }
   const text = `🚨 *App Crashed!*\n\n${error.message}\n\n\n${error.stack}`;
   try {
-    await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-      chat_id,
+    await axios.post(`${baseUrl}${token}/sendMessage`, {
+      chat_id: chatId,
       text
     });
   } catch {
@@ -27,6 +28,7 @@ async function sendCrashReport(error): Promise<void> {
 async function bootstrap(): Promise<void> {
   const app: INestApplication = await NestFactory.create(BotModule);
   app.useLogger(app.get(Logger));
+  app.setGlobalPrefix('api');
   const configService = app.get(ConfigService);
   const port: number = configService.get<number>(GLOBAL_VARIABLES.PORT) || 3000;
   await app.listen(port);
