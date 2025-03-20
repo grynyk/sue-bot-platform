@@ -28,11 +28,11 @@ apps/
 │   └── ...
 libs/
 ├── api/                       # Shared API library
-│   ├── modules/               # API modules
+│   ├── modules/               # Database management modules
 │   ├── api.module.ts          # API module
 │   └── ...
 └── core/                      # Core library
-    ├── config/                # Configuration files
+    ├── config/                # Configs
     ├── utils/                 # Utility functions
     ├── core.module.ts         # Core module
     └── ...
