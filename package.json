@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start:bot": "nx serve bot",
+    "start:admin-panel": "nx serve admin-panel",
     "build:bot": "nx build bot",
     "build:admin-panel": "nx build admin-panel",
     "build:all": "yarn build:bot && yarn build:admin-panel",
@@ -45,6 +46,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@angular/cdk": "^19.2.4",
     "@angular/common": "^19.2.3",
     "@angular/compiler": "~19.2.0",
     "@angular/core": "^19.2.3",
@@ -79,6 +81,7 @@
     "dotenv": "^16.4.7",
     "nestjs-pino": "^4.3.1",
     "nestjs-telegraf": "^2.8.1",
+    "ngx-quill": "^27.0.1",
     "nx": "^20.6.1",
     "pg": "^8.14.1",
     "pino-http": "^10.4.0",

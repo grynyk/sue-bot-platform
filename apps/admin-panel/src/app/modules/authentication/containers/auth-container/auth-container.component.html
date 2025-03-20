@@ -1,0 +1,40 @@
+<mat-card>
+  <mat-card-title class="header">
+    <div class="logo"></div>
+    <div class="title"> Bot Admin Panel </div>
+  </mat-card-title>
+  <mat-card-content>
+    <ng-container [ngSwitch]="mode">
+      <ng-container *ngSwitchCase="modeEnum.LOGIN">
+        <sue-login></sue-login>
+      </ng-container>
+      <ng-container *ngSwitchCase="modeEnum.REGISTRATION">
+        <sue-registration></sue-registration>
+      </ng-container>
+    </ng-container>
+    <div class="mode-swich-button" [ngSwitch]="mode">
+      <ng-container *ngSwitchCase="modeEnum.LOGIN">
+        not registered yet?
+        <a
+          color="accent"
+          tabindex="0"
+          (click)="setAuthMode(modeEnum.REGISTRATION)"
+          (keydown.enter)="setAuthMode(modeEnum.REGISTRATION)"
+        >
+          registration request
+        </a>
+      </ng-container>
+      <ng-container *ngSwitchCase="modeEnum.REGISTRATION">
+        already registered?
+        <a
+          color="accent"
+          tabindex="0"
+          (click)="setAuthMode(modeEnum.LOGIN)"
+          (keydown.enter)="setAuthMode(modeEnum.LOGIN)"
+        >
+          login
+        </a>
+      </ng-container>
+    </div>
+  </mat-card-content>
+</mat-card>

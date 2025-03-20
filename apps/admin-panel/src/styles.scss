@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: mat.$rose-palette,
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+* {
+    font-family: 'Montserrat';
+}
+mat-card {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+}
+
+body {
+  width: auto;
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('./assets/lg-bg.jpg') center center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+mat-error {
+  font-size: small;
+}
