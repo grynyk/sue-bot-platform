@@ -1,0 +1,11 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 25rem;
+}
+
+.submit-button {
+  display: flex;
+  justify-content: flex-end;
+}
