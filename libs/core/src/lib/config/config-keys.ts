@@ -8,6 +8,9 @@ export enum GLOBAL_VARIABLES {
   DATABASE_URL = 'DATABASE_URL',
   PORT = 'PORT',
   HEROKU_URL = 'HEROKU_URL',
+  NODE_ENV = 'NODE_ENV',
+  TZ = 'TZ',
+  ADMIN_CHAT_ID = 'ADMIN_CHAT_ID',
 }
 
 export enum ENV {
