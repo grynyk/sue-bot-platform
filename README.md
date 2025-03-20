@@ -16,22 +16,33 @@ Sue bot is a Telegram bot for a Ukrainian cosmetics company [Sue](https://suemad
 ```
 apps/
 ├── bot/                       # Telegram bot application
-    ├── src/                   
-    │   ├── core/              
-    │   ├── shared/           
-    │   ├── scenes/           
-    │   ├── app.module.ts      
-    │   ├── main.ts            
-    │   └── ...
-    └── ...
+│   ├── src/
+│   │   ├── crons/             # Cron jobs
+│   │   ├── models/            # Data models
+│   │   ├── scenes/            # Telegram bot scenes
+│   │   ├── shared/            # Shared modules and utilities
+│   │   ├── utils/             # Utility functions
+│   │   ├── bot.module.ts      # Bot module
+│   │   ├── main.ts            # Entry point
+│   │   └── ...
+│   └── ...
 libs/
-└── api/                       # Shared API library
-    ├── src/                   
+├── api/                       # Shared API library
+│   ├── modules/               # API modules
+│   ├── api.module.ts          # API module
+│   └── ...
+└── core/                      # Core library
+    ├── config/                # Configuration files
+    ├── utils/                 # Utility functions
+    ├── core.module.ts         # Core module
     └── ...
 ```
 
 ## 📝 TODO
 
--   [ ] Implement database-based storage and retrieval for skin type test results.
--   [ ] Finalize migration to an Nx workspace with separate bot and API projects for better scalability and maintainability.
-
+-   [ ] Store messages id to delete at the end of the day in platform context
+-   [ ] Implement serum builder
+-   [ ] Add email to subscription scene
+-   [ ] Implement database-based storage and retrieval for skin type test scene.
+-   [ ] Implement database-based storage and retrieval for recipes scene.
+-   [ ] Implement database-based storage and retrieval for tips scene.
