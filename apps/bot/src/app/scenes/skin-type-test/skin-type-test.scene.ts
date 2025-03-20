@@ -6,15 +6,10 @@ import { get, isNil } from 'lodash';
 import { SkincareProduct, TestAnswer, TestQuestion, TestResult } from './models/skin-type-test.model';
 import { getQuestionKeyboard, getResultProductSizeKeyboard, getResultProductKeyboard } from './utils/keyboard.factory';
 import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
-import { RESULTS } from './constants/results.constant';
-import { SKINCARE } from './constants/skincare.constant';
+import { RESULTS, SKINCARE } from './constants';
 import { Message } from '@telegraf/types';
-import { NAVIGATION_CALLBACK } from '../../models/navigation.model';
-import { SCENE_ID, SceneContext } from '../../models/scenes.model';
-import { PARSE_MODE, DeleteAndReplyOptions } from '../../models/tg.model';
-import { deleteAndReply } from '../../utils/message.utils';
-import { isBotCommand } from '../../utils/command.utils';
-import { backButtonKeyboard } from '../../utils/keyboard.utils';
+import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK, PARSE_MODE, DeleteAndReplyOptions } from '../../models';
+import { isBotCommand, backButtonKeyboard, deleteAndReply } from '../../utils';
 import { BotUserDataService, PRODUCT_SIZE } from '@sue-bot-platform/api';
 
 @Scene(SCENE_ID.SKIN_TYPE_TEST)

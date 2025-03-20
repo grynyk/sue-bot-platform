@@ -2,12 +2,9 @@ import { Action, Command, Ctx, InjectBot, Start, Update } from 'nestjs-telegraf'
 import { Context, Markup, Telegraf } from 'telegraf';
 import { BotCommand, WebhookInfo } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from './models/commands.model';
-import { SCENE_ID, SceneContext } from './models/scenes.model';
+import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK, PARSE_MODE, BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from './models';
 import { getDefinedBotCommands } from './utils/command.utils';
-import { NAVIGATION_CALLBACK } from './models/navigation.model';
 import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@sue-bot-platform/api';
-import { PARSE_MODE } from './models/tg.model';
 import { get, isNil, omit } from 'lodash';
 import { OnModuleInit } from '@nestjs/common';
 
