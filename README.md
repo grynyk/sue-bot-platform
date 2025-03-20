@@ -2,6 +2,8 @@
 
 Sue bot is a Telegram bot for a Ukrainian cosmetics company [Sue](https://suemade.com), built using **NestJS** and **Telegraf**.
 
+> Get started with the bot: [@mysuebot](https://t.me/mysuebot)
+
 ## 📌 Project Details
 
 -   **Language:** TypeScript
