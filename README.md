@@ -1,4 +1,4 @@
-# 🚀 Sue bot Platform
+# 🤖 Sue bot Platform
 
 Sue bot is a Telegram bot for a Ukrainian cosmetics company [Sue](https://suemade.com), built using **NestJS** and **Telegraf**.
 
