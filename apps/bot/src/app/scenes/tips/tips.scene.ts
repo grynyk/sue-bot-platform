@@ -1,7 +1,6 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
-import { NAVIGATION_CALLBACK } from '../../models/navigation.model';
 import { get } from 'lodash';
 import { TipsSceneContextType } from './models/tips.model';
 import { TIPS } from './constants/tips.constant';
@@ -9,10 +8,8 @@ import { getTipsDynamicAffirmationKeyboard, getTipsInitialKeyboard, getTipsMusic
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { Message } from '@telegraf/types';
 import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
-import { SCENE_ID, SceneContext } from '../../models/scenes.model';
-import { PARSE_MODE } from '../../models/tg.model';
-import { isBotCommand } from '../../utils/command.utils';
-import { backButtonKeyboard } from '../../utils/keyboard.utils';
+import { SCENE_ID, SceneContext, PARSE_MODE, NAVIGATION_CALLBACK } from '../../models';
+import { isBotCommand, backButtonKeyboard } from '../../utils';
 
 @Scene(SCENE_ID.TIPS)
 export class TipsScene extends SceneNavigation {
