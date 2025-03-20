@@ -436,7 +436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:~19.2.0":
+"@angular/common@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/common@npm:19.2.3"
   dependencies:
@@ -480,7 +480,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:~19.2.0":
+"@angular/core@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/core@npm:19.2.3"
   dependencies:
@@ -492,7 +492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/forms@npm:~19.2.0":
+"@angular/forms@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/forms@npm:19.2.3"
   dependencies:
@@ -506,6 +506,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/http@npm:^7.2.16":
+  version: 7.2.16
+  resolution: "@angular/http@npm:7.2.16"
+  dependencies:
+    tslib: "npm:^1.9.0"
+  peerDependencies:
+    "@angular/core": 7.2.16
+    "@angular/platform-browser": 7.2.16
+    rxjs: ^6.0.0
+  checksum: 10c0/ac66f536857a56d4fd26ff52458e80372c5698e65fdb442cc75bf5f18fd903a94a8defc27a7775daf1ec8389254109388cad89c46ac137a4f8d76b11d85bc69c
+  languageName: node
+  linkType: hard
+
 "@angular/language-service@npm:~19.2.0":
   version: 19.2.3
   resolution: "@angular/language-service@npm:19.2.3"
@@ -513,7 +526,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser-dynamic@npm:~19.2.0":
+"@angular/material@npm:^19.2.4":
+  version: 19.2.4
+  resolution: "@angular/material@npm:19.2.4"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/cdk": 19.2.4
+    "@angular/common": ^19.0.0 || ^20.0.0
+    "@angular/core": ^19.0.0 || ^20.0.0
+    "@angular/forms": ^19.0.0 || ^20.0.0
+    "@angular/platform-browser": ^19.0.0 || ^20.0.0
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10c0/d9d7f43e771079d686da26f2ca719420f21fbb2c44c222ebcdd5caa752af92f98c3b629f729374db756f3e4e619254a2bd326bd43edf5235d77f5c52b2b78b50
+  languageName: node
+  linkType: hard
+
+"@angular/platform-browser-dynamic@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/platform-browser-dynamic@npm:19.2.3"
   dependencies:
@@ -527,7 +556,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-browser@npm:~19.2.0":
+"@angular/platform-browser@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/platform-browser@npm:19.2.3"
   dependencies:
@@ -543,7 +572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/router@npm:~19.2.0":
+"@angular/router@npm:^19.2.3":
   version: 19.2.3
   resolution: "@angular/router@npm:19.2.3"
   dependencies:
@@ -554,6 +583,20 @@ __metadata:
     "@angular/platform-browser": 19.2.3
     rxjs: ^6.5.3 || ^7.4.0
   checksum: 10c0/21182f49737e05f2cd2b9dc01520aceed43d8974bb9c51d42be0654527de04d1c3aacb6bcb99001cba94860265aa1349144930ddf6366c0b17140a11e8b3bda9
+  languageName: node
+  linkType: hard
+
+"@angular/service-worker@npm:^19.2.3":
+  version: 19.2.3
+  resolution: "@angular/service-worker@npm:19.2.3"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/core": 19.2.3
+    rxjs: ^6.5.3 || ^7.4.0
+  bin:
+    ngsw-config: ngsw-config.js
+  checksum: 10c0/09eca68f407f2a7dd05738d9eb4f12794dabb9f461b0c2a560d35fc61c99361905d3465845eca52007ca3c4f2250ea760f982be0fab26fd9c4d0915a69b37337
   languageName: node
   linkType: hard
 
@@ -5356,15 +5399,18 @@ __metadata:
     "@angular-devkit/core": "npm:~19.2.0"
     "@angular-devkit/schematics": "npm:~19.2.0"
     "@angular/cli": "npm:~19.2.0"
-    "@angular/common": "npm:~19.2.0"
+    "@angular/common": "npm:^19.2.3"
     "@angular/compiler": "npm:~19.2.0"
     "@angular/compiler-cli": "npm:~19.2.0"
-    "@angular/core": "npm:~19.2.0"
-    "@angular/forms": "npm:~19.2.0"
+    "@angular/core": "npm:^19.2.3"
+    "@angular/forms": "npm:^19.2.3"
+    "@angular/http": "npm:^7.2.16"
     "@angular/language-service": "npm:~19.2.0"
-    "@angular/platform-browser": "npm:~19.2.0"
-    "@angular/platform-browser-dynamic": "npm:~19.2.0"
-    "@angular/router": "npm:~19.2.0"
+    "@angular/material": "npm:^19.2.4"
+    "@angular/platform-browser": "npm:^19.2.3"
+    "@angular/platform-browser-dynamic": "npm:^19.2.3"
+    "@angular/router": "npm:^19.2.3"
+    "@angular/service-worker": "npm:^19.2.3"
     "@eslint/js": "npm:^9.8.0"
     "@nestjs/common": "npm:^10.0.2"
     "@nestjs/config": "npm:^4.0.1"
@@ -5413,7 +5459,7 @@ __metadata:
     pino-pretty: "npm:^13.0.0"
     prettier: "npm:^2.6.2"
     reflect-metadata: "npm:^0.1.13"
-    rxjs: "npm:^7.8.0"
+    rxjs: "npm:^7.8.2"
     telegraf: "npm:^4.16.3"
     ts-jest: "npm:^29.1.0"
     ts-node: "npm:10.9.1"
@@ -5423,7 +5469,7 @@ __metadata:
     typescript: "npm:~5.7.2"
     typescript-eslint: "npm:^8.19.0"
     webpack-cli: "npm:^5.1.4"
-    zone.js: "npm:~0.15.0"
+    zone.js: "npm:^0.15.0"
   languageName: unknown
   linkType: soft
 
@@ -15122,7 +15168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.4.0, rxjs@npm:^7.8.0, rxjs@npm:^7.8.1":
+"rxjs@npm:^7.4.0, rxjs@npm:^7.8.0, rxjs@npm:^7.8.1, rxjs@npm:^7.8.2":
   version: 7.8.2
   resolution: "rxjs@npm:7.8.2"
   dependencies:
@@ -16716,6 +16762,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^1.9.0":
+  version: 1.14.1
+  resolution: "tslib@npm:1.14.1"
+  checksum: 10c0/69ae09c49eea644bc5ebe1bca4fa4cc2c82b7b3e02f43b84bd891504edf66dbc6b2ec0eef31a957042de2269139e4acff911e6d186a258fb14069cd7f6febce2
+  languageName: node
+  linkType: hard
+
 "tsscmp@npm:1.0.6":
   version: 1.0.6
   resolution: "tsscmp@npm:1.0.6"
@@ -17778,7 +17831,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zone.js@npm:~0.15.0":
+"zone.js@npm:^0.15.0":
   version: 0.15.0
   resolution: "zone.js@npm:0.15.0"
   checksum: 10c0/981b664c1978759a2854f6e6692d245d1d6334c6b20b7e2e5fa9b60eed74743b29c6a71f7472dc6d2790ab53d67e30475bcd92b9f7664e50aef8bbcd40379552
