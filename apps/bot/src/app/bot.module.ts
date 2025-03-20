@@ -17,6 +17,8 @@ import { ApiModule } from '@sue-bot-platform/api';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { ConfigService } from '@nestjs/config';
 import { session } from 'telegraf';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 const SCENES = [
   RecipesScene,
@@ -37,6 +39,10 @@ const CRONS = [
   imports: [
     CoreModule,
     ApiModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../../dist/apps/admin-panel/browser'),
+      serveRoot: '/admin-panel',
+    }),
     TelegrafModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {

@@ -7,7 +7,7 @@ import axios from 'axios';
 import { BotModule } from './app/bot.module';
 import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 
-async function sendCrashNotification(error): Promise<void> {
+async function sendCrashReport(error): Promise<void> {
   const token = process.env.BOT_TOKEN;
   const chat_id = process.env.ADMIN_CHAT_ID;
   if (!token || !chat_id) {
@@ -33,16 +33,16 @@ async function bootstrap(): Promise<void> {
 }
 
 process.on('uncaughtException', async (error): Promise<void>  => {
-  await sendCrashNotification(error);
+  await sendCrashReport(error);
   process.exit(1);
 });
 
 process.on('unhandledRejection', async (error): Promise<void>  => {
-  await sendCrashNotification(error);
+  await sendCrashReport(error);
   process.exit(1);
 });
 
 bootstrap().catch(async (error): Promise<void> => {
-  await sendCrashNotification(error);
+  await sendCrashReport(error);
   process.exit(1);
 });
