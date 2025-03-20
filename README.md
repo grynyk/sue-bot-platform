@@ -40,6 +40,24 @@ libs/
     └── ...
 ```
 
+## 🚀 Getting Started
+
+To run the project locally, follow these steps:
+
+1.  Clone the repository.
+
+2.  Install dependencies:
+
+    ```bash
+    yarn install
+    ```
+3.  Create .env file with variables listed in GLOBAL_VARIABLES enum (`libs/core/src/lib/config/config-keys.ts`)
+4.  Start the bot:
+
+    ```bash
+    yarn start:bot
+    ```
+
 ## 📝 TODO
 
 -   [ ] Store messages id to delete at the end of the day in platform context
