@@ -1,20 +1,39 @@
 @use '@angular/material' as mat;
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-html {
-  color-scheme: light;
-  @include mat.theme((
-    color: mat.$rose-palette,
-    typography: Roboto,
-    density: 0
-  ));
-}
+$accent-color: #d75f39;
+$primary-color: #888440;
 
 * {
-    font-family: 'Montserrat';
+  font-family: 'Montserrat';
 }
-mat-card {
-  background-color: rgba(255, 255, 255, 0.75) !important;
+
+html {
+  @include mat.theme(
+    (
+      color: mat.$green-palette,
+    )
+  );
+}
+
+.accent {
+  @include mat.theme(
+    (
+      color: mat.$magenta-palette,
+    )
+  );
+}
+
+.warn {
+  @include mat.theme(
+    (
+      color: mat.$red-palette,
+    )
+  );
+}
+
+mat-card:not(.important) {
+  background-color: rgba($color: #ffffff, $alpha: 0.75);
 }
 
 body {

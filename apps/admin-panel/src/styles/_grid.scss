@@ -1,0 +1,9 @@
+@mixin grid-row($columns) {
+  column-gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+}
+
+@mixin merge-columns($columns-to-merge) {
+  grid-column-start: span #{$columns-to-merge};
+}

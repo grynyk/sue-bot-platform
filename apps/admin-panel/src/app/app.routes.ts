@@ -2,10 +2,17 @@ import { Route } from '@angular/router';
 
 export const appRoutes: Route[] = [
   {
-    path: '',
+    path: 'login',
     loadChildren: () =>
-      import('./modules/authentication/authentication.module').then(
-        (m) => m.AuthenticationModule
+      import('./modules/auth/auth.module').then(
+        (m) => m.AuthModule
+      ),
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./modules/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
       ),
   },
 ];
