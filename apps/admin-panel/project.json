@@ -25,6 +25,9 @@
           }
         ],
         "styles": ["apps/admin-panel/src/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/admin-panel/src/styles/"]
+        },
         "scripts": []
       },
       "configurations": {

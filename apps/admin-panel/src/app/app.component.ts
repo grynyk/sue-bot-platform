@@ -1,12 +1,22 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { GuardsCheckEnd, Router, RouterModule } from '@angular/router';
+import { filter, map, Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './shared/header/header.component';
 
 @Component({
-  imports: [RouterModule],
+  imports: [CommonModule, RouterModule, HeaderComponent],
   selector: 'sue-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'admin-panel';
+  isHeaderVisible$: Observable<boolean>;
+  constructor(private readonly router: Router) {
+    this.isHeaderVisible$ = this.router.events.pipe(
+      filter((event) => event instanceof GuardsCheckEnd),
+      map((route: GuardsCheckEnd) => route.url !== '/login')
+    );
+  }
 }

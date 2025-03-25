@@ -1,0 +1,45 @@
+<mat-card class="logo-container">
+  <div class="logo-container__image"></div>
+  <span class="logo-container__title">Натуральна косметика</span>
+</mat-card>
+<mat-card class="auth-container">
+  <mat-card-title class="auth-container__header">
+    <div class="auth-container__header-title">Bot Admin Panel</div>
+    <div class="auth-container__header-mode-btn">
+      @switch (mode) {
+        @case (AUTH_MODE.LOGIN) {
+          New user?
+          <a
+            class="accent"
+            tabindex="0"
+            (click)="setAuthMode(AUTH_MODE.REGISTRATION)"
+            (keydown.enter)="setAuthMode(AUTH_MODE.REGISTRATION)"
+          >
+            Request an access
+          </a>
+        }
+        @case (AUTH_MODE.REGISTRATION) {
+          Already have an account?
+          <a
+            class="accent"
+            tabindex="0"
+            (click)="setAuthMode(AUTH_MODE.LOGIN)"
+            (keydown.enter)="setAuthMode(AUTH_MODE.LOGIN)"
+          >
+            Sign in
+          </a>
+        }
+      }
+    </div>
+  </mat-card-title>
+  <mat-card-content>
+    @switch (mode) {
+      @case (AUTH_MODE.LOGIN) {
+        <sue-login (submitted)="onLogin($event)"></sue-login>
+      }
+      @case (AUTH_MODE.REGISTRATION) {
+        <sue-registration (submitted)="onRegistration($event)"></sue-registration>
+      }
+    }
+  </mat-card-content>
+</mat-card>
