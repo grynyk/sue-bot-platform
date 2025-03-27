@@ -7,12 +7,12 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-builders/custom-webpack:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/admin-panel",
         "index": "apps/admin-panel/src/index.html",
-        "browser": "apps/admin-panel/src/main.ts",
+        "main": "apps/admin-panel/src/main.ts",
         "baseHref": "/admin-panel/",
         "deployUrl": "/admin-panel/",
         "polyfills": ["zone.js"],
@@ -28,7 +28,10 @@
         "stylePreprocessorOptions": {
           "includePaths": ["apps/admin-panel/src/styles/"]
         },
-        "scripts": []
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/admin-panel/webpack.config.js"
+        }
       },
       "configurations": {
         "production": {
@@ -55,7 +58,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular-builders/custom-webpack:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "admin-panel:build:production"

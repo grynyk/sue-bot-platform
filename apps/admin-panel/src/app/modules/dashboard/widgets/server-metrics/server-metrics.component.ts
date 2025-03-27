@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
@@ -24,16 +24,30 @@ import { DynoStatus } from '../../models/heroku.model';
 export class ServerMetricsWidgetComponent implements OnInit {
   notificationsToSend = 1235;
   notificationsSent = 800;
-
   dynoStatus: DynoStatus;
   isLoaded = false;
-  constructor(private dynoService: DynoService) {}
+
+  constructor(private readonly dynoService: DynoService, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.dynoService.getDynoStatus().subscribe((data: DynoStatus): void => {
       this.dynoStatus = data;
       this.isLoaded = true;
+      this.cdr.markForCheck();
     });
+  }
+
+  getStatus(state: string): string {
+    switch (state) {
+      case 'up':
+        return 'Running';
+      case 'down':
+        return 'Stopped';
+      case 'maintenance':
+        return 'Maintenance';
+      default:
+        return 'Unknown';
+    }
   }
 
   getStatusColor(state: string): string {

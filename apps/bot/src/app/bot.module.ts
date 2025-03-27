@@ -40,7 +40,7 @@ const CRONS = [
     CoreModule,
     ApiModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../../../dist/apps/admin-panel/browser'),
+      rootPath: join(__dirname, '../../../dist/apps/admin-panel'),
       serveRoot: '/admin-panel',
     }),
     TelegrafModule.forRootAsync({

@@ -46,6 +46,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@angular-builders/custom-webpack": "^19.0.0",
     "@angular/animations": "^19.2.3",
     "@angular/cdk": "^19.2.4",
     "@angular/common": "^19.2.3",
@@ -81,6 +82,7 @@
     "concurrently": "^9.1.2",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
+    "dotenv-webpack": "^8.1.0",
     "nestjs-pino": "^4.3.1",
     "nestjs-telegraf": "^2.8.1",
     "ngx-quill": "^27.0.1",
