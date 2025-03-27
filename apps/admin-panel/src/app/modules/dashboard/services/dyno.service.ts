@@ -1,18 +1,26 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { DynoStatus } from '../models/heroku.model';
-import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
+import { ConfigService } from '../../../services/config.service';
 
 @Injectable()
 export class DynoService {
-  env: Record<GLOBAL_VARIABLES, string>;
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private readonly configService: ConfigService
+  ) {}
+
   getDynoStatus(): Observable<DynoStatus> {
     const headers: HttpHeaders = new HttpHeaders({
-      'Authorization': `Bearer ${this.env.HEROKU_API_TOKEN}`,
-      'Accept': 'application/vnd.heroku+json; version=3'
+      Authorization: `Bearer ${this.configService.herokuApiToken}`,
+      Accept: 'application/vnd.heroku+json; version=3',
     });
-    return this.http.get(`${this.env.HEROKU_API_URL}/dynos`, { headers }) as Observable<DynoStatus> ;
+    return this.http
+      .get(`${this.configService.herokuApiUrl}/dynos`, { headers })
+      .pipe(
+        map((res): DynoStatus[] => res as DynoStatus[]),
+        map((res: DynoStatus[]) => res[0])
+      );
   }
 }

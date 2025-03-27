@@ -1,23 +1,23 @@
 <mat-list *ngIf="isLoaded">
     <mat-list-item>
-      <span>Bot Status:</span>
-      <span class="status-value">{{ dynoStatus.state }}</span>
+      <span>Bot status:</span>
+      <span class="status-value">{{ getStatus(dynoStatus.state) }}</span>
       <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>Server Status:</span>
-      <span class="status-value">{{ dynoStatus.state }}</span>
+      <span>Server status:</span>
+      <span class="status-value">{{ getStatus(dynoStatus.state) }}</span>
       <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>Notifications to Send:</span>
+      <span>Pending notifications:</span>
       <span class="status-value">{{ notificationsToSend }}</span>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>Notifications Already Sent:</span>
+      <span>Processed notifications:</span>
       <span class="status-value">{{ notificationsSent }}</span>
     </mat-list-item>
     <mat-divider></mat-divider>
