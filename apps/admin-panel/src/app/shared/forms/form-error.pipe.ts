@@ -3,7 +3,7 @@ import { ValidationErrors } from '@angular/forms';
 import { first, isNil } from 'lodash';
 
 export interface FormError {
-    i18n: string;
+    message: string;
     values?: Array<unknown>;
   }
 
@@ -16,6 +16,6 @@ export class FormErrorPipe implements PipeTransform {
             return null;
         }
         const error: FormError = first(Object.values(errors));
-        return error.i18n;
+        return error.message;
     }
 }

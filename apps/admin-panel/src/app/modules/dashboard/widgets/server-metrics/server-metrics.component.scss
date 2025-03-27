@@ -1,0 +1,28 @@
+:host {
+  margin-top: 0;
+}
+
+.status-value {
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+mat-list {
+    mat-list-item {
+        .mdc-list-item__content {
+            .mat-mdc-list-item-unscoped-content {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                mat-icon {
+                    margin-left: auto;
+                }
+            }
+        }
+      }
+}
+
+mat-divider {
+  border-top-width: 1px;
+  border-top-style: dashed;
+}
