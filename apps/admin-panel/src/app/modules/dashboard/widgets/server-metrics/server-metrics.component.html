@@ -1,0 +1,29 @@
+<mat-list>
+    <mat-list-item>
+      <span>Bot Status:</span>
+      <span class="status-value">{{ botStatus }}</span>
+      <mat-icon [style.color]="getBotStatusColor(botStatus)" mat-list-icon>circle</mat-icon>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span>Server Status:</span>
+      <span class="status-value">{{ serverStatus }}</span>
+      <mat-icon [style.color]="getServerStatusColor(serverStatus)" mat-list-icon>circle</mat-icon>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span>Notifications to Send:</span>
+      <span class="status-value">{{ notificationsToSend }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span>Notifications Already Sent:</span>
+      <span class="status-value">{{ notificationsSent }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span>Version:</span>
+      <span class="status-value">{{ version }}</span>
+    </mat-list-item>
+  </mat-list>
+  

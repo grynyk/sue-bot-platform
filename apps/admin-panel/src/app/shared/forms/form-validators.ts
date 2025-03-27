@@ -11,7 +11,7 @@ export class FormValidators {
     if (Validators.required(control)) {
       return {
         required: {
-          i18n: 'This field is required.',
+          message: 'This field is required.',
         },
       };
     }
@@ -23,7 +23,7 @@ export class FormValidators {
       if (Validators.minLength(length)(control)) {
         return {
           minLength: {
-            i18n: `Minimal length is ${length}.`,
+            message: `Minimal length is ${length}.`,
           },
         };
       }
@@ -37,7 +37,7 @@ export class FormValidators {
       if (Validators.maxLength(length)(control)) {
         return {
           maxLength: {
-            i18n: `Maximal length is ${length}.`,
+            message: `Maximal length is ${length}.`,
           },
         };
       }
@@ -50,7 +50,7 @@ export class FormValidators {
     if (Validators.email(control)) {
       return {
         email: {
-          i18n: 'Not valid email.',
+          message: 'Not valid email.',
         },
       };
     }
@@ -68,7 +68,7 @@ export class FormValidators {
     ) {
       return {
         onlyCharsAndNumbers: {
-          i18n: 'Should contain only letters and numbers.',
+          message: 'Should contain only letters and numbers.',
         },
       };
     }
@@ -80,7 +80,7 @@ export class FormValidators {
       if (isString(control.value) && Validators.pattern(pattern)(control)) {
         return {
           regexPattern: {
-            i18n: 'Invalid value.',
+            message: 'Invalid value.',
           },
         };
       }
@@ -95,7 +95,7 @@ export class FormValidators {
     if (!isString(control.value)) {
       return {
         regexPattern: {
-          i18n: 'Invalid url.',
+          message: 'Invalid url.',
         },
       };
     }
@@ -114,7 +114,7 @@ export class FormValidators {
       return null;
     } catch {
       return {
-        regexPattern: { i18n: 'Invalid url.' },
+        regexPattern: { message: 'Invalid url.' },
       };
     }
   }
