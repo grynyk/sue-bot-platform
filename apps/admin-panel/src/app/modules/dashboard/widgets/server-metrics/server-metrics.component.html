@@ -1,14 +1,14 @@
-<mat-list>
+<mat-list *ngIf="isLoaded">
     <mat-list-item>
       <span>Bot Status:</span>
-      <span class="status-value">{{ botStatus }}</span>
-      <mat-icon [style.color]="getBotStatusColor(botStatus)" mat-list-icon>circle</mat-icon>
+      <span class="status-value">{{ dynoStatus.state }}</span>
+      <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Server Status:</span>
-      <span class="status-value">{{ serverStatus }}</span>
-      <mat-icon [style.color]="getServerStatusColor(serverStatus)" mat-list-icon>circle</mat-icon>
+      <span class="status-value">{{ dynoStatus.state }}</span>
+      <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
@@ -23,7 +23,7 @@
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Version:</span>
-      <span class="status-value">{{ version }}</span>
+      <span class="status-value">{{ dynoStatus.release.version }}</span>
     </mat-list-item>
   </mat-list>
   
