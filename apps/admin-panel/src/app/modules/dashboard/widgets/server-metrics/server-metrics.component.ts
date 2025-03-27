@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { DynoService } from '../../services/dyno.service';
+import { DynoStatus } from '../../models/heroku.model';
 
 @Component({
   standalone: true,
@@ -15,34 +17,32 @@ import { RouterModule } from '@angular/router';
     MatListModule,
     MatIconModule
   ],
+  providers: [DynoService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class ServerMetricsWidgetComponent {
-  botStatus = 'Running';
-  serverStatus = 'Awake';
+export class ServerMetricsWidgetComponent implements OnInit {
   notificationsToSend = 1235;
   notificationsSent = 800;
-  version = '1.0.15';
 
-  getBotStatusColor(status: string): string {
-    switch (status) {
-      case 'Running':
-        return 'green';
-      case 'Crashed':
-        return 'red';
-      case 'Maintenance':
-        return 'yellow';
-      default:
-        return 'gray';
-    }
+  dynoStatus: DynoStatus;
+  isLoaded = false;
+  constructor(private dynoService: DynoService) {}
+
+  ngOnInit(): void {
+    this.dynoService.getDynoStatus().subscribe((data: DynoStatus): void => {
+      this.dynoStatus = data;
+      this.isLoaded = true;
+    });
   }
 
-  getServerStatusColor(status: string): string {
-    switch (status) {
-      case 'Awake':
+  getStatusColor(state: string): string {
+    switch (state) {
+      case 'up':
         return 'green';
-      case 'Sleeping':
+      case 'down':
+        return 'red';
+      case 'maintenance':
         return 'yellow';
       default:
         return 'gray';

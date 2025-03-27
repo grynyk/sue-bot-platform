@@ -59,6 +59,7 @@ export class BotUserDataService {
       return this.repository.save(user);
     } catch (error) {
       this.logger.error(`Bot user repo update(...): ${error.message}`);
+      throw error;
     }
   }
 
