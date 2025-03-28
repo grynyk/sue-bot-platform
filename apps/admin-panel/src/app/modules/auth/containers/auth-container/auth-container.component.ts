@@ -52,7 +52,8 @@ export class AuthContainerComponent {
 
   onLogin(payload: LoginForm): void {
     if (payload.email === 'admin@admin.com' || payload.password === 'adminadmin') {
-      this.router.navigate(['dashboard']);
+      localStorage.setItem('current_user', JSON.stringify({ name: 'Admin' }));
+      this.router.navigate(['']);
       return;
     }
     this.authService.login(payload).pipe(
@@ -61,7 +62,7 @@ export class AuthContainerComponent {
         throw err
       })
     ).subscribe((): void => {
-      this.router.navigate(['dashboard']);
+      this.router.navigate(['']);
     });
   }
 }

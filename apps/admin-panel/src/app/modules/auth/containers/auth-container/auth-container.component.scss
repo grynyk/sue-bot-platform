@@ -11,16 +11,18 @@
   @include v.space-red(gap);
   &__image {
     display: block;
-    width: 100px;
-    height: 82px;
     background: url('../../../../../assets/logo.svg');
-    background-size: 100px 82px;
+    background-size: 7rem 6rem;
+    @include v.set-rem(8, width);
+    @include v.set-rem(6, height);
+    @include v.space-orange(margin-bottom);
   }
   &__title {
     align-self: center;
-    font-size: v.$font-size-small;
-    @include v.space-navy(inline-size);
+    font-size: v.$space-lime;
     color: v.$primary-color;
+    @include v.space-navy(inline-size);
+    @include v.set-rem(2.25, padding-right);
   }
 }
 
@@ -44,7 +46,7 @@
       @include v.space-orange(gap);
       align-items: center;
       font-weight: bold;
-      font-size: v.$font-size-large;
+      font-size: v.$space-lime;
     }
     &-mode-btn {
       display: flex;

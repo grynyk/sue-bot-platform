@@ -22,14 +22,15 @@ import { InlineLoadingSpinnerComponent } from '../../../../shared';
 export class UsersChartWidgetComponent {
   showXAxis = true;
   showYAxis = true;
-  gradient = false;
-  showLegend = true;
+  gradient = true;
   showXAxisLabel = true;
   xAxisLabel = 'Date';
   showYAxisLabel = true;
-  yAxisLabel = 'Number of Users';
+  yAxisLabel = 'Registered users';
   timeline = true;
-  isLoaded = true;
+  isLoaded: boolean;
+  colorScheme: Color;
+  view: [number, number];
   userRegistrationData = [
     {
       name: "User Registrations",
@@ -46,14 +47,14 @@ export class UsersChartWidgetComponent {
     }
   ];
 
-  colorScheme: Color = {
-    name: 'customScheme',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#007bff', '#28a745', '#ffc107', '#dc3545']
-  };
-
-  getView(width: number, height = 400): [number, number] {
-    return [window.innerWidth * width, height];
+  constructor() {
+    this.colorScheme = {
+      name: 'customScheme',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+    };
+    this.view = [window.innerWidth * 0.7, 400];
+    this.isLoaded = true;
   }
 }

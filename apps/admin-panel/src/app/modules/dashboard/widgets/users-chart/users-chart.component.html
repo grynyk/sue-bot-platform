@@ -1,12 +1,12 @@
 @if (isLoaded) {
 <ngx-charts-line-chart
-  [view]="getView(0.7)"
+  [view]="view"
   [scheme]="colorScheme"
   [results]="userRegistrationData"
   [gradient]="gradient"
   [xAxis]="showXAxis"
   [yAxis]="showYAxis"
-  [legend]="showLegend"
+  [legend]="false"
   [showXAxisLabel]="showXAxisLabel"
   [showYAxisLabel]="showYAxisLabel"
   [xAxisLabel]="xAxisLabel"
