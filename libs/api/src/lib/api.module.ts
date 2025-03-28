@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BotNotification } from './modules/notification-data/entities/bot-notification.entity';
 import { QueuedNotification } from './modules/notification-data/entities/queued-notification';
-import { CoreModule, GLOBAL_VARIABLES, isDev, isStaging } from '@sue-bot-platform/core';
+import { CoreModule, GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 import { SkinTypeTestDataModule } from './modules/skin-type-test-data';
 import { SkinTypeTestProduct, SkinTypeTestResult } from './modules/skin-type-test-data/entities';
 
@@ -40,7 +40,7 @@ import { SkinTypeTestProduct, SkinTypeTestResult } from './modules/skin-type-tes
           SkinTypeTestResult,
         ],
         synchronize: true,
-        logging: isDev() || isStaging(),
+        logging: false,
       }),
     }),
   ],

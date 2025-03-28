@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEnca
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { DynoService } from '../../services/dyno.service';
-import { DynoStatus } from '../../models/heroku.model';
+import { InlineLoadingSpinnerComponent } from '../../../../shared';
+import { MetricsService } from '../../services/metrics.service';
+import { ServerMetrics, ServerState } from '../../models/heroku.model';
+import { isNil } from 'lodash';
 
 @Component({
   standalone: true,
@@ -15,51 +17,65 @@ import { DynoStatus } from '../../models/heroku.model';
     CommonModule,
     RouterModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    InlineLoadingSpinnerComponent
   ],
-  providers: [DynoService],
+  providers: [MetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class ServerMetricsWidgetComponent implements OnInit {
   notificationsToSend = 1235;
   notificationsSent = 800;
-  dynoStatus: DynoStatus;
+  serverMetrics: ServerMetrics | null;
   isLoaded = false;
 
-  constructor(private readonly dynoService: DynoService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(private readonly metricsService: MetricsService, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.dynoService.getDynoStatus().subscribe((data: DynoStatus): void => {
-      this.dynoStatus = data;
+    this.metricsService.getServerMetrics().subscribe((metrics: ServerMetrics | null): void => {
+      console.log(metrics)
+      this.serverMetrics = metrics;
       this.isLoaded = true;
       this.cdr.markForCheck();
     });
   }
 
-  getStatus(state: string): string {
-    switch (state) {
-      case 'up':
+  getStatus(metrics: ServerMetrics): string {
+    if (isNil(metrics?.state)) {
+      return 'Stopped';
+    }
+    if (metrics.maintenance) {
+      return 'Maintenance';
+    }
+    switch (metrics.state) {
+      case ServerState.UP:
         return 'Running';
-      case 'down':
+      case ServerState.CRASHED:
         return 'Stopped';
-      case 'maintenance':
-        return 'Maintenance';
+      case ServerState.STARTING:
+        return 'Starting';
       default:
         return 'Unknown';
     }
   }
 
-  getStatusColor(state: string): string {
-    switch (state) {
-      case 'up':
-        return 'green';
-      case 'down':
-        return 'red';
-      case 'maintenance':
-        return 'yellow';
+  getStatusColor(metrics?: ServerMetrics): string {
+    if (isNil(metrics?.state)) {
+      return '#9b000e';
+    }
+    if (metrics.maintenance) {
+      return '#f8ab37';
+    }
+    switch (metrics.state) {
+      case ServerState.UP:
+        return '#508b1b';
+      case ServerState.CRASHED:
+        return '#9b000e';
+      case ServerState.STARTING:
+        return '#9fd45f';
       default:
-        return 'gray';
+        return '#646973';
     }
   }
 }

@@ -1,0 +1,43 @@
+<div class="loading-container">
+  <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 150 50" class="loading-container__spinner">
+    <path d="M75 74 a 53 53 0 0 0 53 -53" fill="none" stroke-linecap="round" [attr.stroke]="firstClipColor" [attr.stroke-width]="strokeWidth">
+      <animateTransform
+        attributeName="transform"
+        dur="2s"
+        type="rotate"
+        values="0 75 22; -370 75 22; -360 75 22; -360 75 22"
+        keyTimes="0; 0.5; 0.9; 1"
+        repeatCount="indefinite"
+        calcMode="spline"
+        keySplines="0 0 .59 1; 0.42 0 1 1; 0 0 0 0;"
+      />
+    </path>
+    <g>
+      <path
+        d="M22 21 a 53 53 0 0 0 106 0"
+        fill="none"
+        stroke-linecap="round"
+        [attr.stroke]="secondClipColor"
+        [attr.stroke-width]="strokeWidth"
+      />
+      <path
+        d="M75 74 a 53 53 0 0 0 53 -54"
+        fill="none"
+        stroke-linecap="round"
+        [attr.stroke]="thirdClipColor"
+        [attr.stroke-width]="strokeWidth"
+      />
+      <animateTransform
+        attributeName="transform"
+        dur="2s"
+        type="rotate"
+        values="0 75 22; 370 75 22; 360 75 22; 360 75 22"
+        keyTimes="0; 0.5; 0.9; 1"
+        repeatCount="indefinite"
+        calcMode="spline"
+        keySplines="0 0 .59 1; 0.42 0 1 1; 0 0 0 0;"
+      />
+    </g>
+  </svg>
+</div>
+

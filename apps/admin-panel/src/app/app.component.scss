@@ -1,3 +1,5 @@
+@use 'variables' as v;
+
 .content {
-    padding: 1rem;
+  @include v.space-blue(padding);
 }

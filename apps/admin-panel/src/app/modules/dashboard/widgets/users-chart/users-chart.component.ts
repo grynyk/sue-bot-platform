@@ -4,17 +4,18 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
+import { InlineLoadingSpinnerComponent } from '../../../../shared';
 
 @Component({
   standalone: true,
   selector: 'sue-users-chart-widget',
-  styleUrls: ['users-chart.component.scss'],
   templateUrl: 'users-chart.component.html',
   imports: [
     CommonModule,
     RouterModule,
     MatCardModule,
-    ChartsModule
+    ChartsModule,
+    InlineLoadingSpinnerComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -28,7 +29,7 @@ export class UsersChartWidgetComponent {
   showYAxisLabel = true;
   yAxisLabel = 'Number of Users';
   timeline = true;
-
+  isLoaded = true;
   userRegistrationData = [
     {
       name: "User Registrations",

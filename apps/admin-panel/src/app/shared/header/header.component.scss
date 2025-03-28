@@ -1,14 +1,18 @@
+@use 'variables' as v;
+
 .logo {
     display: block;
     cursor: pointer;
-    width: 64px;
-    height: 64px;
     background: url(../../../assets/logo.svg);
-    background-size: 64px 64px;
+    background-size: v.$space-cyan v.$space-cyan;
+    width: v.$space-cyan;
+    height: v.$space-cyan;
 }
 
 mat-toolbar {
-    padding: 0 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+    @include v.space-green(padding-left, padding-right);
 }
 
 .nav {

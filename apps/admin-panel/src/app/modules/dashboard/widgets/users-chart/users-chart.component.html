@@ -1,15 +1,19 @@
+@if (isLoaded) {
 <ngx-charts-line-chart
-[view]="getView(0.6)"
-[scheme]="colorScheme"
-[results]="userRegistrationData"
-[gradient]="gradient"
-[xAxis]="showXAxis"
-[yAxis]="showYAxis"
-[legend]="showLegend"
-[showXAxisLabel]="showXAxisLabel"
-[showYAxisLabel]="showYAxisLabel"
-[xAxisLabel]="xAxisLabel"
-[yAxisLabel]="yAxisLabel"
-[timeline]="timeline"
+  [view]="getView(0.7)"
+  [scheme]="colorScheme"
+  [results]="userRegistrationData"
+  [gradient]="gradient"
+  [xAxis]="showXAxis"
+  [yAxis]="showYAxis"
+  [legend]="showLegend"
+  [showXAxisLabel]="showXAxisLabel"
+  [showYAxisLabel]="showYAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+  [yAxisLabel]="yAxisLabel"
+  [timeline]="timeline"
 >
 </ngx-charts-line-chart>
+} @else {
+<sue-inline-loading-spinner></sue-inline-loading-spinner>
+}

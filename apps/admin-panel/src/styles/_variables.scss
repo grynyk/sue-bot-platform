@@ -1,0 +1,120 @@
+$accent-color: #d75f39;
+$primary-color: #888440;
+$warning-color: #f8ab37;
+$error-color: #9b000e;
+$success-color: #508b1b;
+$light-green: #9fd45f;
+$grey: #646973;
+$space-yellow: 0.25rem;
+$space-orange: 0.5rem;
+$space-pink: 0.75rem;
+$space-blue: 1rem;
+$space-lime: 1.5rem;
+$space-red: 2rem;
+$space-green: 3rem;
+$space-cyan: 4rem;
+$space-purple: 5rem;
+$space-navy: 8rem;
+$space-magenta: 10rem;
+$space-grey: 16rem;
+$space-brown: 20rem;
+$space-silver: 25rem;
+$space-black: 30rem;
+
+$font-size-base: 14px;
+$font-size-small: 12px;
+$font-size-large: 16px;
+
+@mixin space-yellow($properties...) {
+  @each $property in $properties {
+    @include set-rem(0.25, $property);
+  }
+}
+
+@mixin space-orange($properties...) {
+  @each $property in $properties {
+    @include set-rem(0.5, $property);
+  }
+}
+
+@mixin space-pink($properties...) {
+  @each $property in $properties {
+    @include set-rem(0.75, $property);
+  }
+}
+
+@mixin space-blue($properties...) {
+  @each $property in $properties {
+    @include set-rem(1, $property);
+  }
+}
+
+@mixin space-lime($properties...) {
+  @each $property in $properties {
+    @include set-rem(1.5, $property);
+  }
+}
+
+@mixin space-red($properties...) {
+  @each $property in $properties {
+    @include set-rem(2, $property);
+  }
+}
+
+@mixin space-green($properties...) {
+  @each $property in $properties {
+    @include set-rem(3, $property);
+  }
+}
+
+@mixin space-cyan($properties...) {
+  @each $property in $properties {
+    @include set-rem(4, $property);
+  }
+}
+
+@mixin space-purple($properties...) {
+  @each $property in $properties {
+    @include set-rem(5, $property);
+  }
+}
+
+@mixin space-navy($properties...) {
+  @each $property in $properties {
+    @include set-rem(8, $property);
+  }
+}
+
+@mixin space-magenta($properties...) {
+  @each $property in $properties {
+    @include set-rem(10, $property);
+  }
+}
+
+@mixin space-grey($properties...) {
+  @each $property in $properties {
+    @include set-rem(16, $property);
+  }
+}
+
+@mixin space-brown($properties...) {
+  @each $property in $properties {
+    @include set-rem(20, $property);
+  }
+}
+
+@mixin space-silver($properties...) {
+  @each $property in $properties {
+    @include set-rem(25, $property);
+  }
+}
+
+@mixin space-black($properties...) {
+  @each $property in $properties {
+    @include set-rem(30, $property);
+  }
+}
+
+@mixin set-rem($rem, $property: font-size) {
+  #{$property}: $font-size-base * $rem;
+}
