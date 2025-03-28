@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { UsersChartWidgetComponent } from '../../widgets/users-chart/users-chart.component';
 import { BotMetricsWidgetComponent } from '../../widgets/bot-metrics/bot-metrics.component';
 import { ServerMetricsWidgetComponent } from '../../widgets/server-metrics/server-metrics.component';
+import { BroadcastMessageWidgetComponent } from '../../widgets/broadcast-message/broadcast-message.component';
 
 @Component({
   standalone: true,
@@ -17,7 +18,8 @@ import { ServerMetricsWidgetComponent } from '../../widgets/server-metrics/serve
     MatCardModule,
     UsersChartWidgetComponent,
     BotMetricsWidgetComponent,
-    ServerMetricsWidgetComponent
+    ServerMetricsWidgetComponent,
+    BroadcastMessageWidgetComponent
   ],
 })
 export class DashboardComponent {

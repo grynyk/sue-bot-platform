@@ -9,12 +9,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
-declare const process: {
-  env: {
-    NODE_ENV: string;
-  };
-};
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -22,6 +16,5 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(NgxChartsModule),
     provideAnimationsAsync(),
     provideRouter(appRoutes),
-    { provide: 'NODE_ENV', useValue: process.env['NODE_ENV'] },
   ],
 };
