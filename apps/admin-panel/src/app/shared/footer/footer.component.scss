@@ -21,10 +21,14 @@
         }
         @include v.space-orange(gap);
     }
-    a {
+    a.link {
         display: flex;
         align-items: center;
         @include v.space-orange(gap);
         font-size: v.$font-size-small;
+        color: v.$cool-grey-500;
+        &:hover {
+            color: v.$primary-color;
+        }
     }
 }

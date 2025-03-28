@@ -16,7 +16,7 @@ export const appRoutes: Route[] = [
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'admin',
+    path: 'admin-management',
     loadChildren: () =>
       import('./modules/admin-management/admin-management.module').then((m) => m.AdminManagementModule),
   },
