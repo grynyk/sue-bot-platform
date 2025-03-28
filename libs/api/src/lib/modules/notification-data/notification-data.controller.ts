@@ -19,7 +19,12 @@ export class NotificationDataController {
   }
 
   @Get('metrics')
-  metrics(): Promise<QueuedNotificationsMetrics> {
-    return this.queuedNotificationDataService.getMetrics();
+  async metrics(): Promise<QueuedNotificationsMetrics> {
+    const queuedNotificationsMetrics: QueuedNotificationsMetrics = await this.queuedNotificationDataService.getMetrics();
+    const definedNotificationsNumber: number = await this.notificationDataService.countAll();
+    return {
+      ...queuedNotificationsMetrics,
+      defined: definedNotificationsNumber
+    }
   }
 }

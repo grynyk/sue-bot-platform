@@ -30,6 +30,11 @@ export class NotificationDataService {
     return this.repository.find({ where: { active: true } });
   }
 
+  async countAll(): Promise<number> {
+    const total: number = await this.repository.count();
+    return total;
+  }
+
   async countWithConfirmButton(): Promise<number> {
     const notificationsWithButtons: BotNotification[] = await this.repository.find({ where: { buttons: Not(IsNull()) } });
     const count: number = notificationsWithButtons.filter((notification: BotNotification): boolean =>

@@ -13,6 +13,12 @@
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
+      <span>Notifications per user:</span>
+      <span class="status-value">{{ notificationsMetrics.defined }}</span>
+      <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
       <span>Pending notifications:</span>
       <span class="status-value">{{ notificationsMetrics.queued }} / {{ notificationsMetrics.total }}</span>
       <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
