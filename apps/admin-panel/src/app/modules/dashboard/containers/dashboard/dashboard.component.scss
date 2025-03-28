@@ -6,6 +6,7 @@
   .item {
     position: relative;
     @include v.space-blue(padding);
+    width: 100%;
     &:nth-child(1),
     &:nth-child(2) {
       @include v.space-blue(margin-bottom);
@@ -13,7 +14,7 @@
     }
     &:nth-child(3),
     &:nth-child(4) {
-      @include v.set-rem(24, height);
+      @include v.set-rem(26, height);
     }
     &.wide {
       @include g.merge-columns(3);
