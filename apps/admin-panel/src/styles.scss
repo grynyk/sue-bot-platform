@@ -23,7 +23,7 @@ body {
   width: auto;
   margin: 0;
   height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background: linear-gradient(v.$transparent-background-dark-500, v.$transparent-background-dark-500),
     url('./assets/lg-bg.jpg') center center no-repeat;
   background-size: cover;
   overflow: hidden;
@@ -39,5 +39,12 @@ a {
   &:hover {
     text-decoration: underline;
     color: v.$grey;
+  }
+}
+
+.theme-small {
+  @include mat.all-component-densities(-3);
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+    display: flex;
   }
 }

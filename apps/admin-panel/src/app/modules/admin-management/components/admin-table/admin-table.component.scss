@@ -1,0 +1,35 @@
+@use 'variables' as v;
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: v.$space-yellow solid v.$transparent-background-dark-100;
+  padding: v.$space-blue;
+  .action-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    &__buttons {
+      display: flex;
+      gap: v.$space-blue;
+    }
+    &__search {
+      margin-bottom: -1.25rem;
+    }
+  }
+}
+
+.table-container {
+  position: relative;
+  height: calc(100vh - 16.5rem);
+  overflow: auto;
+}
+
+.table-row {
+  height: v.$space-cyan;
+  cursor: pointer;
+  &:hover {
+    background-color: v.$transparent-background-dark-100;
+  }
+}

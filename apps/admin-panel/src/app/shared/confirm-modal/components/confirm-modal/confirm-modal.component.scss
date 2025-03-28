@@ -1,0 +1,15 @@
+@use 'variables' as v;
+
+.dialog-container {
+  width: v.$space-black;
+  &-actions {
+    display: flex;
+    justify-content: center;
+    button {
+      min-width: v.$space-navy;
+      &:not(:first-child) {
+        margin-left: v.$space-blue;
+      }
+    }
+  }
+}
