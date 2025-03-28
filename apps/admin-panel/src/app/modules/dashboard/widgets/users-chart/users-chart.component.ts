@@ -10,6 +10,7 @@ import { InlineLoadingSpinnerComponent } from '../../../../shared';
   standalone: true,
   selector: 'sue-users-chart-widget',
   templateUrl: 'users-chart.component.html',
+  styleUrl: 'users-chart.component.scss',
   imports: [
     CommonModule,
     RouterModule,
@@ -23,10 +24,6 @@ export class UsersChartWidgetComponent {
   showXAxis = true;
   showYAxis = true;
   gradient = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Date';
-  showYAxisLabel = true;
-  yAxisLabel = 'Registered users';
   timeline = true;
   isLoaded: boolean;
   colorScheme: Color;
