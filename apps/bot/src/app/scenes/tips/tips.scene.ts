@@ -1,7 +1,7 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
-import { get } from 'lodash-es';
+import { get } from 'lodash';
 import { TipsSceneContextType } from './models/tips.model';
 import { TIPS } from './constants/tips.constant';
 import { getTipsDynamicAffirmationKeyboard, getTipsInitialKeyboard, getTipsMusicAffirmationKeyboard } from './utils/keyboard.factory';

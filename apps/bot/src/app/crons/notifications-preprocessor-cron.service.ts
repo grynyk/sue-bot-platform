@@ -5,7 +5,7 @@ import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@sue-bot-platform/api';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { addMinutes, endOfToday, getDay, isWeekend, setHours, setMinutes, startOfToday, subMinutes } from 'date-fns';
-import { isNil, map } from 'lodash-es';
+import { isNil, map } from 'lodash';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { NotificationDataService, QueuedNotificationDataService } from '@sue-bot-platform/api';
 

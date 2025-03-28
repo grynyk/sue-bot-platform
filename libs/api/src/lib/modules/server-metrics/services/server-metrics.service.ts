@@ -6,7 +6,7 @@ import { ServerMetrics } from '../models/server-metrics.model';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 @Injectable()
-export class MetricsService {
+export class ServerMetricsService {
   private readonly baseUrl: string;
   private readonly token: string;
 
@@ -22,7 +22,7 @@ export class MetricsService {
     );
   }
 
-  async getServerMetrics(): Promise<ServerMetrics> {
+  async getMetrics(): Promise<ServerMetrics> {
     try {
       const headers = {
         Authorization: `Bearer ${this.token}`,

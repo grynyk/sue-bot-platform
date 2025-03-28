@@ -1,5 +1,3 @@
-import { BotNotification } from '../entities/bot-notification.entity';
-
 export enum RECURRENCE_PATTERN {
   MONDAY = 'MONDAY',
   TUESDAY = 'TUESDAY',
@@ -17,4 +15,10 @@ export enum SCHEDULE_TYPE {
   EXACT_TIME = 'EXACT_TIME',
   WAKE_UP_OFFSET = 'WAKE_UP_OFFSET',
   BED_TIME_OFFSET = 'BED_TIME_OFFSET',
+}
+
+export interface QueuedNotificationsMetrics {
+  total: number;
+  queued: number;
+  processed: number;
 }

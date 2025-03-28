@@ -9,7 +9,7 @@ import { QueuedNotification } from './modules/notification-data/entities/queued-
 import { CoreModule, GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 import { SkinTypeTestDataModule } from './modules/skin-type-test-data';
 import { SkinTypeTestProduct, SkinTypeTestResult } from './modules/skin-type-test-data/entities';
-import { MetricsModule } from './modules/metrics';
+import { ServerMetricsModule } from './modules/server-metrics';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { MetricsModule } from './modules/metrics';
     NotificationDataModule,
     PlatformContextDataModule,
     SkinTypeTestDataModule,
-    MetricsModule,
+    ServerMetricsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -51,7 +51,7 @@ import { MetricsModule } from './modules/metrics';
     BotUserDataModule,
     NotificationDataModule,
     PlatformContextDataModule,
-    MetricsModule
+    ServerMetricsModule
   ],
 })
 export class ApiModule {}

@@ -14,13 +14,13 @@
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Pending notifications:</span>
-      <span class="status-value">{{ notificationsToSend }}</span>
+      <span class="status-value">{{ notificationsMetrics.queued }} / {{ notificationsMetrics.total }}</span>
       <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Processed notifications:</span>
-      <span class="status-value">{{ notificationsSent }}</span>
+      <span class="status-value">{{ notificationsMetrics.processed }} / {{ notificationsMetrics.total }}</span>
       <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
