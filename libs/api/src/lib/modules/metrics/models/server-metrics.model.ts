@@ -3,10 +3,11 @@ export enum ServerState {
   CRASHED = 'crashed',
   STARTING = 'starting',
 }
+
 export interface ServerMetrics {
-  releaseDate: string;
-  maintenance: boolean;
-  state: ServerState;
+  state: string | null;
+  maintenance: boolean | null;
+  releaseDate: string | null;
 }
 
 export interface HerokuResponse {

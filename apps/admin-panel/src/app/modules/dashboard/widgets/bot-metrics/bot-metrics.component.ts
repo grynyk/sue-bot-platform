@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
 import { BotUserStats } from '@sue-bot-platform/api';
-import { MetricsService } from '../../services/metrics.service';
+import { BotMetricsService } from '../../services/bot-metrics.service';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
 
 @Component({
@@ -24,7 +24,7 @@ import { InlineLoadingSpinnerComponent } from '../../../../shared';
     ChartsModule,
     InlineLoadingSpinnerComponent,
   ],
-  providers: [MetricsService],
+  providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BotMetricsWidgetComponent implements OnInit {
@@ -34,7 +34,7 @@ export class BotMetricsWidgetComponent implements OnInit {
   view: [number, number];
 
   constructor(
-    private readonly metricsService: MetricsService,
+    private readonly botMetricsService: BotMetricsService,
     private readonly cdr: ChangeDetectorRef
   ) {
     this.colorScheme = {
@@ -48,7 +48,7 @@ export class BotMetricsWidgetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.metricsService
+    this.botMetricsService
       .getBotStats()
       .subscribe((metrics: BotUserStats): void => {
         this.data = [

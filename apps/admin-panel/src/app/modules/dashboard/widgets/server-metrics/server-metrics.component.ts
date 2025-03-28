@@ -1,13 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
-import { MetricsService } from '../../services/metrics.service';
-import { ServerMetrics, ServerState } from '../../models/heroku.model';
 import { isNil } from 'lodash';
-
+import { BotMetricsService } from '../../services/bot-metrics.service';
+import { SERVER_STATUS_MAP, ServerMetrics, STATUS_COLOR_MAP, StatusColor, StatusDisplay } from '../../models/metrics.model';
 @Component({
   standalone: true,
   selector: 'sue-server-metrics-widget',
@@ -18,11 +23,11 @@ import { isNil } from 'lodash';
     RouterModule,
     MatListModule,
     MatIconModule,
-    InlineLoadingSpinnerComponent
+    InlineLoadingSpinnerComponent,
   ],
-  providers: [MetricsService],
+  providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ServerMetricsWidgetComponent implements OnInit {
   notificationsToSend = 1235;
@@ -30,52 +35,38 @@ export class ServerMetricsWidgetComponent implements OnInit {
   serverMetrics: ServerMetrics | null;
   isLoaded = false;
 
-  constructor(private readonly metricsService: MetricsService, private readonly cdr: ChangeDetectorRef) {}
+  constructor(
+    private readonly botMetricsService: BotMetricsService,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.metricsService.getServerMetrics().subscribe((metrics: ServerMetrics | null): void => {
-      console.log(metrics)
-      this.serverMetrics = metrics;
-      this.isLoaded = true;
-      this.cdr.markForCheck();
-    });
+    this.botMetricsService
+      .getServerMetrics()
+      .subscribe((metrics: ServerMetrics | null): void => {
+        this.serverMetrics = metrics;
+        this.isLoaded = true;
+        this.cdr.markForCheck();
+      });
   }
 
   getStatus(metrics: ServerMetrics): string {
     if (isNil(metrics?.state)) {
-      return 'Stopped';
+      return StatusDisplay.STOPPED;
     }
     if (metrics.maintenance) {
-      return 'Maintenance';
+      return StatusDisplay.MAINTENANCE;
     }
-    switch (metrics.state) {
-      case ServerState.UP:
-        return 'Running';
-      case ServerState.CRASHED:
-        return 'Stopped';
-      case ServerState.STARTING:
-        return 'Starting';
-      default:
-        return 'Unknown';
-    }
+    return SERVER_STATUS_MAP[metrics.state] || StatusDisplay.UNKNOWN;
   }
 
   getStatusColor(metrics?: ServerMetrics): string {
     if (isNil(metrics?.state)) {
-      return '#9b000e';
+      return StatusColor.STOPPED;
     }
     if (metrics.maintenance) {
-      return '#f8ab37';
+      return StatusColor.MAINTENANCE;
     }
-    switch (metrics.state) {
-      case ServerState.UP:
-        return '#508b1b';
-      case ServerState.CRASHED:
-        return '#9b000e';
-      case ServerState.STARTING:
-        return '#9fd45f';
-      default:
-        return '#646973';
-    }
+    return STATUS_COLOR_MAP[metrics.state] || StatusColor.UNKNOWN;
   }
 }
