@@ -54,7 +54,7 @@ export class UsersChartWidgetComponent {
       group: ScaleType.Ordinal,
       domain: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
     };
-    this.view = [window.innerWidth * 0.58, 400];
+    this.view = [window.innerWidth * 0.63, 400];
     this.isLoaded = true;
   }
 }
