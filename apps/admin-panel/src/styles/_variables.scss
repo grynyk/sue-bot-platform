@@ -25,6 +25,8 @@ $font-size-base: 14px;
 $font-size-small: 12px;
 $font-size-large: 16px;
 
+$transparent-background: rgba($color: #ffffff, $alpha: 0.75);
+
 @mixin space-yellow($properties...) {
   @each $property in $properties {
     @include set-rem(0.25, $property);

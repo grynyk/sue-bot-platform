@@ -15,7 +15,7 @@ html {
 }
 
 mat-card:not(.important) {
-  background-color: rgba($color: #ffffff, $alpha: 0.75);
+  background-color: v.$transparent-background;
   border-radius: 0;
 }
 
