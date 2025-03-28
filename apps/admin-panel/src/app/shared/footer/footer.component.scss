@@ -1,0 +1,30 @@
+@use 'variables' as v;
+
+.footer-container {
+    position: absolute;
+    display: flex;
+    align-content: center;
+    background-color: v.$transparent-background;
+    margin: 0;
+    bottom: 0;
+    width: 100%;
+    @include v.space-yellow(padding);
+    .icons {
+        display: flex;
+        &.right {
+            margin-left: auto;
+            @include v.space-lime(margin-right);
+        }
+        &.left {
+            margin-right: auto;
+            @include v.space-blue(margin-left);
+        }
+        @include v.space-orange(gap);
+    }
+    a {
+        display: flex;
+        align-items: center;
+        @include v.space-orange(gap);
+        font-size: v.$font-size-small;
+    }
+}
