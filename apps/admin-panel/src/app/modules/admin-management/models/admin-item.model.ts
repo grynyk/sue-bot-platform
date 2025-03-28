@@ -3,3 +3,8 @@ export enum ADMIN_ROLE {
     ADMIN = 'ADMIN',
     MODERATOR = 'MODERATOR'
 }
+
+export enum ADMIN_STATUS {
+    ACTIVE = 'ACTIVE',
+    INACTIVE = 'INACTIVE',
+}
