@@ -11,8 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 declare const process: {
   env: {
-    HEROKU_API_URL: string;
-    HEROKU_API_TOKEN: string;
+    NODE_ENV: string;
   };
 };
 
@@ -23,7 +22,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(NgxChartsModule),
     provideAnimationsAsync(),
     provideRouter(appRoutes),
-    { provide: 'HEROKU_API_URL', useValue: process.env['HEROKU_API_URL'] },
-    { provide: 'HEROKU_API_TOKEN', useValue: process.env['HEROKU_API_TOKEN'] },
+    { provide: 'NODE_ENV', useValue: process.env['NODE_ENV'] },
   ],
 };

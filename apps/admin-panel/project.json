@@ -5,6 +5,7 @@
   "prefix": "sue",
   "sourceRoot": "apps/admin-panel/src",
   "tags": [],
+  "implicitDependencies": ["api"],
   "targets": {
     "build": {
       "executor": "@angular-builders/custom-webpack:browser",
