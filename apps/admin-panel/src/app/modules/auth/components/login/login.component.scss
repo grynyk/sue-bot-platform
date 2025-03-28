@@ -1,18 +1,20 @@
+@use 'variables' as v;
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  width: 25rem;
+  @include v.set-rem(0.25, gap);
+  @include v.space-silver(width);
 }
 
 .submit-button {
   display: flex;
   justify-content: flex-end;
-  margin-top: 1rem;
+  @include v.space-blue(margin-top);
 }
 
 @media (max-width: 576px) {
   .form {
-    width: 18rem;
+    @include v.set-rem(18, width);
   }
 }

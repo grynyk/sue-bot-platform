@@ -1,3 +1,5 @@
+@use 'variables' as v;
+
 .logo-container {
   display: flex;
   flex-direction: row;
@@ -5,8 +7,8 @@
   top: 50%;
   left: 25%;
   transform: translate(-50%, -50%);
-  padding: 1rem;
-  gap: 2rem;
+  @include v.space-blue(padding);
+  @include v.space-red(gap);
   &__image {
     display: block;
     width: 100px;
@@ -16,9 +18,9 @@
   }
   &__title {
     align-self: center;
-    inline-size: 8rem;
-    font-size: 1.25rem;
-    color: #888440;
+    font-size: v.$font-size-small;
+    @include v.space-navy(inline-size);
+    color: v.$primary-color;
   }
 }
 
@@ -28,22 +30,21 @@
   top: 50%;
   left: 75%;
   transform: translate(-50%, -50%);
-  padding: 1rem;
+  @include v.space-blue(padding);
   &__header {
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    gap: 0.25rem;
+    @include v.space-blue(padding, margin-bottom);
+    @include v.set-rem(0.25, gap);
     &-title {
       display: flex;
       justify-content: start;
-      gap: 0.5rem;
+      @include v.space-orange(gap);
       align-items: center;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: v.$font-size-large;
     }
     &-mode-btn {
       display: flex;
@@ -51,11 +52,11 @@
       justify-content: center;
       align-items: center;
       font-size: small;
-      gap: 0.25rem;
+      @include v.set-rem(0.25, gap);
       a {
         cursor: pointer;
         text-decoration: none;
-        color: #d75f39;
+        color: v.$accent-color;
       }
     }
   }
@@ -71,6 +72,6 @@
   }
   .auth-container {
     left: 50%;
-    padding: 1rem;
+    @include v.space-blue(padding);
   }
 }

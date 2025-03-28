@@ -1,8 +1,6 @@
 @use '@angular/material' as mat;
+@use 'variables' as v;
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-
-$accent-color: #d75f39;
-$primary-color: #888440;
 
 * {
   font-family: 'Montserrat';
@@ -12,22 +10,6 @@ html {
   @include mat.theme(
     (
       color: mat.$green-palette,
-    )
-  );
-}
-
-.accent {
-  @include mat.theme(
-    (
-      color: mat.$magenta-palette,
-    )
-  );
-}
-
-.warn {
-  @include mat.theme(
-    (
-      color: mat.$red-palette,
     )
   );
 }
@@ -48,4 +30,13 @@ body {
 
 mat-error {
   font-size: small;
+}
+
+a {
+  color: v.$accent-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: v.$grey;
+  }
 }

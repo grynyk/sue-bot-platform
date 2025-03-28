@@ -1,33 +1,28 @@
 @use 'grid' as g;
+@use 'variables' as v;
 
 .grid {
   @include g.grid-row(4);
   .item {
-    padding: 1rem;
     position: relative;
+    @include v.space-blue(padding);
     &:nth-child(1),
     &:nth-child(2) {
-      margin-bottom: 1rem;
-      height: 30rem;
+      @include v.space-blue(margin-bottom);
+      @include v.set-rem(33, height);
     }
-    &:nth-child(3) {
-      height: 20rem;
+    &:nth-child(3),
+    &:nth-child(4) {
+      @include v.set-rem(23, height);
     }
-    &.half-width {
-      @include g.merge-columns(2);
-    }
-    &.wide-width {
+    &.wide {
       @include g.merge-columns(3);
     }
-    &.full-width {
-      @include g.merge-columns(4);
+    .thumb-title {
+      font-size: v.$space-lime;
+      font-weight: bold;
+      @include v.space-blue(padding-left);
+      @include v.space-orange(padding-bottom);
     }
   }
-}
-
-.thumb-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding-left: 1rem;
-  padding-bottom: 0.5rem;
 }

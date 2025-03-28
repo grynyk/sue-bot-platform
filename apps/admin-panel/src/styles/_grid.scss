@@ -1,5 +1,7 @@
+@use 'variables' as v;
+
 @mixin grid-row($columns) {
-  column-gap: 1.5rem;
+  column-gap: v.$space-blue;
   display: grid;
   grid-template-columns: repeat($columns, 1fr);
 }

@@ -1,29 +1,35 @@
-<mat-list *ngIf="isLoaded">
+@if (isLoaded) {
+  <mat-list>
     <mat-list-item>
       <span>Bot status:</span>
-      <span class="status-value">{{ getStatus(dynoStatus.state) }}</span>
-      <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
+      <span class="status-value">{{ getStatus(serverMetrics) }}</span>
+      <mat-icon [style.color]="getStatusColor(serverMetrics)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Server status:</span>
-      <span class="status-value">{{ getStatus(dynoStatus.state) }}</span>
-      <mat-icon [style.color]="getStatusColor(dynoStatus.state)" mat-list-icon>circle</mat-icon>
+      <span class="status-value">{{ getStatus(serverMetrics) }}</span>
+      <mat-icon [style.color]="getStatusColor(serverMetrics)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Pending notifications:</span>
       <span class="status-value">{{ notificationsToSend }}</span>
+      <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Processed notifications:</span>
       <span class="status-value">{{ notificationsSent }}</span>
+      <mat-icon [style.color]="getStatusColor()" mat-list-icon>circle</mat-icon>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>Version:</span>
-      <span class="status-value">{{ dynoStatus.release.version }}</span>
+      <span>Release date:</span>
+      <span class="status-value">{{ serverMetrics?.releaseDate | date:'dd.MM.yyyy HH:mm' }}</span>
+      <mat-icon [style.color]="getStatusColor(serverMetrics)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
   </mat-list>
-  
+} @else {
+<sue-inline-loading-spinner></sue-inline-loading-spinner>
+}
