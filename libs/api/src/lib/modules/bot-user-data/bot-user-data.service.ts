@@ -7,7 +7,7 @@ import { UpdateBotUserDto } from './dto/update-bot-user.dto';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { BotUserStats } from './models/bot-user-stats.model';
 import { format, startOfToday } from 'date-fns';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 
 @Injectable()
 export class BotUserDataService {

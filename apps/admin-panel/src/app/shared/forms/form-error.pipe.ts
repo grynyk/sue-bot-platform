@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { first, isNil } from 'lodash';
+import { first, isNil } from 'lodash-es';
 
 export interface FormError {
     message: string;

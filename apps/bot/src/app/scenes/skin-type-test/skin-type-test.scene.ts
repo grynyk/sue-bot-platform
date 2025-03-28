@@ -2,7 +2,7 @@ import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { getAnswer, getQuestion, getResultProductSizeCaption, getResultProductCaption } from './utils/skin-type-test.utils';
-import { get, isNil } from 'lodash';
+import { get, isNil } from 'lodash-es';
 import { SkincareProduct, TestAnswer, TestQuestion, TestResult } from './models/skin-type-test.model';
 import { getQuestionKeyboard, getResultProductSizeKeyboard, getResultProductKeyboard } from './utils/keyboard.factory';
 import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
