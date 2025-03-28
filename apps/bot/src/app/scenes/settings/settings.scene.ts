@@ -20,7 +20,7 @@ import {
   getSettingsNotificationTimeKeyboard,
 } from './utils/keyboard.factory';
 import { SettingsSceneContextType } from './models/settings.model';
-import { get, isBoolean, isNil } from 'lodash';
+import { get, isBoolean, isNil } from 'lodash-es';
 import { SETTINGS } from './constants/settings.constant';
 import { NotificationsPreprocessorCronService } from '../../crons/notifications-preprocessor-cron.service';
 @Scene(SCENE_ID.SETTINGS)

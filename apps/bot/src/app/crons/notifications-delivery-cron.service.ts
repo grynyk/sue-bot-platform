@@ -6,7 +6,7 @@ import { NotificationDataService, QueuedNotificationDataService, SCHEDULE_TYPE }
 import { addMinutes, subMinutes } from 'date-fns';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { BotNotification } from '@sue-bot-platform/api';
-import { isNil, sample } from 'lodash';
+import { isNil, sample } from 'lodash-es';
 import { PARSE_MODE } from '../models/tg.model';
 import { InlineKeyboardButton } from 'typegram';
 import { Telegraf } from 'telegraf';

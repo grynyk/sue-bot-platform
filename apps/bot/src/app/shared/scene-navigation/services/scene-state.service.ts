@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { dropRight, isNil, last, uniq } from 'lodash';
+import { dropRight, isNil, last, uniq } from 'lodash-es';
 import { SceneStateItem } from '../models/scene-state.model';
 import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK } from '../../../models';
 

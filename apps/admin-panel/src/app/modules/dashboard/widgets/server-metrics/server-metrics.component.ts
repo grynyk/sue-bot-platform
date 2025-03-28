@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { SERVER_STATUS_MAP, ServerMetrics, STATUS_COLOR_MAP, StatusColor, StatusDisplay } from '../../models/metrics.model';
 @Component({

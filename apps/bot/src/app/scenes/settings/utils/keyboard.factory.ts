@@ -2,7 +2,7 @@ import { Markup } from 'telegraf';
 import { InlineKeyboardButton, InlineKeyboardMarkup } from 'typegram';
 import { SETTINGS } from '../constants/settings.constant';
 import { backButton, closeButton, createButtons } from '../../../utils/keyboard.utils';
-import { range } from 'lodash';
+import { range } from 'lodash-es';
 
 export function getSettingsInitialKeyboard(): ReturnType<typeof Markup.inlineKeyboard> {
   const callbacks: string[] = Object.values(SETTINGS.CALLBACKS.MAIN);

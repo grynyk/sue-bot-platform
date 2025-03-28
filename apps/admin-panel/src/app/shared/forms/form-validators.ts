@@ -4,7 +4,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { isString, isNil, includes } from 'lodash';
+import { isString, isNil, includes } from 'lodash-es';
 
 export class FormValidators {
   static required(control: AbstractControl): ValidationErrors | null {

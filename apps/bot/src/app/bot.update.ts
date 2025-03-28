@@ -5,7 +5,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK, PARSE_MODE, BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from './models';
 import { getDefinedBotCommands } from './utils/command.utils';
 import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@sue-bot-platform/api';
-import { get, isNil, omit } from 'lodash';
+import { get, isNil, omit } from 'lodash-es';
 import { OnModuleInit } from '@nestjs/common';
 
 @Update()

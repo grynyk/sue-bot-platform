@@ -1,4 +1,4 @@
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import { Markup } from 'telegraf';
 import { Message } from '@telegraf/types';
 import { SceneContext, DeleteAndReplyOptions, PARSE_MODE } from '../models';

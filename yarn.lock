@@ -5562,6 +5562,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-preset-angular: "npm:~14.4.0"
+    lodash-es: "npm:^4.17.21"
     nestjs-pino: "npm:^4.3.1"
     nestjs-telegraf: "npm:^2.8.1"
     ngx-quill: "npm:^27.0.1"
