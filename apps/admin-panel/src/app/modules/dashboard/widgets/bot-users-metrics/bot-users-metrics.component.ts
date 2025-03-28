@@ -12,11 +12,12 @@ import { ChartsModule } from '../../../../shared/charts/charts.module';
 import { BotUserStats } from '@sue-bot-platform/api';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
+import { ChartDataSeries } from '../../models/chart.model';
 
 @Component({
   standalone: true,
-  selector: 'sue-bot-metrics-widget',
-  templateUrl: 'bot-metrics.component.html',
+  selector: 'sue-bot-users-metrics-widget',
+  templateUrl: 'bot-users-metrics.component.html',
   imports: [
     CommonModule,
     RouterModule,
@@ -27,9 +28,9 @@ import { InlineLoadingSpinnerComponent } from '../../../../shared';
   providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BotMetricsWidgetComponent implements OnInit {
+export class BotUsersMetricsWidgetComponent implements OnInit {
   isLoaded: boolean;
-  data: { name: string; value: number }[];
+  data: ChartDataSeries[];
   colorScheme: Color;
   view: [number, number];
 
@@ -41,32 +42,36 @@ export class BotMetricsWidgetComponent implements OnInit {
       name: 'customScheme',
       selectable: true,
       group: ScaleType.Ordinal,
-      domain: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
+      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#afb4bb', '#888440' ],
     };
     this.view = [window.innerWidth * 0.30, 410];
     this.isLoaded = false;
   }
 
   ngOnInit(): void {
+    this.initData();
+  }
+
+  private initData(): void {
     this.botMetricsService
-      .getBotStats()
-      .subscribe((metrics: BotUserStats): void => {
-        this.data = [
-          { name: 'All', value: metrics.total },
-          { name: 'New', value: metrics.newToday },
-          { name: 'Blocked', value: metrics.blocked },
-          { name: 'Active today', value: metrics.active },
-          {
-            name: 'Disabled notifications',
-            value: metrics.notificationsDisabled,
-          },
-          {
-            name: 'Completed skin type test',
-            value: metrics.completedSkinTest,
-          },
-        ];
-        this.isLoaded = true;
-        this.cdr.markForCheck();
-      });
+    .getBotStats()
+    .subscribe((metrics: BotUserStats): void => {
+      this.data = [
+        { name: 'All', value: metrics.total },
+        { name: 'New', value: metrics.newToday },
+        { name: 'Blocked', value: metrics.blocked },
+        { name: 'Active today', value: metrics.active },
+        {
+          name: 'Disabled notifications',
+          value: metrics.notificationsDisabled,
+        },
+        {
+          name: 'Completed skin type test',
+          value: metrics.completedSkinTest,
+        },
+      ];
+      this.isLoaded = true;
+      this.cdr.markForCheck();
+    });
   }
 }
