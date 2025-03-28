@@ -43,7 +43,7 @@ export class BotMetricsWidgetComponent implements OnInit {
       group: ScaleType.Ordinal,
       domain: ['#007bff', '#28a745', '#ffc107', '#dc3545'],
     };
-    this.view = [window.innerWidth * 0.36, 415];
+    this.view = [window.innerWidth * 0.38, 415];
     this.isLoaded = false;
   }
 

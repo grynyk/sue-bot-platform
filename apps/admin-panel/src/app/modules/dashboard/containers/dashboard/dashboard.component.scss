@@ -14,7 +14,7 @@
     }
     &:nth-child(3),
     &:nth-child(4) {
-      @include v.set-rem(26, height);
+      @include v.set-rem(25.65, height);
     }
     &.wide {
       @include g.merge-columns(3);
