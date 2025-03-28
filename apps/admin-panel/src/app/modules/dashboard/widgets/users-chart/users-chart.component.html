@@ -1,5 +1,6 @@
 @if (isLoaded) {
-<ngx-charts-line-chart
+<div class="content">
+  <ngx-charts-line-chart
   [view]="view"
   [scheme]="colorScheme"
   [results]="userRegistrationData"
@@ -7,13 +8,12 @@
   [xAxis]="showXAxis"
   [yAxis]="showYAxis"
   [legend]="false"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxisLabel]="xAxisLabel"
-  [yAxisLabel]="yAxisLabel"
+  [showXAxisLabel]="false"
+  [showYAxisLabel]="false"
   [timeline]="timeline"
 >
 </ngx-charts-line-chart>
+</div>
 } @else {
 <sue-inline-loading-spinner></sue-inline-loading-spinner>
 }
