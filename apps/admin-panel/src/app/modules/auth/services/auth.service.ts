@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { LoginForm } from '../models/login.model';
-import { isNil } from 'lodash-es';
+import { isNil } from 'lodash';
 import { Router } from '@angular/router';
 import { RegistrationForm } from '../models';
 

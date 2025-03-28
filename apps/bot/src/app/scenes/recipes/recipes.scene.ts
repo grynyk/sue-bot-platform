@@ -1,7 +1,7 @@
 import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InlineKeyboardMarkup } from 'typegram';
-import { get } from 'lodash-es';
+import { get } from 'lodash';
 import { RecipesSceneContextType } from './models/recipes.model';
 import { getRecipesInitialKeyboard } from './utils/keyboard.factory';
 import { RECIPES } from './constants/recipes.constant';

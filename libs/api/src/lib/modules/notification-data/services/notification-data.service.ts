@@ -37,7 +37,7 @@ export class NotificationDataService {
     ).length;
     return count;
   }
-
+  
   async update(id: string, dto: UpdateBotNotificationDto): Promise<BotNotification> {
     await this.repository.update(id, dto);
     return this.findOne(id);

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Between, In, Repository } from 'typeorm';
 import { QueuedNotification } from '../entities/queued-notification';
 import { CreateQueuedNotificationDto } from '../dto/create-queued-notification.dto';
+import { QueuedNotificationsMetrics } from '../models';
 
 @Injectable()
 export class QueuedNotificationDataService {
@@ -39,7 +40,9 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async findAllScheduledForExactTime(currentTime: Date): Promise<QueuedNotification[]> {
+  async findAllScheduledForExactTime(
+    currentTime: Date
+  ): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: currentTime,
@@ -48,7 +51,11 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async findAllNotProcessedInTimeRangeByUserId(userId: string, startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
+  async findAllNotProcessedInTimeRangeByUserId(
+    userId: string,
+    startTime: Date,
+    endTime: Date
+  ): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: Between(startTime, endTime),
@@ -62,7 +69,10 @@ export class QueuedNotificationDataService {
     await this.repository.delete({ userId: In(userIds) });
   }
 
-  async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
+  async findAllNotProcessedInTimeRange(
+    startTime: Date,
+    endTime: Date
+  ): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: Between(startTime, endTime),
@@ -81,6 +91,25 @@ export class QueuedNotificationDataService {
 
   async remove(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async getMetrics(): Promise<QueuedNotificationsMetrics> {
+    const total: number = await this.repository.count();
+    const queued: number = await this.repository.count({
+      where: {
+        processed: false,
+      },
+    });
+    const processed: number = await this.repository.count({
+      where: {
+        processed: true,
+      },
+    });
+    return {
+      total,
+      queued,
+      processed,
+    };
   }
 
   async drop(): Promise<void> {

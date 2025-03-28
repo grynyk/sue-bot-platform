@@ -2,7 +2,7 @@ import { Action, Ctx, InjectBot, Scene, SceneEnter } from 'nestjs-telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SCENE_ID, SceneContext, PARSE_MODE } from '../../models';
 import { BotCommand, Message, ReplyKeyboardMarkup } from 'typegram';
-import { compact, isNil, omit } from 'lodash-es';
+import { compact, isNil, omit } from 'lodash';
 import { Markup, Telegraf } from 'telegraf';
 import { BotUser, BotUserDataService, UpdateBotUserDto } from '@sue-bot-platform/api';
 import { format, startOfToday } from 'date-fns';

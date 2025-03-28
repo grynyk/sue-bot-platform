@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { BotUserStats } from '@sue-bot-platform/api';
+import { BotUserStats, QueuedNotificationsMetrics } from '@sue-bot-platform/api';
 import { ServerMetrics } from '../models/metrics.model';
 
 @Injectable()
@@ -16,7 +16,13 @@ export class BotMetricsService {
 
   getServerMetrics(): Observable<ServerMetrics> {
     return this.http
-      .get(`/api/metrics`)
+      .get(`/api/server-metrics`)
       .pipe(map((v: object) => v as ServerMetrics));
+  }
+
+  getNotificationsMetrics(): Observable<QueuedNotificationsMetrics> {
+    return this.http
+      .get(`/api/notifications/metrics`)
+      .pipe(map((v: object) => v as QueuedNotificationsMetrics));
   }
 }

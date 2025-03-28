@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { PlatformContext } from './entities/platform-context.entity';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SEASON } from './models/platform-context.model';
-import { isNil } from 'lodash-es';
+import { isNil } from 'lodash';
 
 @Injectable()
 export class PlatformContextDataService {

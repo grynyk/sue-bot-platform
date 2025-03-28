@@ -17,7 +17,7 @@ export enum GLOBAL_VARIABLES {
 }
 
 export enum ENV {
-  DEV = 'develop',
+  DEV = 'development',
   PROD = 'production',
   STAGING = 'staging',
 }
