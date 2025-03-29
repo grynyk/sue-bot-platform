@@ -10,7 +10,10 @@ import { RegistrationForm } from '../models';
 export class AuthService {
   private baseUrl = '/api/auth';
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) {}
 
   login(payload: LoginForm): Observable<unknown> {
     return this.httpClient.post<unknown>(`${this.baseUrl}/login`, payload).pipe(

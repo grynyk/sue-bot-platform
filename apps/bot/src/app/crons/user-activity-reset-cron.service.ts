@@ -7,7 +7,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 export class UserActivityResetCronService {
   constructor(
     @InjectPinoLogger() protected readonly logger: PinoLogger,
-    private readonly botUserDataService: BotUserDataService,
+    private readonly botUserDataService: BotUserDataService
   ) {}
 
   /**

@@ -12,13 +12,7 @@ import { ChartDataSeries } from '../../models/chart.model';
   selector: 'sue-users-chart-widget',
   templateUrl: 'users-chart.component.html',
   styleUrl: 'users-chart.component.scss',
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    ChartsModule,
-    InlineLoadingSpinnerComponent,
-  ],
+  imports: [CommonModule, RouterModule, MatCardModule, ChartsModule, InlineLoadingSpinnerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersChartWidgetComponent {
@@ -29,7 +23,7 @@ export class UsersChartWidgetComponent {
   isLoaded: boolean;
   colorScheme: Color;
   view: [number, number];
-  data: { name: string; series: ChartDataSeries[]}[];
+  data: { name: string; series: ChartDataSeries[] }[];
 
   constructor() {
     this.data = [

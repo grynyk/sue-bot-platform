@@ -32,10 +32,10 @@
     <mat-divider></mat-divider>
     <mat-list-item>
       <span>Release date:</span>
-      <span class="status-value">{{ serverMetrics?.releaseDate | date:'dd.MM.yyyy HH:mm' }}</span>
+      <span class="status-value">{{ serverMetrics?.releaseDate | date: 'dd.MM.yyyy HH:mm' }}</span>
       <mat-icon [style.color]="getStatusColor(serverMetrics)" mat-list-icon>circle</mat-icon>
     </mat-list-item>
   </mat-list>
 } @else {
-<sue-inline-loading-spinner></sue-inline-loading-spinner>
+  <sue-inline-loading-spinner></sue-inline-loading-spinner>
 }

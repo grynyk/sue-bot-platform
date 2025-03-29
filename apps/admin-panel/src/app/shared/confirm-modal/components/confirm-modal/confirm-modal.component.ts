@@ -8,7 +8,10 @@ import { ConfirmModalData } from '../../models';
   styleUrls: ['./confirm-modal.component.scss'],
 })
 export class ConfirmModalComponent {
-  constructor(public dialogRef: MatDialogRef<ConfirmModalComponent>, @Inject(MAT_DIALOG_DATA) public data: ConfirmModalData) {}
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmModalData
+  ) {}
 
   onClose(): void {
     this.dialogRef.close(false);

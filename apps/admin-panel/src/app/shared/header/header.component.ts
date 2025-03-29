@@ -10,13 +10,6 @@ import { MatMenuModule } from '@angular/material/menu';
   selector: 'sue-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule
-  ]
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule],
 })
 export class HeaderComponent {}

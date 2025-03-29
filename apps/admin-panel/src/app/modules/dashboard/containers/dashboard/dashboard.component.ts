@@ -19,9 +19,7 @@ import { BroadcastMessageWidgetComponent } from '../../widgets/broadcast-message
     UsersChartWidgetComponent,
     BotUsersMetricsWidgetComponent,
     ServerMetricsWidgetComponent,
-    BroadcastMessageWidgetComponent
+    BroadcastMessageWidgetComponent,
   ],
 })
-export class DashboardComponent {
-
-}
+export class DashboardComponent {}

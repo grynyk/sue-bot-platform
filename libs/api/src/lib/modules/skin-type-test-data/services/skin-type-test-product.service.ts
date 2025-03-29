@@ -9,7 +9,7 @@ import { SkinTypeTestProduct } from '../entities/product.entity';
 export class SkinTypeTestProductService {
   constructor(
     @InjectRepository(SkinTypeTestProduct)
-    private readonly productRepository: Repository<SkinTypeTestProduct>,
+    private readonly productRepository: Repository<SkinTypeTestProduct>
   ) {}
 
   async createProduct(createProductDto: CreateSkinTypeTestProductDto): Promise<SkinTypeTestProduct> {

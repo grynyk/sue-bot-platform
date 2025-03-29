@@ -4,22 +4,10 @@
     <mat-error *ngIf="email.invalid">{{ email.errors | FormError }}</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input
-      type="password"
-      matInput
-      placeholder="Password"
-      formControlName="password"
-    />
+    <input type="password" matInput placeholder="Password" formControlName="password" />
     <mat-error *ngIf="password.invalid">{{ password.errors | FormError }}</mat-error>
   </mat-form-field>
   <div class="submit-button">
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="formGroup.invalid"
-      (click)="onSubmit()"
-    >
-      Login
-    </button>
+    <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="onSubmit()">Login</button>
   </div>
 </form>

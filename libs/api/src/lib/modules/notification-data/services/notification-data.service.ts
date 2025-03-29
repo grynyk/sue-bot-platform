@@ -10,7 +10,7 @@ import { InlineKeyboardButton } from 'typegram';
 export class NotificationDataService {
   constructor(
     @InjectRepository(BotNotification)
-    private repository: Repository<BotNotification>,
+    private repository: Repository<BotNotification>
   ) {}
 
   async create(dto: CreateBotNotificationDto): Promise<BotNotification> {
@@ -42,7 +42,7 @@ export class NotificationDataService {
     ).length;
     return count;
   }
-  
+
   async update(id: string, dto: UpdateBotNotificationDto): Promise<BotNotification> {
     await this.repository.update(id, dto);
     return this.findOne(id);

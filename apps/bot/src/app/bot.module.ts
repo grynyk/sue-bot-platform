@@ -20,20 +20,8 @@ import { session } from 'telegraf';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-const SCENES = [
-  RecipesScene,
-  TipsScene,
-  SkinTypeTestScene,
-  SubscriptionScene,
-  SettingsScene,
-  SceneStateService,
-];
-const CRONS = [
-  ServerPingCronService,
-  UserActivityResetCronService,
-  NotificationsPreprocessorCronService,
-  NotificationDeliveryCronService,
-];
+const SCENES = [RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene, SceneStateService];
+const CRONS = [ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService];
 
 @Module({
   imports: [
@@ -46,12 +34,8 @@ const CRONS = [
     TelegrafModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const token: string = configService.getOrThrow<string>(
-          GLOBAL_VARIABLES.BOT_TOKEN
-        );
-        const domain: string = configService.get<string>(
-          GLOBAL_VARIABLES.HEROKU_URL
-        );
+        const token: string = configService.getOrThrow<string>(GLOBAL_VARIABLES.BOT_TOKEN);
+        const domain: string = configService.get<string>(GLOBAL_VARIABLES.HEROKU_URL);
         const hookPath = `/bot${token}`;
         return {
           token,

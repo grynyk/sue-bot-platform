@@ -27,10 +27,8 @@ body {
 
 body {
   overflow: hidden;
-  background: linear-gradient(
-      v.$transparent-background-dark-700,
-      v.$transparent-background-dark-700
-    ),
+  background:
+    linear-gradient(v.$transparent-background-dark-700, v.$transparent-background-dark-700),
     url('./assets/lg-bg.jpg') center center no-repeat;
   background-size: cover;
   background-position: center;

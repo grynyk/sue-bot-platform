@@ -2,16 +2,8 @@ import { Action, Ctx, InjectBot, Scene } from 'nestjs-telegraf';
 import { Markup, Telegraf } from 'telegraf';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { InlineKeyboardMarkup, Message } from '@telegraf/types';
-import {
-  SceneNavigation,
-  SceneStateService,
-} from '../../shared/scene-navigation';
-import {
-  NAVIGATION_CALLBACK,
-  SCENE_ID,
-  SceneContext,
-  PARSE_MODE,
-} from '../../models';
+import { SceneNavigation, SceneStateService } from '../../shared/scene-navigation';
+import { NAVIGATION_CALLBACK, SCENE_ID, SceneContext, PARSE_MODE } from '../../models';
 import { isBotCommand } from '../../utils/command.utils';
 import { BotUser, BotUserDataService } from '@sue-bot-platform/api';
 import {
@@ -38,13 +30,9 @@ export class SettingsScene extends SceneNavigation {
   @Action(NAVIGATION_CALLBACK.START)
   async onStart(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> =
-        getSettingsInitialKeyboard();
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsInitialKeyboard();
       if (isBotCommand(ctx.text)) {
-        const message: Message.TextMessage = await ctx.reply(
-          'Доступні налаштування:',
-          keyboard
-        );
+        const message: Message.TextMessage = await ctx.reply('Доступні налаштування:', keyboard);
         this.stateService.setMessageId(message.message_id);
       } else {
         ctx.answerCbQuery();
@@ -58,10 +46,7 @@ export class SettingsScene extends SceneNavigation {
   @Action(/^SETTINGS_/)
   async onSettingCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      const callbackData: SettingsSceneContextType = get(
-        ctx.callbackQuery,
-        'data'
-      ) as SettingsSceneContextType;
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       this.stateService.storeCallback(callbackData);
       if (callbackData === SETTINGS.CALLBACKS.MAIN.NOTIFICATIONS) {
         this.onNotificationsSettings(ctx);
@@ -73,14 +58,9 @@ export class SettingsScene extends SceneNavigation {
   }
 
   @Action(/^NOTIFICATIONS_/)
-  async onNotificationSettingsCallback(
-    @Ctx() ctx: SceneContext
-  ): Promise<void> {
+  async onNotificationSettingsCallback(@Ctx() ctx: SceneContext): Promise<void> {
     try {
-      const callbackData: SettingsSceneContextType = get(
-        ctx.callbackQuery,
-        'data'
-      ) as SettingsSceneContextType;
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       if (callbackData === SETTINGS.CALLBACKS.NOTIFICATIONS.DISABLE) {
         this.onToggleNotifications(ctx, false);
         return;
@@ -110,9 +90,7 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { wakeUpTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(
-        chatId
-      );
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -126,25 +104,18 @@ export class SettingsScene extends SceneNavigation {
       await this.botUserDataService.update(ctx.from.id, { bedTime });
       this.stateService.removeLastCallback();
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(
-        chatId
-      );
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
   }
 
-  private async onToggleNotifications(
-    ctx: SceneContext,
-    notificationsEnabled = true
-  ): Promise<void> {
+  private async onToggleNotifications(ctx: SceneContext, notificationsEnabled = true): Promise<void> {
     try {
       const chatId: number = ctx.from.id;
       await this.botUserDataService.update(chatId, { notificationsEnabled });
       await this.onNotificationsSettings(ctx);
-      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(
-        chatId
-      );
+      await this.notificationsPreprocessorCronService.processNotificationsByUserChatId(chatId);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -152,13 +123,9 @@ export class SettingsScene extends SceneNavigation {
 
   private async onSetWakeUpTime(ctx: SceneContext): Promise<void> {
     try {
-      const callbackData: SettingsSceneContextType = get(
-        ctx.callbackQuery,
-        'data'
-      ) as SettingsSceneContextType;
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       this.stateService.storeCallback(callbackData);
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> =
-        getSettingsNotificationTimeKeyboard(6, 10, 'WAKE_UP_TIME');
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationTimeKeyboard(6, 10, 'WAKE_UP_TIME');
       await ctx.editMessageText('Оберіть час прокидання:', keyboard);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
@@ -167,13 +134,9 @@ export class SettingsScene extends SceneNavigation {
 
   private async onSetBedTime(ctx: SceneContext): Promise<void> {
     try {
-      const callbackData: SettingsSceneContextType = get(
-        ctx.callbackQuery,
-        'data'
-      ) as SettingsSceneContextType;
+      const callbackData: SettingsSceneContextType = get(ctx.callbackQuery, 'data') as SettingsSceneContextType;
       this.stateService.storeCallback(callbackData);
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> =
-        getSettingsNotificationTimeKeyboard(22, 24, 'BED_TIME');
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationTimeKeyboard(22, 24, 'BED_TIME');
       await ctx.editMessageText('Оберіть час сну:', keyboard);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
@@ -183,16 +146,13 @@ export class SettingsScene extends SceneNavigation {
   private async onNotificationsSettings(ctx: SceneContext): Promise<void> {
     try {
       ctx.answerCbQuery();
-      const user: BotUser = await this.botUserDataService.findByChatId(
-        ctx.from.id
-      );
-      const keyboard: Markup.Markup<InlineKeyboardMarkup> =
-        getSettingsNotificationsKeyboard(user.notificationsEnabled);
+      const user: BotUser = await this.botUserDataService.findByChatId(ctx.from.id);
+      const keyboard: Markup.Markup<InlineKeyboardMarkup> = getSettingsNotificationsKeyboard(user.notificationsEnabled);
       const content: string = this.getUserNotificationSettingsDetails(user);
-      await ctx.editMessageText(
-        `<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${content}</code>`,
-        { parse_mode: PARSE_MODE.HTML, ...keyboard }
-      );
+      await ctx.editMessageText(`<strong>${SETTINGS.RESPONSES.MAIN.SETTINGS_NOTIFICATIONS}:</strong>\n\n<code>${content}</code>`, {
+        parse_mode: PARSE_MODE.HTML,
+        ...keyboard,
+      });
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }
@@ -204,16 +164,11 @@ export class SettingsScene extends SceneNavigation {
       wakeUpTime: 'Час прокидання',
       bedTime: 'Час сну',
     };
-    const parseValue: (value: unknown) => string = (
-      value: string | boolean
-    ): string =>
+    const parseValue: (value: unknown) => string = (value: string | boolean): string =>
       isBoolean(value) ? (value ? 'Увімкнено' : 'Вимкнено') : `${value}`;
     const stringifiedDetails: string = Object.keys(LOCALIZATION_STRINGS)
       .filter((key: keyof BotUser): boolean => !isNil(get(user, key)))
-      .map(
-        (key: keyof BotUser): string =>
-          `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`
-      )
+      .map((key: keyof BotUser): string => `${get(LOCALIZATION_STRINGS, key)}: ${parseValue(get(user, key))}`)
       .join('\n');
     return stringifiedDetails;
   }

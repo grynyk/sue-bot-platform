@@ -5,12 +5,12 @@ import { AuthContainerComponent } from './containers/auth-container/auth-contain
 const routes: Routes = [
   {
     path: '',
-    component: AuthContainerComponent
-  }
+    component: AuthContainerComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}

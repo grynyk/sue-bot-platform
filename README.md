@@ -6,12 +6,12 @@ Sue bot is a Telegram bot for a Ukrainian cosmetics company [Sue](https://suemad
 
 ## 📌 Project Details
 
--   **Language:** TypeScript
--   **Framework:** NestJS
--   **Telegram Bot Library:** Telegraf
--   **Database:** PostgreSQL
--   **ORM:** TypeORM
--   **Architecture:** Monorepo
+- **Language:** TypeScript
+- **Framework:** NestJS
+- **Telegram Bot Library:** Telegraf
+- **Database:** PostgreSQL
+- **ORM:** TypeORM
+- **Architecture:** Monorepo
 
 ## 📌 Project Structure
 
@@ -51,6 +51,7 @@ To run the project locally, follow these steps:
     ```bash
     yarn install
     ```
+
 3.  Create .env file with variables listed in GLOBAL_VARIABLES enum (`libs/core/src/lib/config/config-keys.ts`)
 4.  Start the bot:
 
@@ -60,9 +61,9 @@ To run the project locally, follow these steps:
 
 ## 📝 TODO
 
--   [ ] Store messages id to delete at the end of the day in platform context
--   [ ] Implement serum builder
--   [ ] Add email to subscription scene
--   [ ] Implement database-based storage and retrieval for skin type test scene.
--   [ ] Implement database-based storage and retrieval for recipes scene.
--   [ ] Implement database-based storage and retrieval for tips scene.
+- [ ] Store messages id to delete at the end of the day in platform context
+- [ ] Implement serum builder
+- [ ] Add email to subscription scene
+- [ ] Implement database-based storage and retrieval for skin type test scene.
+- [ ] Implement database-based storage and retrieval for recipes scene.
+- [ ] Implement database-based storage and retrieval for tips scene.

@@ -20,14 +20,7 @@
         }
         @case (AUTH_MODE.REGISTRATION) {
           Already have an account?
-          <a
-            class="accent"
-            tabindex="0"
-            (click)="setAuthMode(AUTH_MODE.LOGIN)"
-            (keydown.enter)="setAuthMode(AUTH_MODE.LOGIN)"
-          >
-            Sign in
-          </a>
+          <a class="accent" tabindex="0" (click)="setAuthMode(AUTH_MODE.LOGIN)" (keydown.enter)="setAuthMode(AUTH_MODE.LOGIN)"> Sign in </a>
         }
       }
     </div>

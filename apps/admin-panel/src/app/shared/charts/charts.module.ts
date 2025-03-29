@@ -3,10 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgxChartsModule
-  ],
+  imports: [CommonModule, NgxChartsModule],
   exports: [NgxChartsModule],
 })
 export class ChartsModule {}

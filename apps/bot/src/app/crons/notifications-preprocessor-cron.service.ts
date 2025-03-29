@@ -129,7 +129,6 @@ export class NotificationsPreprocessorCronService {
   }
 }
 
-
 // Sample data to populate database
 // export const NOTIFICATIONS: Partial<BotNotification>[] = [
 //     {

@@ -4,7 +4,7 @@ import { SettingsSceneStructure } from '../models/settings.model';
 export const SETTINGS: SettingsSceneStructure = {
   CALLBACKS: {
     MAIN: SETTINGS_MAIN_BUTTON_CALLBACK,
-    NOTIFICATIONS: SETTINGS_NOTIFICATIONS_BUTTON_CALLBACK
+    NOTIFICATIONS: SETTINGS_NOTIFICATIONS_BUTTON_CALLBACK,
   },
   LABELS: {
     MAIN: {
@@ -15,7 +15,7 @@ export const SETTINGS: SettingsSceneStructure = {
       [SETTINGS_NOTIFICATIONS_BUTTON_CALLBACK.ENABLE]: 'Увімкнути сповіщення',
       [SETTINGS_NOTIFICATIONS_BUTTON_CALLBACK.WAKE_UP_TIME]: 'Встановити час прокидання',
       [SETTINGS_NOTIFICATIONS_BUTTON_CALLBACK.BED_TIME]: 'Встановити час сну',
-    }
+    },
   },
   RESPONSES: {
     MAIN: {

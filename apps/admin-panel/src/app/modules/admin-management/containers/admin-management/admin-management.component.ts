@@ -10,11 +10,7 @@ import { ADMIN_ROLE, ADMIN_STATUS } from '../../models/admin-item.model';
   selector: 'sue-admin-management',
   styleUrls: ['admin-management.component.scss'],
   templateUrl: 'admin-management.component.html',
-  imports: [
-    CommonModule,
-    MatCardModule,
-    AdminTableComponent
-  ]
+  imports: [CommonModule, MatCardModule, AdminTableComponent],
 })
 export class AdminManagementComponent {
   data$: Observable<AdminItem[]> = of([
@@ -143,6 +139,6 @@ export class AdminManagementComponent {
       status: ADMIN_STATUS.INACTIVE,
       lastLogin: '2023-10-01',
       createdAt: '2023-01-01',
-    }
+    },
   ]);
 }

@@ -12,8 +12,7 @@ mat-error {
 
 .theme-small {
   @include mat.all-component-densities(-3);
-  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
-    .mat-mdc-form-field-infix {
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
     display: flex;
   }
 }

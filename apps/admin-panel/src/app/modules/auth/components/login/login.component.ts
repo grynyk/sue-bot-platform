@@ -12,14 +12,7 @@ import { FormErrorPipe, FormValidators } from '../../../../shared/forms';
   selector: 'sue-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormErrorPipe
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormErrorPipe],
 })
 export class LoginComponent {
   @Output() submitted: EventEmitter<LoginForm> = new EventEmitter<LoginForm>();
@@ -35,14 +28,8 @@ export class LoginComponent {
 
   constructor() {
     this.formGroup = new FormGroup<LoginFormGroup>({
-      email: new FormControl<string | null>(null, [
-        FormValidators.required,
-        FormValidators.email,
-      ]),
-      password: new FormControl<string | null>(null, [
-        FormValidators.required,
-        FormValidators.minLength(6),
-      ]),
+      email: new FormControl<string | null>(null, [FormValidators.required, FormValidators.email]),
+      password: new FormControl<string | null>(null, [FormValidators.required, FormValidators.minLength(6)]),
     });
   }
 

@@ -5,5 +5,5 @@ export enum PARSE_MODE {
 
 export interface DeleteAndReplyOptions {
   deletePreviousMessage?: boolean;
-  image?: string
+  image?: string;
 }

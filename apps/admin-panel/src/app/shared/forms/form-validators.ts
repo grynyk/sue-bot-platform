@@ -1,9 +1,4 @@
-import {
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { isString, isNil, includes } from 'lodash';
 
 export class FormValidators {
@@ -57,15 +52,9 @@ export class FormValidators {
     return null;
   }
 
-  static onlyCharsAndNumbers(
-    control: AbstractControl
-  ): ValidationErrors | null {
+  static onlyCharsAndNumbers(control: AbstractControl): ValidationErrors | null {
     const regexpCharsPattern = /^[a-zA-Z0-9]+$/;
-    if (
-      isString(control.value) &&
-      control.value.length &&
-      !control.value.match(regexpCharsPattern)
-    ) {
+    if (isString(control.value) && control.value.length && !control.value.match(regexpCharsPattern)) {
       return {
         onlyCharsAndNumbers: {
           message: 'Should contain only letters and numbers.',

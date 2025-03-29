@@ -39,15 +39,18 @@ export class AuthContainerComponent {
       email: form.email,
       password: form.password,
     };
-    this.authService.registrationRequest(payload).pipe(
-      catchError((err) => {
-        this.snackbarService.showMessage('Failed to send registration request', 'error');
-        throw err
-      })
-    ).subscribe((): void => {
-      this.snackbarService.showMessage('Registration request was sent successfully', 'error');
-      this.setAuthMode(AUTH_MODE.LOGIN);
-    });
+    this.authService
+      .registrationRequest(payload)
+      .pipe(
+        catchError((err) => {
+          this.snackbarService.showMessage('Failed to send registration request', 'error');
+          throw err;
+        })
+      )
+      .subscribe((): void => {
+        this.snackbarService.showMessage('Registration request was sent successfully', 'error');
+        this.setAuthMode(AUTH_MODE.LOGIN);
+      });
   }
 
   onLogin(payload: LoginForm): void {
@@ -56,13 +59,16 @@ export class AuthContainerComponent {
       this.router.navigate(['']);
       return;
     }
-    this.authService.login(payload).pipe(
-      catchError((err) => {
-        this.snackbarService.showMessage('Failed to login', 'error');
-        throw err
-      })
-    ).subscribe((): void => {
-      this.router.navigate(['']);
-    });
+    this.authService
+      .login(payload)
+      .pipe(
+        catchError((err) => {
+          this.snackbarService.showMessage('Failed to login', 'error');
+          throw err;
+        })
+      )
+      .subscribe((): void => {
+        this.router.navigate(['']);
+      });
   }
 }

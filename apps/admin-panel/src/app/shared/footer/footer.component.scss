@@ -1,39 +1,39 @@
 @use 'variables' as v;
 
 :host {
-    position: relative;
-    display: flex;
-    margin-top: auto;
-    width: 100%;
+  position: relative;
+  display: flex;
+  margin-top: auto;
+  width: 100%;
 }
 
 .footer-container {
+  display: flex;
+  align-content: center;
+  background-color: v.$transparent-background-light-800;
+  width: 100%;
+  @include v.space-yellow(padding);
+  .icons {
     display: flex;
-    align-content: center;
-    background-color: v.$transparent-background-light-800;
-    width: 100%;
-    @include v.space-yellow(padding);
-    .icons {
-        display: flex;
-        &.right {
-            margin-left: auto;
-            @include v.space-lime(margin-right);
-        }
-        &.left {
-            margin-right: auto;
-            @include v.space-blue(margin-left);
-        }
-        @include v.space-orange(gap);
+    &.right {
+      margin-left: auto;
+      @include v.space-lime(margin-right);
     }
-    a.link {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        font-size: v.$font-size-small;
-        color: v.$cool-grey-500;
-        @include v.space-orange(gap);
-        &:hover {
-            color: v.$primary-color;
-        }
+    &.left {
+      margin-right: auto;
+      @include v.space-blue(margin-left);
     }
+    @include v.space-orange(gap);
+  }
+  a.link {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: v.$font-size-small;
+    color: v.$cool-grey-500;
+    @include v.space-orange(gap);
+    &:hover {
+      color: v.$primary-color;
+    }
+  }
 }

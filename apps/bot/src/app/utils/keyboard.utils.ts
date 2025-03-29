@@ -8,7 +8,10 @@ export function createButtons(callbacks: string[], labels: Record<string, string
 
 export const backButton: InlineKeyboardButton.CallbackButton = Markup.button.callback(NAVIGATION_ICON.BACK, NAVIGATION_CALLBACK.BACK);
 export const closeButton: InlineKeyboardButton.CallbackButton = Markup.button.callback(NAVIGATION_ICON.CLOSE, NAVIGATION_CALLBACK.CLOSE);
-export const confirmButton: InlineKeyboardButton.CallbackButton = Markup.button.callback(NAVIGATION_ICON.CONFIRM, NAVIGATION_CALLBACK.CONFIRM)
+export const confirmButton: InlineKeyboardButton.CallbackButton = Markup.button.callback(
+  NAVIGATION_ICON.CONFIRM,
+  NAVIGATION_CALLBACK.CONFIRM
+);
 export const backButtonKeyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([backButton]);
 export const closeButtonKeyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([closeButton]);
 export const confirmButtonKeyboard: Markup.Markup<InlineKeyboardMarkup> = Markup.inlineKeyboard([confirmButton]);

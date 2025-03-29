@@ -1,11 +1,5 @@
 @if (isLoaded) {
-<ngx-charts-number-card
-  [view]="view"
-  [scheme]="colorScheme"
-  [results]="data"
-  [animations]="true"
->
-</ngx-charts-number-card>
+  <ngx-charts-number-card [view]="view" [scheme]="colorScheme" [results]="data" [animations]="true"> </ngx-charts-number-card>
 } @else {
   <sue-inline-loading-spinner></sue-inline-loading-spinner>
 }

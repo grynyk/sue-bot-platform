@@ -6,4 +6,3 @@ export interface SceneStateItem {
   callbacksHistory: CallbacksHistoryType[];
   messageId: number;
 }
-

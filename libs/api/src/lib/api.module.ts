@@ -33,25 +33,12 @@ import { ServerMetricsModule } from './modules/server-metrics';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [
-          BotUser,
-          BotNotification,
-          QueuedNotification,
-          PlatformContext,
-          SkinTypeTestProduct,
-          SkinTypeTestResult,
-        ],
+        entities: [BotUser, BotNotification, QueuedNotification, PlatformContext, SkinTypeTestProduct, SkinTypeTestResult],
         synchronize: true,
         logging: false,
       }),
     }),
   ],
-  exports: [
-    TypeOrmModule,
-    BotUserDataModule,
-    NotificationDataModule,
-    PlatformContextDataModule,
-    ServerMetricsModule
-  ],
+  exports: [TypeOrmModule, BotUserDataModule, NotificationDataModule, PlatformContextDataModule, ServerMetricsModule],
 })
 export class ApiModule {}
