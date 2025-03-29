@@ -5,12 +5,12 @@ import { AdminManagementComponent } from './containers/admin-management/admin-ma
 const routes: Routes = [
   {
     path: '',
-    component: AdminManagementComponent
+    component: AdminManagementComponent,
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminManagementRoutingModule { }
+export class AdminManagementRoutingModule {}

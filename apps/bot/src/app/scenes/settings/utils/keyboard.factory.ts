@@ -20,7 +20,11 @@ export function getSettingsNotificationsKeyboard(enabledNotifications: boolean):
   return keyboard;
 }
 
-export function getSettingsNotificationTimeKeyboard(min: number, max: number, callbackKey: string): ReturnType<typeof Markup.inlineKeyboard> {
+export function getSettingsNotificationTimeKeyboard(
+  min: number,
+  max: number,
+  callbackKey: string
+): ReturnType<typeof Markup.inlineKeyboard> {
   const buttons: InlineKeyboardButton.CallbackButton[] = range(min, max).flatMap((hour: number): InlineKeyboardButton.CallbackButton[] =>
     range(0, 60, 10).map((minute: number): InlineKeyboardButton.CallbackButton => {
       const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;

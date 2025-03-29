@@ -28,8 +28,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatChipsModule,
     MatPaginatorModule,
     MatSortModule,
-    MatMenuModule
-  ]
+    MatMenuModule,
+  ],
 })
 export class AdminTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;

@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  MatSnackBar,
-  MatSnackBarRef,
-  TextOnlySnackBar,
-} from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 type SNACKBAR_TYPE = 'error' | 'success' | 'info';
 
@@ -13,12 +9,7 @@ type SNACKBAR_TYPE = 'error' | 'success' | 'info';
 export class SnackbarService {
   constructor(private readonly snackBar: MatSnackBar) {}
 
-  showMessage(
-    caption: string,
-    type: SNACKBAR_TYPE = 'success',
-    close = 'x',
-    duration = 5000
-  ): MatSnackBarRef<TextOnlySnackBar> {
+  showMessage(caption: string, type: SNACKBAR_TYPE = 'success', close = 'x', duration = 5000): MatSnackBarRef<TextOnlySnackBar> {
     switch (type) {
       case 'error':
         return this.snackBar.open(caption, close, {

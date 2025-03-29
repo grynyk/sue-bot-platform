@@ -10,7 +10,8 @@
     "build:admin-panel": "nx build admin-panel",
     "build:all": "yarn build:bot && yarn build:admin-panel",
     "start:prod": "node dist/apps/bot/main.js",
-    "heroku-postbuild": "yarn build:all"
+    "heroku-postbuild": "yarn build:all",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.5",
@@ -36,7 +37,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-preset-angular": "~14.4.0",
-    "prettier": "^2.6.2",
+    "prettier": "3.1",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",

@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   selector: 'sue-inline-loading-spinner',
   templateUrl: './inline-loading-spinner.component.html',
   styleUrls: ['./inline-loading-spinner.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class InlineLoadingSpinnerComponent {
   @Input() strokeWidth = 5;

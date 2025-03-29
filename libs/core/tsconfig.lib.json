@@ -10,7 +10,7 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"]
 }

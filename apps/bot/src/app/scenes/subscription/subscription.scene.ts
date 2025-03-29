@@ -72,13 +72,7 @@ export class SubscriptionScene {
         .pipe(
           switchMap((): Promise<Message> => ctx.reply('Давай розпочнемо зі склянки води 💧')),
           switchMap((): Observable<number> => timer(2000)),
-          switchMap(
-            (): Promise<Message> =>
-              ctx.reply(
-                'Випий 200мл води 💧',
-                confirmButtonKeyboard
-              )
-          ),
+          switchMap((): Promise<Message> => ctx.reply('Випий 200мл води 💧', confirmButtonKeyboard)),
           tap((): void => {
             ctx.scene.leave();
           })

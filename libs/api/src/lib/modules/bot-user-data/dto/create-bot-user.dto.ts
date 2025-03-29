@@ -1,13 +1,4 @@
-import {
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  Matches,
-  IsOptional,
-  IsDateString,
-  IsBoolean,
-  IsNumber,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, Matches, IsOptional, IsDateString, IsBoolean, IsNumber } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 export class CreateBotUserDto {

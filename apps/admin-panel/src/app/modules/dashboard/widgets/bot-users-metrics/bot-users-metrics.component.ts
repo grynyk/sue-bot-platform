@@ -1,10 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
@@ -17,13 +12,7 @@ import { ChartDataSeries } from '../../models/chart.model';
   standalone: true,
   selector: 'sue-bot-users-metrics-widget',
   templateUrl: 'bot-users-metrics.component.html',
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    ChartsModule,
-    InlineLoadingSpinnerComponent,
-  ],
+  imports: [CommonModule, RouterModule, MatCardModule, ChartsModule, InlineLoadingSpinnerComponent],
   providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -41,9 +30,9 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
       name: 'customScheme',
       selectable: true,
       group: ScaleType.Ordinal,
-      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#afb4bb', '#888440' ],
+      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#afb4bb', '#888440'],
     };
-    this.view = [window.innerWidth * 0.30, 410];
+    this.view = [window.innerWidth * 0.3, 410];
     this.isLoaded = false;
   }
 
@@ -52,9 +41,7 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
   }
 
   private initData(): void {
-    this.botMetricsService
-    .getBotStats()
-    .subscribe((metrics: BotUserStats): void => {
+    this.botMetricsService.getBotStats().subscribe((metrics: BotUserStats): void => {
       this.data = [
         { name: 'All', value: metrics.total },
         { name: 'New', value: metrics.newToday },

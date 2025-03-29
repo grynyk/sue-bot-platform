@@ -1,9 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  RegistrationForm,
-  RegistrationFormGroup,
-} from '../../models/registration.model';
+import { RegistrationForm, RegistrationFormGroup } from '../../models/registration.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -15,18 +12,10 @@ import { FormErrorPipe, FormValidators } from '../../../../shared';
   selector: 'sue-registration',
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    FormErrorPipe
-  ]
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, MatButtonModule, FormErrorPipe],
 })
 export class RegistrationComponent {
-  @Output() submitted: EventEmitter<RegistrationForm> =
-    new EventEmitter<RegistrationForm>();
+  @Output() submitted: EventEmitter<RegistrationForm> = new EventEmitter<RegistrationForm>();
 
   formGroup: FormGroup<RegistrationFormGroup>;
 
@@ -48,22 +37,10 @@ export class RegistrationComponent {
 
   constructor() {
     this.formGroup = new FormGroup<RegistrationFormGroup>({
-      name: new FormControl<string | null>(null, [
-        FormValidators.required,
-        FormValidators.minLength(6),
-      ]),
-      email: new FormControl<string | null>(null, [
-        FormValidators.required,
-        FormValidators.email,
-      ]),
-      password: new FormControl<string | null>(null, [
-        FormValidators.minLength(6),
-        FormValidators.required,
-      ]),
-      confirmPassword: new FormControl<string | null>(null, [
-        FormValidators.minLength(6),
-        FormValidators.required,
-      ]),
+      name: new FormControl<string | null>(null, [FormValidators.required, FormValidators.minLength(6)]),
+      email: new FormControl<string | null>(null, [FormValidators.required, FormValidators.email]),
+      password: new FormControl<string | null>(null, [FormValidators.minLength(6), FormValidators.required]),
+      confirmPassword: new FormControl<string | null>(null, [FormValidators.minLength(6), FormValidators.required]),
     });
   }
 

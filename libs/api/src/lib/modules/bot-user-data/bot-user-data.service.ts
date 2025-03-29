@@ -34,7 +34,7 @@ export class BotUserDataService {
       ...user,
       chatId: Number(user.chatId),
       doneTasksCounter: Number(user.doneTasksCounter),
-    }
+    };
   }
 
   async findByChatId(chatId: number): Promise<BotUser> {

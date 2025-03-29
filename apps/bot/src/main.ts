@@ -10,7 +10,7 @@ import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 async function sendCrashReport(error): Promise<void> {
   const token: string = process.env.BOT_TOKEN;
   const chatId: string = process.env.ADMIN_CHAT_ID;
-  const baseUrl: string = process.env.BOT_API_URL
+  const baseUrl: string = process.env.BOT_API_URL;
   if (!token || !chatId) {
     return;
   }
@@ -18,7 +18,7 @@ async function sendCrashReport(error): Promise<void> {
   try {
     await axios.post(`${baseUrl}${token}/sendMessage`, {
       chat_id: chatId,
-      text
+      text,
     });
   } catch {
     console.error('Failed to send crash notification');
@@ -34,12 +34,12 @@ async function bootstrap(): Promise<void> {
   await app.listen(port);
 }
 
-process.on('uncaughtException', async (error): Promise<void>  => {
+process.on('uncaughtException', async (error): Promise<void> => {
   await sendCrashReport(error);
   process.exit(1);
 });
 
-process.on('unhandledRejection', async (error): Promise<void>  => {
+process.on('unhandledRejection', async (error): Promise<void> => {
   await sendCrashReport(error);
   process.exit(1);
 });

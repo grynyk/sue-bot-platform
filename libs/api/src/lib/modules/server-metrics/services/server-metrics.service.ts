@@ -14,12 +14,8 @@ export class ServerMetricsService {
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly configService: ConfigService
   ) {
-    this.baseUrl = this.configService.get<string>(
-      GLOBAL_VARIABLES.HEROKU_API_URL
-    );
-    this.token = this.configService.get<string>(
-      GLOBAL_VARIABLES.HEROKU_API_TOKEN
-    );
+    this.baseUrl = this.configService.get<string>(GLOBAL_VARIABLES.HEROKU_API_URL);
+    this.token = this.configService.get<string>(GLOBAL_VARIABLES.HEROKU_API_TOKEN);
   }
 
   async getMetrics(): Promise<ServerMetrics> {

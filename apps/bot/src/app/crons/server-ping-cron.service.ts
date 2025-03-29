@@ -13,9 +13,7 @@ export class ServerPingCronService {
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly configService: ConfigService
   ) {
-    this.baseUrl = this.configService.getOrThrow<string>(
-      GLOBAL_VARIABLES.HEROKU_URL
-    );
+    this.baseUrl = this.configService.getOrThrow<string>(GLOBAL_VARIABLES.HEROKU_URL);
   }
 
   /**

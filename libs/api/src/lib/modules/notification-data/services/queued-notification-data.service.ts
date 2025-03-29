@@ -40,9 +40,7 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async findAllScheduledForExactTime(
-    currentTime: Date
-  ): Promise<QueuedNotification[]> {
+  async findAllScheduledForExactTime(currentTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: currentTime,
@@ -51,11 +49,7 @@ export class QueuedNotificationDataService {
     });
   }
 
-  async findAllNotProcessedInTimeRangeByUserId(
-    userId: string,
-    startTime: Date,
-    endTime: Date
-  ): Promise<QueuedNotification[]> {
+  async findAllNotProcessedInTimeRangeByUserId(userId: string, startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: Between(startTime, endTime),
@@ -69,10 +63,7 @@ export class QueuedNotificationDataService {
     await this.repository.delete({ userId: In(userIds) });
   }
 
-  async findAllNotProcessedInTimeRange(
-    startTime: Date,
-    endTime: Date
-  ): Promise<QueuedNotification[]> {
+  async findAllNotProcessedInTimeRange(startTime: Date, endTime: Date): Promise<QueuedNotification[]> {
     return this.repository.find({
       where: {
         sendTime: Between(startTime, endTime),

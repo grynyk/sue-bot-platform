@@ -67,13 +67,14 @@ export class NotificationDeliveryCronService {
                   const increasedDelay: number = Math.pow(2, retryCount) * 100;
                   this.logger.warn(`Retrying notification ${notification.id}`);
                   return EMPTY.pipe(delay(increasedDelay));
-                }
+                },
               }),
               catchError((error): Observable<never> => {
                 this.logger.error(`Error in processNotifications: ${error.message}`, error.stack);
                 return EMPTY;
               })
-            ), MAX_CONCURRENT_REQUESTS
+            ),
+          MAX_CONCURRENT_REQUESTS
         )
       )
       .subscribe({

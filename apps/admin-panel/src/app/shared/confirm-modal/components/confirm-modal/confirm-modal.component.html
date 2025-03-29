@@ -1,20 +1,7 @@
 <div class="dialog-container">
   <h2 mat-dialog-title data-test-id="title">{{ data.title }}</h2>
   <div class="dialog-container-actions" mat-dialog-actions>
-    <button
-      mat-button
-      color="warn"
-      (click)="onClose()"
-      cdkFocusInitial
-    >
-      Cancel
-    </button>
-    <button
-      mat-flat-button
-      color="primary"
-      (click)="onConfirm()"
-    >
-      Confirm
-    </button>
+    <button mat-button color="warn" (click)="onClose()" cdkFocusInitial>Cancel</button>
+    <button mat-flat-button color="primary" (click)="onConfirm()">Confirm</button>
   </div>
 </div>

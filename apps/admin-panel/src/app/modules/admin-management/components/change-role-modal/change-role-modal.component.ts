@@ -13,13 +13,7 @@ import { DropdownOption, getDropdownOptionsFromEnum } from '../../../../shared';
   selector: 'sue-change-role-modal',
   templateUrl: './change-role-modal.component.html',
   styleUrls: ['./change-role-modal.component.scss'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule
-  ]
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule],
 })
 export class ChangeRoleModalComponent implements OnInit {
   roleControl: FormControl<ADMIN_ROLE>;

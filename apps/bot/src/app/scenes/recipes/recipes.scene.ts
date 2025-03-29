@@ -43,10 +43,7 @@ export class RecipesScene extends SceneNavigation {
       await ctx.answerCbQuery();
       const callbackData: RecipesSceneContextType = get(ctx.callbackQuery, 'data') as RecipesSceneContextType;
       this.stateService.storeCallback(callbackData);
-      await ctx.editMessageText(
-        RECIPES.RESPONSES.MAIN[callbackData],
-        backButtonKeyboard
-      );
+      await ctx.editMessageText(RECIPES.RESPONSES.MAIN[callbackData], backButtonKeyboard);
     } catch (error) {
       this.logger.error(`${ctx.text}: ${error.message}`);
     }

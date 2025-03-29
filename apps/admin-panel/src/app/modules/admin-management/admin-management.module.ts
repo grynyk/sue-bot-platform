@@ -5,11 +5,6 @@ import { AdminManagementComponent } from './containers/admin-management/admin-ma
 import { AdminTableComponent } from './components/admin-table/admin-table.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    AdminManagementComponent,
-    AdminTableComponent,
-    AdminManagementRoutingModule,
-  ],
+  imports: [CommonModule, AdminManagementComponent, AdminTableComponent, AdminManagementRoutingModule],
 })
 export class AdminManagementModule {}

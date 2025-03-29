@@ -1,7 +1,7 @@
 export enum NAVIGATION_ICON {
   BACK = '⬅️',
   CLOSE = '❌',
-  CONFIRM = '✅'
+  CONFIRM = '✅',
 }
 
 export enum NAVIGATION_CALLBACK {
