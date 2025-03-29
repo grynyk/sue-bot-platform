@@ -1,7 +1,7 @@
 @use 'variables' as v;
 
 :host {
-  margin-top: 0;
+  width: 100%;
 }
 
 .status-value {
@@ -9,19 +9,20 @@
   @include v.space-orange(margin-left);
 }
 
-mat-list {
-    mat-list-item {
-        .mdc-list-item__content {
-            .mat-mdc-list-item-unscoped-content {
-                display: flex;
-                align-items: center;
-                width: 100%;
-                mat-icon {
-                    margin-left: auto;
-                }
-            }
+mat-list:not(.important) {
+  padding: 0;
+  mat-list-item {
+    .mdc-list-item__content {
+      .mat-mdc-list-item-unscoped-content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        mat-icon {
+          margin-left: auto;
         }
       }
+    }
+  }
 }
 
 mat-divider {
