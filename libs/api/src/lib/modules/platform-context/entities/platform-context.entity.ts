@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { SEASON } from '../models/platform-context.model';
+import { SEASON } from '@sue-bot-platform/types';
 
 @Entity()
 export class PlatformContext {

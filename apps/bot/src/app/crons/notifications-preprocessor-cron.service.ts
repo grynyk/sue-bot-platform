@@ -1,7 +1,7 @@
 import { BotUser, BotUserDataService } from '@sue-bot-platform/api';
 import { BotNotification } from '@sue-bot-platform/api';
 import { QueuedNotification } from '@sue-bot-platform/api';
-import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@sue-bot-platform/api';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@sue-bot-platform/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { addMinutes, endOfToday, getDay, isWeekend, setHours, setMinutes, startOfToday, subMinutes } from 'date-fns';

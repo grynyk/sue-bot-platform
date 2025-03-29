@@ -17,7 +17,8 @@
     "paths": {
       "@sue-bot-platform/api": ["libs/api/src/index.ts"],
       "@sue-bot-platform/bot/*": ["apps/bot/src/*"],
-      "@sue-bot-platform/core": ["libs/core/src/index.ts"]
+      "@sue-bot-platform/core": ["libs/core/src/index.ts"],
+      "@sue-bot-platform/types": ["libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

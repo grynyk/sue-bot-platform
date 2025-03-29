@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { NotificationDataService, QueuedNotificationDataService } from './services';
 import { BotNotification } from './entities/bot-notification.entity';
-import { QueuedNotificationsMetrics } from './models';
+import { QueuedNotificationsMetrics } from '@sue-bot-platform/types';
 
 @Controller('notifications')
 export class NotificationDataController {

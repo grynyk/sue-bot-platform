@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
-import { BotUserStats } from '@sue-bot-platform/api';
+import { BotUserStats } from '@sue-bot-platform/types';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { ChartDataSeries } from '../../models/chart.model';
@@ -41,7 +41,7 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
   }
 
   private initData(): void {
-    this.botMetricsService.getBotStats().subscribe((metrics: BotUserStats): void => {
+    this.botMetricsService.getBotUsersStats().subscribe((metrics: BotUserStats): void => {
       this.data = [
         { name: 'All', value: metrics.total },
         { name: 'New', value: metrics.newToday },

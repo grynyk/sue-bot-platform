@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { from, catchError, EMPTY, Observable, delay, mergeMap, retry } from 'rxjs';
 import { BotUser, BotUserDataService } from '@sue-bot-platform/api';
-import { NotificationDataService, QueuedNotificationDataService, SCHEDULE_TYPE } from '@sue-bot-platform/api';
+import { NotificationDataService, QueuedNotificationDataService } from '@sue-bot-platform/api';
 import { addMinutes, subMinutes } from 'date-fns';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { BotNotification } from '@sue-bot-platform/api';
@@ -13,6 +13,7 @@ import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { QueuedNotification } from '@sue-bot-platform/api';
 import { PlatformContextDataService } from '@sue-bot-platform/api';
+import { SCHEDULE_TYPE } from '@sue-bot-platform/types';
 
 const DELAY_TIME = 100;
 const MAX_RETRIES = 2;

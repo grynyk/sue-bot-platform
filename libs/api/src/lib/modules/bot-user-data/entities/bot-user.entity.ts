@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BotUserActivityLog } from './bot-user-activity-log.entity';
 
 @Entity()
 export class BotUser {
@@ -43,4 +44,7 @@ export class BotUser {
 
   @Column({ name: 'was_active_today', type: 'boolean', default: false })
   wasActiveToday: boolean;
+
+  @OneToMany(() => BotUserActivityLog, (log) => log.user)
+  statusLogs: BotUserActivityLog[];
 }

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PlatformContext } from './entities/platform-context.entity';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { SEASON } from './models/platform-context.model';
+import { SEASON } from '@sue-bot-platform/types';
 import { isNil } from 'lodash';
 
 @Injectable()

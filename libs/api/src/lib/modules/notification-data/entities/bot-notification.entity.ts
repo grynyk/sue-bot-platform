@@ -1,6 +1,6 @@
 import { InlineKeyboardButton } from 'typegram';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '../models/notifications.model';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@sue-bot-platform/types';
 
 @Entity()
 export class BotNotification {

@@ -4,9 +4,10 @@ import { BotCommand, WebhookInfo } from 'typegram';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK, PARSE_MODE, BOT_COMMAND_DESCRIPTION, BOT_COMMAND_NAME } from './models';
 import { getDefinedBotCommands } from './utils/command.utils';
-import { BotUser, BotUserDataService, BotUserStats, UpdateBotUserDto } from '@sue-bot-platform/api';
+import { BotUser, BotUserDataService, UpdateBotUserDto } from '@sue-bot-platform/api';
 import { get, isNil, omit } from 'lodash';
 import { OnModuleInit } from '@nestjs/common';
+import { BotUserStats } from '@sue-bot-platform/types';
 
 @Update()
 export class BotUpdate implements OnModuleInit {

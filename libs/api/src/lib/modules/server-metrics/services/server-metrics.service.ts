@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
+import { ServerMetrics } from '@sue-bot-platform/types';
 import axios, { AxiosResponse } from 'axios';
-import { ServerMetrics } from '../models/server-metrics.model';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-
 @Injectable()
 export class ServerMetricsService {
   private readonly baseUrl: string;

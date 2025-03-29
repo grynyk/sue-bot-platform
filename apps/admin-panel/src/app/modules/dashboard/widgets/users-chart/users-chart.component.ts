@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { ChartDataSeries } from '../../models/chart.model';
+import { BotMetricsService } from '../../services/bot-metrics.service';
+import { BOT_USER_STATUS, BotUserActivityMetrics } from '@sue-bot-platform/types';
+import { forkJoin } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -13,9 +16,10 @@ import { ChartDataSeries } from '../../models/chart.model';
   templateUrl: 'users-chart.component.html',
   styleUrl: 'users-chart.component.scss',
   imports: [CommonModule, RouterModule, MatCardModule, ChartsModule, InlineLoadingSpinnerComponent],
+  providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersChartWidgetComponent {
+export class UsersChartWidgetComponent implements OnInit {
   showXAxis = true;
   showYAxis = true;
   gradient = true;
@@ -25,48 +29,9 @@ export class UsersChartWidgetComponent {
   view: [number, number];
   data: { name: string; series: ChartDataSeries[] }[];
 
-  constructor() {
-    this.data = [
-      {
-        name: 'Registered Users',
-        series: [
-          { name: new Date('2025-03-20'), value: 28 },
-          { name: new Date('2025-03-21'), value: 37 },
-          { name: new Date('2025-03-22'), value: 45 },
-          { name: new Date('2025-03-23'), value: 52 },
-          { name: new Date('2025-03-24'), value: 61 },
-          { name: new Date('2025-03-25'), value: 73 },
-          { name: new Date('2025-03-26'), value: 85 },
-          { name: new Date('2025-03-27'), value: 96 },
-        ],
-      },
-      {
-        name: 'Unavailable Users',
-        series: [
-          { name: new Date('2025-03-20'), value: 1 },
-          { name: new Date('2025-03-21'), value: 2 },
-          { name: new Date('2025-03-22'), value: 0 },
-          { name: new Date('2025-03-23'), value: 5 },
-          { name: new Date('2025-03-24'), value: 0 },
-          { name: new Date('2025-03-25'), value: 32 },
-          { name: new Date('2025-03-26'), value: 0 },
-          { name: new Date('2025-03-27'), value: 10 },
-        ],
-      },
-      {
-        name: 'Active Users',
-        series: [
-          { name: new Date('2025-03-20'), value: 54 },
-          { name: new Date('2025-03-21'), value: 130 },
-          { name: new Date('2025-03-22'), value: 254 },
-          { name: new Date('2025-03-23'), value: 5 },
-          { name: new Date('2025-03-24'), value: 10 },
-          { name: new Date('2025-03-25'), value: 756 },
-          { name: new Date('2025-03-26'), value: 230 },
-          { name: new Date('2025-03-27'), value: 39 },
-        ],
-      },
-    ];
+  constructor(private readonly botMetricsService: BotMetricsService, private readonly cdr: ChangeDetectorRef) {
+    this.data = [];
+    this.isLoaded = false;
     this.colorScheme = {
       name: 'customScheme',
       selectable: true,
@@ -74,6 +39,38 @@ export class UsersChartWidgetComponent {
       domain: ['#347de0', '#9b000e', '#508b1b'],
     };
     this.view = [window.innerWidth * 0.62, 360];
-    this.isLoaded = true;
+  }
+
+  ngOnInit(): void {
+    this.initData();
+  }
+
+  private initData(): void {
+    forkJoin([
+      this.botMetricsService.getBotUsersMetrics(BOT_USER_STATUS.ACTIVE),
+      this.botMetricsService.getBotUsersMetrics(BOT_USER_STATUS.BLOCKED),
+    ]).subscribe(([active, blocked]: [BotUserActivityMetrics[], BotUserActivityMetrics[]]): void => {
+      this.data = [
+        {
+          name: 'Active Users',
+          series: this.mapToChartSeries(active),
+        },
+        {
+          name: 'Blocked Users',
+          series: this.mapToChartSeries(blocked),
+        },
+      ];
+      this.isLoaded = true;
+      this.cdr.markForCheck();
+    });
+  }
+
+  private mapToChartSeries(data: BotUserActivityMetrics[]): ChartDataSeries[] {
+    return data.map(
+      (item: BotUserActivityMetrics): ChartDataSeries => ({
+        name: item.date,
+        value: item.quantity,
+      })
+    );
   }
 }

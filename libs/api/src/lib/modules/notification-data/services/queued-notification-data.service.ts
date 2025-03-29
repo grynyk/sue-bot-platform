@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Between, In, Repository } from 'typeorm';
 import { QueuedNotification } from '../entities/queued-notification';
 import { CreateQueuedNotificationDto } from '../dto/create-queued-notification.dto';
-import { QueuedNotificationsMetrics } from '../models';
+import { QueuedNotificationsMetrics } from '@sue-bot-platform/types';
 
 @Injectable()
 export class QueuedNotificationDataService {

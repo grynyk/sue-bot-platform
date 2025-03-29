@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SkinTypeTestResult } from './result.entity';
-import { SEASON } from '../../platform-context/models/platform-context.model';
-import { PRODUCT_SIZE } from '../models';
+import { SEASON, PRODUCT_SIZE } from '@sue-bot-platform/types';
 
 @Entity()
 export class SkinTypeTestProduct {

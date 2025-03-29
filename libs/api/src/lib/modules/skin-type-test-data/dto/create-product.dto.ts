@@ -1,6 +1,5 @@
 import { IsEnum, IsString, IsUrl } from 'class-validator';
-import { PRODUCT_SIZE } from '../models';
-import { SEASON } from '../../platform-context/models/platform-context.model';
+import { PRODUCT_SIZE, SEASON } from '@sue-bot-platform/types';
 
 export class CreateSkinTypeTestProductDto {
   @IsString()

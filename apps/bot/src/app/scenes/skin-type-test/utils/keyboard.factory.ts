@@ -1,7 +1,7 @@
 import { Markup } from 'telegraf';
 import { SkincareProduct, TestAnswer, TestQuestion } from '../models/skin-type-test.model';
 import { InlineKeyboardButton } from 'typegram';
-import { PRODUCT_SIZE } from '@sue-bot-platform/api';
+import { PRODUCT_SIZE } from '@sue-bot-platform/types';
 import { SKINCARE } from '../constants/skincare.constant';
 import { backButton, closeButton } from '../../../utils/keyboard.utils';
 

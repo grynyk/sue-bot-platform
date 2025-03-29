@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { BotUser, BotUserDataModule } from './modules/bot-user-data';
+import { BotUser, BotUserActivityLog, BotUserDataModule } from './modules/bot-user-data';
 import { NotificationDataModule } from './modules/notification-data';
 import { PlatformContext, PlatformContextDataModule } from './modules/platform-context';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -33,7 +33,7 @@ import { ServerMetricsModule } from './modules/server-metrics';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, BotNotification, QueuedNotification, PlatformContext, SkinTypeTestProduct, SkinTypeTestResult],
+        entities: [BotUser, BotUserActivityLog, BotNotification, QueuedNotification, PlatformContext, SkinTypeTestProduct, SkinTypeTestResult],
         synchronize: true,
         logging: false,
       }),

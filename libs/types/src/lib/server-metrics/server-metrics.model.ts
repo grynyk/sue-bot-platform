@@ -1,8 +1,4 @@
-export enum ServerState {
-  UP = 'up',
-  CRASHED = 'crashed',
-  STARTING = 'starting',
-}
+import { ServerState } from "./server-metrics.enum";
 
 export interface ServerMetrics {
   state: string | null;

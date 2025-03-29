@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, IsNull, MoreThanOrEqual, Not, Repository } from 'typeorm';
-import { BotUser } from './entities/bot-user.entity';
-import { CreateBotUserDto } from './dto/create-bot-user.dto';
-import { UpdateBotUserDto } from './dto/update-bot-user.dto';
+import { BotUser } from '../entities/bot-user.entity';
+import { CreateBotUserDto } from '../dto/create-bot-user.dto';
+import { UpdateBotUserDto } from '../dto/update-bot-user.dto';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
-import { BotUserStats } from './models/bot-user-stats.model';
+import { BotUserStats } from '@sue-bot-platform/types';
 import { format, startOfToday } from 'date-fns';
 import { isNil } from 'lodash';
 

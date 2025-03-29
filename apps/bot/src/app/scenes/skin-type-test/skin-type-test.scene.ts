@@ -10,7 +10,8 @@ import { RESULTS, SKINCARE } from './constants';
 import { Message } from '@telegraf/types';
 import { SCENE_ID, SceneContext, NAVIGATION_CALLBACK, PARSE_MODE, DeleteAndReplyOptions } from '../../models';
 import { isBotCommand, backButtonKeyboard, deleteAndReply } from '../../utils';
-import { BotUserDataService, PRODUCT_SIZE } from '@sue-bot-platform/api';
+import { BotUserDataService } from '@sue-bot-platform/api';
+import { PRODUCT_SIZE } from '@sue-bot-platform/types';
 
 @Scene(SCENE_ID.SKIN_TYPE_TEST)
 export class SkinTypeTestScene extends SceneNavigation {

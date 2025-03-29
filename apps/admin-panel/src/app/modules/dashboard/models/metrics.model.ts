@@ -4,12 +4,6 @@ export enum ServerState {
   STARTING = 'starting',
 }
 
-export interface ServerMetrics {
-  state: string | null;
-  maintenance: boolean | null;
-  releaseDate: string | null;
-}
-
 export enum StatusDisplay {
   STOPPED = 'Stopped',
   MAINTENANCE = 'Maintenance',

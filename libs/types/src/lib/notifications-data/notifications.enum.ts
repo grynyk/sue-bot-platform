@@ -16,10 +16,3 @@ export enum SCHEDULE_TYPE {
   WAKE_UP_OFFSET = 'WAKE_UP_OFFSET',
   BED_TIME_OFFSET = 'BED_TIME_OFFSET',
 }
-
-export interface QueuedNotificationsMetrics {
-  total: number;
-  queued: number;
-  processed: number;
-  defined?: number;
-}

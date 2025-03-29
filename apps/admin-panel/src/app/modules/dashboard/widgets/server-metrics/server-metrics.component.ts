@@ -6,9 +6,9 @@ import { RouterModule } from '@angular/router';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { isNil } from 'lodash';
 import { BotMetricsService } from '../../services/bot-metrics.service';
-import { SERVER_STATUS_MAP, ServerMetrics, STATUS_COLOR_MAP, StatusColor, StatusDisplay } from '../../models/metrics.model';
+import { SERVER_STATUS_MAP, STATUS_COLOR_MAP, StatusColor, StatusDisplay } from '../../models/metrics.model';
 import { forkJoin } from 'rxjs';
-import { QueuedNotificationsMetrics } from '@sue-bot-platform/api';
+import { QueuedNotificationsMetrics, ServerMetrics } from '@sue-bot-platform/types';
 @Component({
   standalone: true,
   selector: 'sue-server-metrics-widget',

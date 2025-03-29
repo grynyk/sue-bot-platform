@@ -1,5 +1,5 @@
 import { InlineKeyboardButton } from 'typegram';
-import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '../models/notifications.model';
+import { RECURRENCE_PATTERN, SCHEDULE_TYPE } from '@sue-bot-platform/types';
 import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
 

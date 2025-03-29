@@ -1,5 +1,5 @@
-import { PRODUCT_SIZE, SEASON } from '@sue-bot-platform/api';
 import { TestResult } from '../models/skin-type-test.model';
+import { SEASON, PRODUCT_SIZE } from '@sue-bot-platform/types';
 
 export const RESULTS: TestResult[] = [
   {
