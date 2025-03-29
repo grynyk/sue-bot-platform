@@ -19,10 +19,10 @@ export enum StatusDisplay {
 }
 
 export enum StatusColor {
-  STOPPED = '#9b000e',
-  MAINTENANCE = '#f8ab37',
-  RUNNING = '#508b1b',
-  STARTING = '#9fd45f',
+  ERROR = '#9b000e',
+  WARNING = '#f8ab37',
+  SUCCESS = '#508b1b',
+  LOADING = '#9fd45f',
   UNKNOWN = '#646973',
 }
 
@@ -33,7 +33,7 @@ export const SERVER_STATUS_MAP: Record<ServerState, StatusDisplay> = {
 };
 
 export const STATUS_COLOR_MAP: Record<ServerState, StatusColor> = {
-  [ServerState.UP]: StatusColor.RUNNING,
-  [ServerState.CRASHED]: StatusColor.STOPPED,
-  [ServerState.STARTING]: StatusColor.STARTING,
+  [ServerState.UP]: StatusColor.SUCCESS,
+  [ServerState.CRASHED]: StatusColor.ERROR,
+  [ServerState.STARTING]: StatusColor.LOADING,
 };

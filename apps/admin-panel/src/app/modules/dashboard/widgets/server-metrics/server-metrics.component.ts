@@ -52,11 +52,24 @@ export class ServerMetricsWidgetComponent implements OnInit {
 
   getStatusColor(metrics?: ServerMetrics): string {
     if (isNil(metrics?.state)) {
-      return StatusColor.STOPPED;
+      return StatusColor.ERROR;
     }
     if (metrics.maintenance) {
-      return StatusColor.MAINTENANCE;
+      return StatusColor.WARNING;
     }
     return STATUS_COLOR_MAP[metrics.state] || StatusColor.UNKNOWN;
+  }
+
+  getNotificationsStatusColor(value: number, total: number): StatusColor {
+    if (value === 0) {
+      return StatusColor.ERROR;
+    }
+    if (value === total) {
+      return StatusColor.SUCCESS;
+    }
+    if (value > 0) {
+      return StatusColor.WARNING;
+    }
+    return StatusColor.UNKNOWN;
   }
 }
