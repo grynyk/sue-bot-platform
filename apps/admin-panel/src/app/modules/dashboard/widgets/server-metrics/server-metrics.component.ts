@@ -61,11 +61,11 @@ export class ServerMetricsWidgetComponent implements OnInit {
   }
 
   getProcessedNotificationStatusColor(value: number, total: number): StatusColor {
-    if (value === 0) {
-      return StatusColor.ERROR;
-    }
     if (value === total) {
       return StatusColor.SUCCESS;
+    }
+    if (value === 0) {
+      return StatusColor.ERROR;
     }
     if (value > 0) {
       return StatusColor.WARNING;
@@ -77,11 +77,11 @@ export class ServerMetricsWidgetComponent implements OnInit {
     if (value === total) {
       return StatusColor.ERROR;
     }
-    if (value > 0) {
-      return StatusColor.WARNING;
-    }
     if (value === 0) {
       return StatusColor.SUCCESS;
+    }
+    if (value > 0) {
+      return StatusColor.WARNING;
     }
     return StatusColor.UNKNOWN;
   }
