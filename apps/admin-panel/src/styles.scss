@@ -1,6 +1,8 @@
 @use '@angular/material' as mat;
 @use 'variables' as v;
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import 'elements';
+@import 'material';
 
 * {
   font-family: 'Montserrat';
@@ -14,37 +16,30 @@ html {
   );
 }
 
-mat-card:not(.important) {
-  background-color: v.$transparent-background;
-  border-radius: 0;
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
-  width: auto;
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(v.$transparent-background-dark-500, v.$transparent-background-dark-500),
+  overflow: hidden;
+  background: linear-gradient(
+      v.$transparent-background-dark-700,
+      v.$transparent-background-dark-700
+    ),
     url('./assets/lg-bg.jpg') center center no-repeat;
   background-size: cover;
-  overflow: hidden;
+  background-position: center;
+  background-attachment: fixed;
 }
 
-mat-error {
-  font-size: small;
-}
-
-a {
-  color: v.$accent-color;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-    color: v.$cool-grey-200;
-  }
-}
-
-.theme-small {
-  @include mat.all-component-densities(-3);
-  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-    display: flex;
-  }
+sue-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }

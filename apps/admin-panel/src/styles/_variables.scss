@@ -32,9 +32,11 @@ $font-size-base: 14px;
 $font-size-small: 12px;
 $font-size-large: 16px;
 
-$transparent-background: rgba($color: #ffffff, $alpha: 0.75);
+$transparent-background-light-700: rgba($color: #ffffff, $alpha: 0.7);
+$transparent-background-light-800: rgba($color: #ffffff, $alpha: 0.8);
 $transparent-background-dark-100: rgba(0, 0, 0, 0.04);
-$transparent-background-dark-500: rgba($color: #000000, $alpha: 0.75);
+$transparent-background-dark-300: rgba(0, 0, 0, 0.3);
+$transparent-background-dark-700: rgba($color: #000000, $alpha: 0.7);
 
 @mixin space-yellow($properties...) {
   @each $property in $properties {

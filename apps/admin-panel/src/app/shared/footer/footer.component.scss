@@ -1,12 +1,16 @@
 @use 'variables' as v;
 
+:host {
+    position: relative;
+    display: flex;
+    margin-top: auto;
+    width: 100%;
+}
+
 .footer-container {
-    position: absolute;
     display: flex;
     align-content: center;
-    background-color: v.$transparent-background;
-    margin: 0;
-    bottom: 0;
+    background-color: v.$transparent-background-light-800;
     width: 100%;
     @include v.space-yellow(padding);
     .icons {
@@ -24,9 +28,10 @@
     a.link {
         display: flex;
         align-items: center;
-        @include v.space-orange(gap);
+        cursor: pointer;
         font-size: v.$font-size-small;
         color: v.$cool-grey-500;
+        @include v.space-orange(gap);
         &:hover {
             color: v.$primary-color;
         }

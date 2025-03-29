@@ -12,7 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-
+import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'sue-admin-table',
   styleUrls: ['admin-table.component.scss'],
@@ -27,7 +27,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatCheckboxModule,
     MatChipsModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatMenuModule
   ]
 })
 export class AdminTableComponent implements OnInit, AfterViewInit {

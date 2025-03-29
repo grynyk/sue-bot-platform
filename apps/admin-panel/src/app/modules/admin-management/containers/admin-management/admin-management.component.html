@@ -1,3 +1,3 @@
-<mat-card *ngIf="data$ | async as data">
-    <sue-admin-table [data]="data"></sue-admin-table>
-</mat-card>
+@if (data$ | async; as data) {
+<sue-admin-table [data]="data"></sue-admin-table>
+}
