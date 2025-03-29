@@ -38,7 +38,9 @@ export class UsersChartWidgetComponent implements OnInit {
       group: ScaleType.Ordinal,
       domain: ['#347de0', '#9b000e', '#508b1b'],
     };
-    this.view = [window.innerWidth * 0.62, 360];
+    const width: number = window.innerWidth < 768 ? window.innerWidth * 0.85 : window.innerWidth * 0.62;
+    const height = 360;
+    this.view = [width, height];
   }
 
   ngOnInit(): void {

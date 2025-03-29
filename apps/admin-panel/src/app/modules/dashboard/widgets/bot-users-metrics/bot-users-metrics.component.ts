@@ -32,7 +32,7 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
       group: ScaleType.Ordinal,
       domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#afb4bb', '#888440'],
     };
-    const width: number = window.innerWidth < 768 ? window.innerWidth * 0.8 : window.innerWidth * 0.3;
+    const width: number = window.innerWidth < 768 ? window.innerWidth * 0.85 : window.innerWidth * 0.3;
     const height: number = window.innerWidth < 768 ? 360 : 410;
     this.view = [width, height];
     this.isLoaded = false;
