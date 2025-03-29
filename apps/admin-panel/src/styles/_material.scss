@@ -1,0 +1,19 @@
+@use 'variables' as v;
+@use '@angular/material' as mat;
+
+mat-card:not(.important) {
+  background-color: v.$transparent-background-light-700;
+  border-radius: 0;
+}
+
+mat-error {
+  font-size: small;
+}
+
+.theme-small {
+  @include mat.all-component-densities(-3);
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+    .mat-mdc-form-field-infix {
+    display: flex;
+  }
+}

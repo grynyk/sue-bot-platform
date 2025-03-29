@@ -13,7 +13,6 @@ import { BotUserStats } from '@sue-bot-platform/api';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { ChartDataSeries } from '../../models/chart.model';
-
 @Component({
   standalone: true,
   selector: 'sue-bot-users-metrics-widget',

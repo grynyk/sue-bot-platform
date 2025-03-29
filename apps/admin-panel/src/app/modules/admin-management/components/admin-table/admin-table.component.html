@@ -1,9 +1,22 @@
-<mat-card>
+<mat-card class="wrapper">
   <mat-card-header class="header-container">
     <div class="action-bar">
+      <div class="action-bar__buttons-mobile">
+        <button type="button" mat-stroked-button (click)="toggleStatus()" [matMenuTriggerFor]="menu">
+          Modify
+        </button>
+        <mat-menu #menu="matMenu">
+          <button type="button" mat-menu-item (click)="toggleStatus()">
+            Change Status
+          </button>
+          <button type="button" mat-menu-item (click)="changeRole()">
+            Change Role
+          </button>
+        </mat-menu>
+      </div>
       <div class="action-bar__buttons">
         <button type="button" mat-stroked-button (click)="toggleStatus()">
-          Toggle Status
+          Change Status
         </button>
         <button type="button" mat-stroked-button (click)="changeRole()">
           Change Role
@@ -82,7 +95,7 @@
   <mat-paginator
     #paginator
     [length]="resultsLength"
-    [pageSize]="10"
+    [pageSize]="5"
   >
   </mat-paginator>
 </mat-card>

@@ -1,18 +1,29 @@
-<div class="grid">
-  <mat-card class="item">
-    <span class="thumb-title">Users Metrics</span>
-    <sue-bot-users-metrics-widget></sue-bot-users-metrics-widget>
-  </mat-card>
-  <mat-card class="item wide">
-    <span class="thumb-title">User Activity Trends</span>
-    <sue-users-chart-widget></sue-users-chart-widget>
-  </mat-card>
-  <mat-card class="item">
-    <span class="thumb-title">Server/Tasks Metrics</span>
-    <sue-server-metrics-widget></sue-server-metrics-widget>
-  </mat-card>
-  <mat-card class="item wide">
-    <span class="thumb-title">Broadcast Message</span>
-    <sue-broadcast-message-widget></sue-broadcast-message-widget>
-  </mat-card>
+<div class="dashboard-container">
+  <div class="grid">
+    <mat-card class="item">
+      <span class="item-title">Users Metrics</span>
+      <div class="item-content">
+        <sue-bot-users-metrics-widget></sue-bot-users-metrics-widget>
+      </div>
+    </mat-card>
+    <mat-card class="item">
+      <span class="item-title">User Activity Trends</span>
+      <div class="item-content">
+        <sue-users-chart-widget></sue-users-chart-widget>
+      </div>
+    </mat-card>
+    <mat-card class="item">
+      <span class="item-title">Server/Tasks Metrics</span>
+      <div class="item-content">
+        <sue-server-metrics-widget></sue-server-metrics-widget>
+      </div>
+    </mat-card>
+    <mat-card class="item">
+      <span class="item-title">Broadcast Message</span>
+      <div class="item-content">
+        <sue-broadcast-message-widget></sue-broadcast-message-widget>
+      </div>
+    </mat-card>
+  </div>
+  
 </div>

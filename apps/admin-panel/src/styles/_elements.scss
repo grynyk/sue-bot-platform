@@ -1,0 +1,10 @@
+@use 'variables' as v;
+
+a {
+  color: v.$accent-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: v.$cool-grey-200;
+  }
+}

@@ -1,26 +1,39 @@
 @use 'variables' as v;
 
-.logo {
-    display: block;
-    cursor: pointer;
-    background: url(../../../assets/logo.svg);
-    background-size: v.$space-cyan v.$space-cyan;
-    width: v.$space-cyan;
-    height: v.$space-cyan;
+mat-toolbar {
+  padding-top: 0;
+  padding-bottom: 0;
+  @include v.space-green(padding-left, padding-right);
+  background-color: v.$transparent-background-light-800;
 }
 
-mat-toolbar {
-    padding-top: 0;
-    padding-bottom: 0;
-    @include v.space-green(padding-left, padding-right);
+.logo {
+  display: block;
+  cursor: pointer;
+  background: url(../../../assets/logo.svg);
+  background-size: v.$space-cyan v.$space-cyan;
+  width: v.$space-cyan;
+  height: v.$space-cyan;
 }
 
 .nav {
-    list-style: none;
-    margin:0;
-    padding:0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  &.mobile {
+    display: none;
+  }
 }
 
 .fill-remaining-space {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+    &.mobile {
+      display: block;
+    }
   }
+}

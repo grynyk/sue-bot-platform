@@ -1,8 +1,21 @@
 <mat-toolbar>
-    <div class="logo" [routerLink]="'/'"></div>
-    <span class="fill-remaining-space"></span>
-    <div class="nav">
-        <button mat-button [routerLink]="'/admin-management'">Admin Management</button>
-        <button mat-button [routerLink]="'/login'">Logout</button>
-    </div>
+  <div class="logo" [routerLink]="'/'"></div>
+  <span class="fill-remaining-space"></span>
+  <div class="nav">
+    <button mat-button [routerLink]="'/admin-management'">
+      Admin Management
+    </button>
+    <button mat-button [routerLink]="'/login'">Logout</button>
+  </div>
+  <div class="nav mobile">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="'/admin-management'">
+        Admin Management
+      </button>
+      <button mat-menu-item [routerLink]="'/login'">Logout</button>
+    </mat-menu>
+  </div>
 </mat-toolbar>
