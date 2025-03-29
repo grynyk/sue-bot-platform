@@ -12,6 +12,7 @@ import { ChartDataSeries } from '../../models/chart.model';
   standalone: true,
   selector: 'sue-bot-users-metrics-widget',
   templateUrl: 'bot-users-metrics.component.html',
+  styleUrls: ['bot-users-metrics.component.scss'],
   imports: [CommonModule, RouterModule, MatCardModule, ChartsModule, InlineLoadingSpinnerComponent],
   providers: [BotMetricsService],
   changeDetection: ChangeDetectionStrategy.OnPush,
