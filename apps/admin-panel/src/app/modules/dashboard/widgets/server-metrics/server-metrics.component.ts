@@ -60,7 +60,7 @@ export class ServerMetricsWidgetComponent implements OnInit {
     return STATUS_COLOR_MAP[metrics.state] || StatusColor.UNKNOWN;
   }
 
-  getNotificationsStatusColor(value: number, total: number): StatusColor {
+  getProcessedNotificationStatusColor(value: number, total: number): StatusColor {
     if (value === 0) {
       return StatusColor.ERROR;
     }
@@ -69,6 +69,19 @@ export class ServerMetricsWidgetComponent implements OnInit {
     }
     if (value > 0) {
       return StatusColor.WARNING;
+    }
+    return StatusColor.UNKNOWN;
+  }
+
+  getPendingNotificationStatusColor(value: number, total: number): StatusColor {
+    if (value === total) {
+      return StatusColor.ERROR;
+    }
+    if (value > 0) {
+      return StatusColor.WARNING;
+    }
+    if (value === 0) {
+      return StatusColor.SUCCESS;
     }
     return StatusColor.UNKNOWN;
   }
