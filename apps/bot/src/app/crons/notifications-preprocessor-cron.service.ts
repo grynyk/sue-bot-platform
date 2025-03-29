@@ -29,16 +29,12 @@ export class NotificationsPreprocessorCronService {
   async processAllNotifications(): Promise<void> {
     try {
       await this.queuedNotificationDataService.drop();
-      this.notificationsQueue = [];
       const users: BotUser[] = await this.botUserDataService.findWithEnabledNotifications();
       const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
       for (const user of users) {
         this.addToQueue(user, notifications);
       }
-      for (let i = 0; i < this.notificationsQueue.length; i += 1000) {
-        const batch: Partial<QueuedNotification>[] = this.notificationsQueue.slice(i, i + 1000);
-        await this.queuedNotificationDataService.bulkInsert(batch);
-      }
+      await this.insertToDatabase();
     } catch (error) {
       this.logger.error(`Precompute All Pending Notifications: ${error.message}`);
     }
@@ -54,6 +50,7 @@ export class NotificationsPreprocessorCronService {
       if (user.notificationsEnabled && !user.blocked) {
         const notifications: BotNotification[] = await this.notificationDataService.findAllActive();
         this.addToQueue(user, notifications);
+        await this.insertToDatabase();
       }
     } catch (error) {
       this.logger.error(`Precompute Users Pending Notifications: ${error.message}`);
@@ -61,6 +58,7 @@ export class NotificationsPreprocessorCronService {
   }
 
   private addToQueue(user: BotUser, notifications: BotNotification[]): void {
+    this.notificationsQueue = [];
     for (const notification of notifications) {
       if (this.shouldSendNotificationToday(notification)) {
         const sendTime: Date = this.calculateSendTime(user, notification);
@@ -73,6 +71,13 @@ export class NotificationsPreprocessorCronService {
           });
         }
       }
+    }
+  }
+
+  private async insertToDatabase(): Promise<void> {
+    for (let i = 0; i < this.notificationsQueue.length; i += 1000) {
+      const batch: Partial<QueuedNotification>[] = this.notificationsQueue.slice(i, i + 1000);
+      await this.queuedNotificationDataService.bulkInsert(batch);
     }
   }
 
