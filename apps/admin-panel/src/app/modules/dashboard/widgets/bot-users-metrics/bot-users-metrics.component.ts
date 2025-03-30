@@ -34,7 +34,7 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
       domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#f8ab37', '#888440'],
     };
     const width: number = window.innerWidth < 768 ? window.innerWidth * 0.85 : window.innerWidth * 0.3;
-    const height: number = window.innerWidth < 768 ? 250 : 410;
+    const height: number = window.innerWidth < 768 ? 220 : 410;
     this.view = [width, height];
     this.isLoaded = false;
   }
