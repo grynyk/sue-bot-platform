@@ -4,3 +4,4 @@ export * from './snackbar';
 export * from './charts';
 export * from './models';
 export * from './helpers';
+export * from './screen-size';

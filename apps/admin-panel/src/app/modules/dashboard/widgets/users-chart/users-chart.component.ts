@@ -4,8 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
-import { InlineLoadingSpinnerComponent } from '../../../../shared';
-import { ChartDataSeries } from '../../models/chart.model';
+import { InlineLoadingSpinnerComponent, ScreenSizeService } from '../../../../shared';
+import { ChartData, ChartDataSeries } from '../../models/chart.model';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { BOT_USER_STATUS, BotUserActivityMetrics } from '@sue-bot-platform/types';
 import { forkJoin } from 'rxjs';
@@ -20,28 +20,23 @@ import { forkJoin } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersChartWidgetComponent implements OnInit {
-  showXAxis = true;
-  showYAxis = true;
-  gradient = true;
+  showXAxis: boolean;
+  showYAxis: boolean;
+  gradient: boolean;
   timeline: boolean;
   isLoaded: boolean;
   colorScheme: Color;
+  data: ChartData[];
   view: [number, number];
-  data: { name: string; series: ChartDataSeries[] }[];
 
-  constructor(private readonly botMetricsService: BotMetricsService, private readonly cdr: ChangeDetectorRef) {
+  constructor(
+    private readonly botMetricsService: BotMetricsService,
+    private readonly screenSizeService: ScreenSizeService,
+    private readonly cdr: ChangeDetectorRef
+  ) {
     this.data = [];
     this.isLoaded = false;
-    this.colorScheme = {
-      name: 'customScheme',
-      selectable: true,
-      group: ScaleType.Ordinal,
-      domain: ['#347de0', '#9b000e', '#508b1b'],
-    };
-    const width: number = window.innerWidth < 768 ? window.innerWidth * 0.8 : window.innerWidth * 0.62;
-    const height = window.innerWidth < 768 ? 250 : 360;
-    this.view = [width, height];
-    this.timeline = window.innerWidth > 768;
+    this.setChartConfig();
   }
 
   ngOnInit(): void {
@@ -75,5 +70,22 @@ export class UsersChartWidgetComponent implements OnInit {
         value: item.quantity,
       })
     );
+  }
+
+  private setChartConfig(): void {
+    const isMobile: boolean = this.screenSizeService.isMobile();
+    const width: number = isMobile ? window.innerWidth * 0.8 : window.innerWidth * 0.62;
+    const height = isMobile ? 250 : 360;
+    this.view = [width, height];
+    this.timeline = !isMobile;
+    this.showXAxis = true;
+    this.showYAxis = true;
+    this.gradient = true;
+    this.colorScheme = {
+      name: 'customScheme',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: ['#347de0', '#9b000e', '#508b1b'],
+    };
   }
 }

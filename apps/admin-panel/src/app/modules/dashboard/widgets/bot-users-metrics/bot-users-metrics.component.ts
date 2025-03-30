@@ -6,7 +6,7 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
 import { BotUserStats } from '@sue-bot-platform/types';
 import { BotMetricsService } from '../../services/bot-metrics.service';
-import { InlineLoadingSpinnerComponent } from '../../../../shared';
+import { InlineLoadingSpinnerComponent, ScreenSizeService } from '../../../../shared';
 import { ChartDataSeries } from '../../models/chart.model';
 @Component({
   standalone: true,
@@ -25,18 +25,12 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
 
   constructor(
     private readonly botMetricsService: BotMetricsService,
+    private readonly screenSizeService: ScreenSizeService,
     private readonly cdr: ChangeDetectorRef
   ) {
-    this.colorScheme = {
-      name: 'customScheme',
-      selectable: true,
-      group: ScaleType.Ordinal,
-      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#f8ab37', '#888440'],
-    };
-    const width: number = window.innerWidth < 768 ? window.innerWidth * 0.85 : window.innerWidth * 0.3;
-    const height: number = window.innerWidth < 768 ? 220 : 410;
-    this.view = [width, height];
+    this.data = [];
     this.isLoaded = false;
+    this.setChartConfig();
   }
 
   ngOnInit(): void {
@@ -51,16 +45,29 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
         { name: 'Blocked', value: metrics.blocked },
         { name: 'Active today', value: metrics.active },
         {
-          name: 'Disabled notifications',
+          name: 'Notifications off',
           value: metrics.notificationsDisabled,
         },
         {
-          name: 'Completed skin type test',
+          name: 'Skin test done',
           value: metrics.completedSkinTest,
         },
       ];
       this.isLoaded = true;
       this.cdr.markForCheck();
     });
+  }
+
+  private setChartConfig(): void {
+    const isMobile: boolean = this.screenSizeService.isMobile();
+    const width: number = isMobile ? window.innerWidth * 0.85 : window.innerWidth * 0.3;
+    const height: number = isMobile ? 220 : 410;
+    this.view = [width, height];
+    this.colorScheme = {
+      name: 'customScheme',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#f8ab37', '#888440'],
+    };
   }
 }
