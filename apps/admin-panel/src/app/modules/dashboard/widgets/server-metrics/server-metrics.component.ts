@@ -24,10 +24,7 @@ export class ServerMetricsWidgetComponent implements OnInit {
   notificationsMetrics: QueuedNotificationsMetrics | null;
   isLoaded = false;
 
-  constructor(
-    private readonly botMetricsService: BotMetricsService,
-    private readonly cdr: ChangeDetectorRef
-  ) {}
+  constructor(private readonly botMetricsService: BotMetricsService, private readonly cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     forkJoin([this.botMetricsService.getServerMetrics(), this.botMetricsService.getNotificationsMetrics()]).subscribe(
@@ -60,29 +57,21 @@ export class ServerMetricsWidgetComponent implements OnInit {
     return STATUS_COLOR_MAP[metrics.state] || StatusColor.UNKNOWN;
   }
 
-  getProcessedNotificationStatusColor(value: number, total: number): StatusColor {
+  getNotificationStatusColor(value: number, total: number, isProcessed: boolean): StatusColor {
     if (value === total) {
-      return StatusColor.SUCCESS;
+      return isProcessed ? StatusColor.SUCCESS : StatusColor.ERROR;
     }
     if (value === 0) {
-      return StatusColor.ERROR;
+      return isProcessed ? StatusColor.ERROR : StatusColor.SUCCESS;
     }
-    if (value > 0) {
-      return StatusColor.WARNING;
-    }
-    return StatusColor.UNKNOWN;
+    return StatusColor.WARNING;
+  }
+
+  getProcessedNotificationStatusColor(value: number, total: number): StatusColor {
+    return this.getNotificationStatusColor(value, total, true);
   }
 
   getPendingNotificationStatusColor(value: number, total: number): StatusColor {
-    if (value === total) {
-      return StatusColor.ERROR;
-    }
-    if (value === 0) {
-      return StatusColor.SUCCESS;
-    }
-    if (value > 0) {
-      return StatusColor.WARNING;
-    }
-    return StatusColor.UNKNOWN;
+    return this.getNotificationStatusColor(value, total, false);
   }
 }
