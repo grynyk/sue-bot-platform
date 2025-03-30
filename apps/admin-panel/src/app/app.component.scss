@@ -4,5 +4,11 @@
   display: flex;
   flex: 1;
   overflow: hidden;
-  @include v.space-blue(padding);
+  padding: v.$space-blue v.$space-cyan;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: v.$space-orange;
+  }
 }

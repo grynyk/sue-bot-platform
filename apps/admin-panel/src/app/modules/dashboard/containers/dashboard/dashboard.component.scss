@@ -49,5 +49,6 @@
   .grid {
     grid-template-columns: 1fr;
     overflow-y: auto;
+    @include v.space-orange(gap);
   }
 }
