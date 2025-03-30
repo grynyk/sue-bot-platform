@@ -30,3 +30,14 @@ mat-divider {
   border-top-width: 1px;
   border-top-style: dashed;
 }
+
+@media (max-width: 768px) {
+  mat-list:not(.important) {
+    mat-list-item {
+      height: v.$space-red;
+      .mdc-list-item__content {
+        font-size: v.$font-size-small;
+      }
+    }
+  }
+}
