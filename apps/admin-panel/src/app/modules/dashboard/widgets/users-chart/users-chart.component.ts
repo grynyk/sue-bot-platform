@@ -74,7 +74,7 @@ export class UsersChartWidgetComponent implements OnInit {
 
   private setChartConfig(): void {
     const isMobile: boolean = this.screenSizeService.isMobile();
-    const width: number = isMobile ? window.innerWidth * 0.85 : window.innerWidth * 0.55;
+    const width: number = isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.55;
     const height = isMobile ? 200 : 360;
     this.view = [width, height];
     this.timeline = !isMobile;
