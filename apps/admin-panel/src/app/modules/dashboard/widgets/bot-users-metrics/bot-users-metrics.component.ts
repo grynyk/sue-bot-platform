@@ -60,7 +60,7 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
 
   private setChartConfig(): void {
     const isMobile: boolean = this.screenSizeService.isMobile();
-    const width: number = isMobile ? window.innerWidth * 0.92 : window.innerWidth * 0.25;
+    const width: number = isMobile ? window.innerWidth * 0.92 : window.innerWidth * 0.3;
     const height: number = isMobile ? 205 : 350;
     this.view = [width, height];
     this.colorScheme = {
