@@ -31,10 +31,10 @@ export class BotUsersMetricsWidgetComponent implements OnInit {
       name: 'customScheme',
       selectable: true,
       group: ScaleType.Ordinal,
-      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#afb4bb', '#888440'],
+      domain: ['#000000', '#347de0', '#9b000e', '#508b1b', '#f8ab37', '#888440'],
     };
     const width: number = window.innerWidth < 768 ? window.innerWidth * 0.85 : window.innerWidth * 0.3;
-    const height: number = window.innerWidth < 768 ? 360 : 410;
+    const height: number = window.innerWidth < 768 ? 250 : 410;
     this.view = [width, height];
     this.isLoaded = false;
   }
