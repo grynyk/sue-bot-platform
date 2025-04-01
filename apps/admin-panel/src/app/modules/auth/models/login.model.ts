@@ -1,10 +1,6 @@
 import { FormControl } from '@angular/forms';
+import { LoginData } from '@sue-bot-platform/types';
 
-export interface LoginForm {
-  email: string | null;
-  password: string | null;
-}
-
-export type LoginFormGroup = {
-  [K in keyof LoginForm]: FormControl<LoginForm[K]>;
+export type LoginForm = {
+  [K in keyof LoginData]: FormControl<LoginData[K]>;
 };

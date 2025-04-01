@@ -1,37 +1,60 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { LoginForm } from '../models/login.model';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { LoginData, LoginResponse, RegistrationData } from '@sue-bot-platform/types';
 import { isNil } from 'lodash';
 import { Router } from '@angular/router';
-import { RegistrationForm } from '../models';
-
-@Injectable()
+import { AdminPanelUser } from '@sue-bot-platform/api';
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
   private baseUrl = '/api/auth';
+  private _currentUser$: BehaviorSubject<LoginResponse>;
+
+  get currentUser$(): Observable<LoginResponse> {
+    return this._currentUser$.asObservable();
+  }
+
+  get isLoggedIn(): boolean {
+    return !isNil(this._currentUser$.value);
+  }
 
   constructor(
-    private httpClient: HttpClient,
+    private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    const storedUser: string | null = localStorage.getItem('current_user');
+    const currentUser: LoginResponse | null = storedUser ? JSON.parse(storedUser) : null;
+    this._currentUser$ = new BehaviorSubject<LoginResponse>(currentUser);
+  }
 
-  login(payload: LoginForm): Observable<unknown> {
-    return this.httpClient.post<unknown>(`${this.baseUrl}/login`, payload).pipe(
-      tap((response): void => {
-        if (isNil(response)) {
-          return;
-        }
-        localStorage.setItem('current_user', JSON.stringify(response));
+  login({ email, password }: LoginData): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, password }).pipe(
+      catchError((error: HttpErrorResponse): Observable<never> => {
+        throw error;
       })
     );
   }
 
-  logout(): void {
-    localStorage.removeItem('current_user');
-    this.router.navigate(['login']);
+  registrationRequest(payload: RegistrationData): Observable<AdminPanelUser> {
+    return this.http.post(`${this.baseUrl}/request`, payload).pipe(
+      map((v: object) => v as AdminPanelUser),
+      catchError((error: HttpErrorResponse): Observable<never> => {
+        throw error;
+      })
+    );
   }
 
-  registrationRequest(payload: Partial<RegistrationForm>): Observable<object> {
-    return this.httpClient.post(`${this.baseUrl}/registration`, payload);
+  setUser(user: LoginResponse): void {
+    localStorage.setItem('current_user', JSON.stringify(user));
+    this._currentUser$.next(user);
+  }
+
+  logout(): void {
+    localStorage.removeItem('current_user');
+    this._currentUser$.next(null);
+    this.router.navigate(['login']);
   }
 }

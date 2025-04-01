@@ -1,10 +1,10 @@
-export enum ADMIN_ROLE {
-  GUEST = 'GUEST',
+export enum ADMIN_PANEL_USER_ROLE {
   ADMIN = 'ADMIN',
   MODERATOR = 'MODERATOR',
+  GUEST = 'GUEST',
 }
 
-export enum ADMIN_STATUS {
+export enum ADMIN_PANEL_USER_STATUS {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }

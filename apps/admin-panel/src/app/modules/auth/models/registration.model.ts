@@ -1,12 +1,10 @@
 import { FormControl } from '@angular/forms';
+import { RegistrationData as RegistrationDataApi } from '@sue-bot-platform/types';
 
-export interface RegistrationForm {
-  name: string | null;
-  email: string | null;
-  password: string | null;
+export interface RegistrationData extends RegistrationDataApi {
   confirmPassword: string | null;
 }
 
-export type RegistrationFormGroup = {
-  [K in keyof RegistrationForm]: FormControl<RegistrationForm[K]>;
+export type RegistrationForm = {
+  [K in keyof RegistrationData]: FormControl<RegistrationData[K]>;
 };

@@ -3,11 +3,13 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { LoginComponent } from '../../components/login/login.component';
 import { RegistrationComponent } from '../../components/registration/registration.component';
-import { AUTH_MODE, LoginForm, RegistrationForm } from '../../models';
+import { AUTH_MODE, RegistrationData } from '../../models';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
+import { catchError, EMPTY, Observable } from 'rxjs';
 import { SnackbarService } from '../../../../shared/snackbar';
+import { LoginData, LoginResponse } from '@sue-bot-platform/types';
+import { RegistrationData as RegistrationDataApi } from '@sue-bot-platform/types';
 
 @Component({
   standalone: true,
@@ -33,8 +35,8 @@ export class AuthContainerComponent {
     this.mode = mode;
   }
 
-  onRegistration(form: RegistrationForm): void {
-    const payload: Partial<RegistrationForm> = {
+  onRegistration(form: RegistrationData): void {
+    const payload: RegistrationDataApi = {
       name: form.name,
       email: form.email,
       password: form.password,
@@ -42,9 +44,9 @@ export class AuthContainerComponent {
     this.authService
       .registrationRequest(payload)
       .pipe(
-        catchError((err) => {
+        catchError((): Observable<never> => {
           this.snackbarService.showMessage('Failed to send registration request', 'error');
-          throw err;
+          return EMPTY
         })
       )
       .subscribe((): void => {
@@ -53,22 +55,15 @@ export class AuthContainerComponent {
       });
   }
 
-  onLogin(payload: LoginForm): void {
-    if (payload.email === 'admin@admin.com' || payload.password === 'adminadmin') {
-      localStorage.setItem('current_user', JSON.stringify({ name: 'Admin' }));
-      this.router.navigate(['']);
-      return;
-    }
-    this.authService
-      .login(payload)
-      .pipe(
-        catchError((err) => {
-          this.snackbarService.showMessage('Failed to login', 'error');
-          throw err;
-        })
-      )
-      .subscribe((): void => {
+  onLogin(payload: LoginData): void {
+    this.authService.login(payload).subscribe({
+      next: (loginResponse: LoginResponse) => {
+        this.authService.setUser(loginResponse);
         this.router.navigate(['']);
-      });
+      },
+      error: (): void => {
+        this.snackbarService.showMessage('Failed to login', 'error');
+      }
+    });
   }
 }

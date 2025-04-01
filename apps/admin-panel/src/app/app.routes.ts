@@ -14,5 +14,6 @@ export const appRoutes: Route[] = [
   {
     path: 'admin-management',
     loadChildren: () => import('./modules/admin-management/admin-management.module').then((m) => m.AdminManagementModule),
+    canActivate: [AuthGuard],
   },
 ];

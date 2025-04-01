@@ -12,13 +12,14 @@ import {
   NotificationsPreprocessorCronService,
   NotificationDeliveryCronService,
 } from './crons';
-import { CoreModule, GLOBAL_VARIABLES } from '@sue-bot-platform/core';
+import { CoreModule, GLOBAL_VARIABLES, LoggerOptions } from '@sue-bot-platform/core';
 import { ApiModule } from '@sue-bot-platform/api';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { ConfigService } from '@nestjs/config';
 import { session } from 'telegraf';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { LoggerModule } from 'nestjs-pino';
 
 const SCENES = [RecipesScene, TipsScene, SkinTypeTestScene, SubscriptionScene, SettingsScene, SceneStateService];
 const CRONS = [ServerPingCronService, UserActivityResetCronService, NotificationsPreprocessorCronService, NotificationDeliveryCronService];
@@ -27,6 +28,7 @@ const CRONS = [ServerPingCronService, UserActivityResetCronService, Notification
   imports: [
     CoreModule,
     ApiModule,
+    LoggerModule.forRoot(LoggerOptions),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../../dist/apps/admin-panel'),
       serveRoot: '/admin-panel',

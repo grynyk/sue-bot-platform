@@ -6,8 +6,9 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
 import { BotUserStats } from '@sue-bot-platform/types';
 import { BotMetricsService } from '../../services/bot-metrics.service';
-import { InlineLoadingSpinnerComponent, ScreenSizeService } from '../../../../shared';
+import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { ChartDataSeries } from '../../models/chart.model';
+import { ScreenSizeService } from '../../../../services';
 @Component({
   standalone: true,
   selector: 'sue-bot-users-metrics-widget',

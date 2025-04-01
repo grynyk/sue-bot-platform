@@ -2,3 +2,4 @@ export enum AUTH_MODE {
   LOGIN = 'LOGIN',
   REGISTRATION = 'REGISTRATION',
 }
+

@@ -4,7 +4,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ConfirmService } from './service/confirm.service';
+import { ConfirmService } from './services/confirm.service';
 
 @NgModule({
   providers: [ConfirmService],

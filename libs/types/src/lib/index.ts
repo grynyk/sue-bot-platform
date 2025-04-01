@@ -3,3 +3,4 @@ export * from './platform-context';
 export * from './notifications-data';
 export * from './bot-user-data';
 export * from './skin-type-test-data';
+export * from './admin-panel-user-data';

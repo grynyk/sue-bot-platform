@@ -6,19 +6,24 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BotNotification } from './modules/notification-data/entities/bot-notification.entity';
 import { QueuedNotification } from './modules/notification-data/entities/queued-notification';
-import { CoreModule, GLOBAL_VARIABLES } from '@sue-bot-platform/core';
+import { CoreModule, GLOBAL_VARIABLES, LoggerOptions } from '@sue-bot-platform/core';
 import { SkinTypeTestDataModule } from './modules/skin-type-test-data';
 import { SkinTypeTestProduct, SkinTypeTestResult } from './modules/skin-type-test-data/entities';
 import { ServerMetricsModule } from './modules/server-metrics';
+import { AdminPanelUser } from './modules/admin-panel-user-data/entities';
+import { AdminPanelUserDataModule } from './modules/admin-panel-user-data/admin-panel-user-data.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
     CoreModule,
+    LoggerModule.forRoot(LoggerOptions),
     BotUserDataModule,
     NotificationDataModule,
     PlatformContextDataModule,
     SkinTypeTestDataModule,
     ServerMetricsModule,
+    AdminPanelUserDataModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -33,7 +38,7 @@ import { ServerMetricsModule } from './modules/server-metrics';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [BotUser, BotUserActivityLog, BotNotification, QueuedNotification, PlatformContext, SkinTypeTestProduct, SkinTypeTestResult],
+        entities: [BotUser, BotUserActivityLog, BotNotification, QueuedNotification, PlatformContext, SkinTypeTestProduct, SkinTypeTestResult, AdminPanelUser],
         synchronize: true,
         logging: false,
       }),

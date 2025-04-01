@@ -3,14 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
 import { ServerMetrics } from '@sue-bot-platform/types';
 import axios, { AxiosResponse } from 'axios';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 @Injectable()
 export class ServerMetricsService {
   private readonly baseUrl: string;
   private readonly token: string;
 
   constructor(
-    @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly configService: ConfigService
   ) {
     this.baseUrl = this.configService.get<string>(GLOBAL_VARIABLES.HEROKU_API_URL);
@@ -30,8 +28,7 @@ export class ServerMetricsService {
         maintenance: serverData.data.maintenance,
         releaseDate: serverData.data.released_at,
       };
-    } catch (error) {
-      this.logger.error(`Bot user repo update(...): ${error.message}`);
+    } catch {
       return {
         state: null,
         maintenance: null,

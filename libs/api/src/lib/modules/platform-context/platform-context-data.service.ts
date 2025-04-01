@@ -2,15 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PlatformContext } from './entities/platform-context.entity';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { SEASON } from '@sue-bot-platform/types';
 import { isNil } from 'lodash';
 
 @Injectable()
 export class PlatformContextDataService {
   constructor(
-    @InjectRepository(PlatformContext) private readonly repository: Repository<PlatformContext>,
-    @InjectPinoLogger() protected readonly logger: PinoLogger
+    @InjectRepository(PlatformContext) private readonly repository: Repository<PlatformContext>
   ) {}
 
   async init(): Promise<PlatformContext> {

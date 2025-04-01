@@ -14,6 +14,8 @@ export enum GLOBAL_VARIABLES {
   NODE_ENV = 'NODE_ENV',
   TZ = 'TZ',
   ADMIN_CHAT_ID = 'ADMIN_CHAT_ID',
+  JWT_SECRET = 'JWT_SECRET',
+  JWT_EXPIRATION = 'JWT_EXPIRATION'
 }
 
 export enum ENV {

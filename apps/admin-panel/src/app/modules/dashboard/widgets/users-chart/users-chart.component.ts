@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import { ChartsModule } from '../../../../shared/charts/charts.module';
-import { InlineLoadingSpinnerComponent, ScreenSizeService } from '../../../../shared';
+import { InlineLoadingSpinnerComponent } from '../../../../shared';
 import { ChartData, ChartDataSeries } from '../../models/chart.model';
 import { BotMetricsService } from '../../services/bot-metrics.service';
 import { BOT_USER_STATUS, BotUserActivityMetrics } from '@sue-bot-platform/types';
 import { forkJoin } from 'rxjs';
+import { ScreenSizeService } from '../../../../services';
 
 @Component({
   standalone: true,
@@ -75,7 +76,7 @@ export class UsersChartWidgetComponent implements OnInit {
   private setChartConfig(): void {
     const isMobile: boolean = this.screenSizeService.isMobile();
     const width: number = isMobile ? window.innerWidth * 0.9 : window.innerWidth * 0.55;
-    const height: number = isMobile ? 200 : 345;
+    const height: number = isMobile ? 200 : 350;
     this.view = [width, height];
     this.timeline = !isMobile;
     this.showXAxis = true;
