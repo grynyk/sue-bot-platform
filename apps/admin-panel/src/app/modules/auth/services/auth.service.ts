@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   registrationRequest(payload: RegistrationData): Observable<AdminPanelUser> {
-    return this.http.post(`${this.baseUrl}/request`, payload).pipe(
+    return this.http.post(`${this.baseUrl}/access`, payload).pipe(
       map((v: object): AdminPanelUser => v as AdminPanelUser),
       catchError((error: HttpErrorResponse): Observable<never> => {
         throw error;

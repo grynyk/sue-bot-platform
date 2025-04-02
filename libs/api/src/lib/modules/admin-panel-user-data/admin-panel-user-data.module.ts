@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
+import { AdminPanelUsersController } from './controllers/admin-panel-users.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
     }),
     PassportModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AdminPanelUsersController],
   providers: [
     AdminPanelUserService,
     JwtStrategy,

@@ -10,6 +10,10 @@ import { CreateAdminPanelUserDto } from '../dto';
 export class AdminPanelUserService {
   constructor(@InjectRepository(AdminPanelUser) private readonly repository: Repository<AdminPanelUser>) {}
 
+  async findAll(): Promise<AdminPanelUser[]> {
+    return this.repository.find();
+  }
+
   async findOne(email: string): Promise<AdminPanelUser | undefined> {
     return this.repository.findOne({ where: { email } });
   }

@@ -1,7 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { AdminItem } from '../../models/admin-list.model';
 import { isNil } from 'lodash';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +12,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { AdminPanelUser } from '@sue-bot-platform/api';
 @Component({
   selector: 'sue-admin-table',
   styleUrls: ['admin-table.component.scss'],
@@ -34,17 +34,15 @@ import { MatMenuModule } from '@angular/material/menu';
 export class AdminTableComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @Input() data: AdminItem[];
+  @Input() dataSource: MatTableDataSource<AdminPanelUser>;
 
-  displayedColumns: string[] = ['select', 'name', 'email', 'role', 'status', 'lastLogin', 'createdAt'];
-  dataSource: MatTableDataSource<AdminItem>;
-  selection: SelectionModel<AdminItem>;
+  displayedColumns: string[] = ['select', 'email', 'name', 'role', 'status', 'lastLogin', 'createdAt'];
+  selection: SelectionModel<AdminPanelUser>;;
   resultsLength: number;
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<AdminItem>(this.data);
-    this.resultsLength = this.data.length;
-    this.selection = new SelectionModel<AdminItem>(false, []);
+    this.resultsLength = this.dataSource.data.length;
+    this.selection = new SelectionModel<AdminPanelUser>(false, []);
   }
 
   ngAfterViewInit(): void {
@@ -53,15 +51,15 @@ export class AdminTableComponent implements OnInit, AfterViewInit {
   }
 
   changeRole(): void {
-    const adminItem: AdminItem = this.selection.selected[0];
-    if (isNil(adminItem)) {
+    const user: AdminPanelUser = this.selection.selected[0];
+    if (isNil(user)) {
       return;
     }
   }
 
   toggleStatus(): void {
-    const adminItem: AdminItem = this.selection.selected[0];
-    if (isNil(adminItem)) {
+    const user: AdminPanelUser = this.selection.selected[0];
+    if (isNil(user)) {
       return;
     }
   }

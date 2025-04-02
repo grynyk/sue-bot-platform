@@ -16,7 +16,7 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @Post('request')
+  @Post('access')
   async register(@Body() body: RegistrationData): Promise<AdminPanelUser> {
     return this.authService.register(body);
   }
