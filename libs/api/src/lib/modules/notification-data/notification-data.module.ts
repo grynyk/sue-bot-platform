@@ -5,9 +5,10 @@ import { QueuedNotification } from './entities/queued-notification';
 import { QueuedNotificationDataService } from './services/queued-notification-data.service';
 import { NotificationDataService } from './services/notification-data.service';
 import { NotificationDataController } from './notification-data.controller';
+import { AdminPanelUserDataModule } from '../admin-panel-user-data';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BotNotification, QueuedNotification])],
+  imports: [TypeOrmModule.forFeature([BotNotification, QueuedNotification]), AdminPanelUserDataModule],
   controllers: [NotificationDataController],
   providers: [NotificationDataService, QueuedNotificationDataService],
   exports: [NotificationDataService, QueuedNotificationDataService],
