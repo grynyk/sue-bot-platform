@@ -6,7 +6,7 @@ import { isNil } from 'lodash';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class TelegramBotTokenGuard implements CanActivate {
+export class BotAuthGuard implements CanActivate {
   constructor(private readonly configService: ConfigService) {}
   canActivate(
     context: ExecutionContext,
@@ -14,11 +14,11 @@ export class TelegramBotTokenGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token: string = request.headers['x-telegram-bot-token'];
     if (isNil(token)) {
-      throw new UnauthorizedException('Telegram bot token missing');
+      throw new UnauthorizedException('Bot token missing');
     }
     const validToken: string = this.configService.getOrThrow<string>(GLOBAL_VARIABLES.BOT_TOKEN);
     if (token !== validToken) {
-      throw new UnauthorizedException('Invalid Telegram bot token');
+      throw new UnauthorizedException('Invalid bot token');
     }
     return true;
   }

@@ -93,7 +93,7 @@ export class NotificationDeliveryCronService {
       if (!notificationData) {
         throw new NotFoundException(`Notification with id ${data.notificationId} not found`);
       }
-      await this.sendTelegramMessage(user, notificationData);
+      await this.sendBotMessage(user, notificationData);
       await this.queuedNotificationDataService.markAsProcessed(data.id);
     } catch (error) {
       this.logger.error(`Failed to send notification ${data.id} to user ${data.userId}: ${error.message}`, error.stack);
@@ -101,7 +101,7 @@ export class NotificationDeliveryCronService {
     }
   }
 
-  private async sendTelegramMessage(user: BotUser, notification: BotNotification): Promise<void> {
+  private async sendBotMessage(user: BotUser, notification: BotNotification): Promise<void> {
     let caption: string;
     try {
       caption = sample(notification.captions);

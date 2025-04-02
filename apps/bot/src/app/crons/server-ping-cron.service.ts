@@ -8,12 +8,13 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 @Injectable()
 export class ServerPingCronService {
   private readonly baseUrl: string;
-
+  private readonly botToken: string;
   constructor(
     @InjectPinoLogger() protected readonly logger: PinoLogger,
     private readonly configService: ConfigService
   ) {
     this.baseUrl = this.configService.getOrThrow<string>(GLOBAL_VARIABLES.HEROKU_URL);
+    this.botToken = this.configService.getOrThrow<string>(GLOBAL_VARIABLES.BOT_TOKEN);
   }
 
   /**
@@ -24,7 +25,11 @@ export class ServerPingCronService {
   keepAwake(): void {
     this.logger.info(`Pinging ${this.baseUrl} to keep the dyno awake.`);
     axios
-      .get(`${this.baseUrl}/api/notifications`)
+      .get(`${this.baseUrl}/api/notifications`, {
+        headers: {
+          'x-telegram-bot-token': this.botToken,
+        },
+      })
       .then((response: AxiosResponse): void => {
         this.logger.info(`Ping successful. Status: ${response.status}`);
       })

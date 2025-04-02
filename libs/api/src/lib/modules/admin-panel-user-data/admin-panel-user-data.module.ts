@@ -4,7 +4,7 @@ import { AdminPanelUser } from './entities';
 import { AuthController } from './controllers';
 import { AdminPanelUserService, AuthService } from './services';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtAuthGuard, TelegramBotTokenGuard } from './guards';
+import { JwtAuthGuard, BotAuthGuard, MultiAuthGuard } from './guards';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy, LocalStrategy } from './strategies';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -29,9 +29,10 @@ import { GLOBAL_VARIABLES } from '@sue-bot-platform/core';
     JwtStrategy,
     LocalStrategy,
     AuthService,
-    TelegramBotTokenGuard,
-    JwtAuthGuard
+    BotAuthGuard,
+    JwtAuthGuard,
+    MultiAuthGuard
   ],
-  exports: [AuthService, TelegramBotTokenGuard, JwtAuthGuard],
+  exports: [AuthService, BotAuthGuard, JwtAuthGuard, MultiAuthGuard],
 })
 export class AdminPanelUserDataModule {}

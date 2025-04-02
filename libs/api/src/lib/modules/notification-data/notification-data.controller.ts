@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { NotificationDataService, QueuedNotificationDataService } from './services';
 import { BotNotification } from './entities/bot-notification.entity';
 import { QueuedNotificationsMetrics } from '@sue-bot-platform/types';
-import { JwtAuthGuard, TelegramBotTokenGuard } from '../admin-panel-user-data';
+import { MultiAuthGuard } from '../admin-panel-user-data';
 
 @Controller('notifications')
 export class NotificationDataController {
@@ -11,13 +11,13 @@ export class NotificationDataController {
     private readonly queuedNotificationDataService: QueuedNotificationDataService
   ) {}
 
-  @UseGuards(TelegramBotTokenGuard)
+  @UseGuards(MultiAuthGuard)
   @Get()
   findAll(): Promise<BotNotification[]> {
     return this.notificationDataService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(MultiAuthGuard)
   @Get('metrics')
   async metrics(): Promise<QueuedNotificationsMetrics> {
     const queuedNotificationsMetrics: QueuedNotificationsMetrics = await this.queuedNotificationDataService.getMetrics();
