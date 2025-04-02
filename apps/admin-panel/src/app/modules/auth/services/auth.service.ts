@@ -3,17 +3,18 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { LoginData, LoginResponse, RegistrationData } from '@sue-bot-platform/types';
-import { isNil } from 'lodash';
 import { Router } from '@angular/router';
 import { AdminPanelUser } from '@sue-bot-platform/api';
+import { isNil } from 'lodash';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = '/api/auth';
-  private _currentUser$: BehaviorSubject<LoginResponse>;
+  private _currentUser$: BehaviorSubject<LoginResponse | null> = new BehaviorSubject<LoginResponse | null>(null);
 
-  get currentUser$(): Observable<LoginResponse> {
+  get currentUser$(): Observable<LoginResponse | null> {
     return this._currentUser$.asObservable();
   }
 
@@ -25,13 +26,22 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    const storedUser: string | null = localStorage.getItem('current_user');
-    const currentUser: LoginResponse | null = storedUser ? JSON.parse(storedUser) : null;
-    this._currentUser$ = new BehaviorSubject<LoginResponse>(currentUser);
+    this.loadUserFromStorage();
+  }
+
+  private loadUserFromStorage(): void {
+    const storedUser: string = localStorage.getItem('current_user');
+    if (storedUser) {
+      this._currentUser$.next(JSON.parse(storedUser));
+    }
   }
 
   login({ email, password }: LoginData): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, password }).pipe(
+      map((user: LoginResponse): LoginResponse=> {
+        this.setUser(user);
+        return user;
+      }),
       catchError((error: HttpErrorResponse): Observable<never> => {
         throw error;
       })
@@ -40,7 +50,7 @@ export class AuthService {
 
   registrationRequest(payload: RegistrationData): Observable<AdminPanelUser> {
     return this.http.post(`${this.baseUrl}/request`, payload).pipe(
-      map((v: object) => v as AdminPanelUser),
+      map((v: object): AdminPanelUser => v as AdminPanelUser),
       catchError((error: HttpErrorResponse): Observable<never> => {
         throw error;
       })

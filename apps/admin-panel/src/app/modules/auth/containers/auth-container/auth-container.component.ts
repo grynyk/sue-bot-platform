@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, Observable } from 'rxjs';
 import { SnackbarService } from '../../../../shared/snackbar';
-import { LoginData, LoginResponse } from '@sue-bot-platform/types';
+import { LoginData } from '@sue-bot-platform/types';
 import { RegistrationData as RegistrationDataApi } from '@sue-bot-platform/types';
 
 @Component({
@@ -57,8 +57,7 @@ export class AuthContainerComponent {
 
   onLogin(payload: LoginData): void {
     this.authService.login(payload).subscribe({
-      next: (loginResponse: LoginResponse) => {
-        this.authService.setUser(loginResponse);
+      next: (): void => {
         this.router.navigate(['']);
       },
       error: (): void => {
