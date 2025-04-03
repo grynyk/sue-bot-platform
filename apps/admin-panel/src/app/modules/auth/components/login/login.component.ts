@@ -7,17 +7,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormErrorPipe, FormValidators } from '../../../../shared/forms';
 import { LoginData } from '@sue-bot-platform/types';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
   selector: 'sue-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormErrorPipe],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, FormErrorPipe],
 })
 export class LoginComponent {
   @Output() submitted: EventEmitter<LoginData> = new EventEmitter<LoginData>();
   formGroup: FormGroup<LoginForm>;
+
+  isHiddenPassword = true;
 
   get email(): FormControl<string | null> {
     return this.formGroup.controls.email;
@@ -39,5 +42,9 @@ export class LoginComponent {
       return;
     }
     this.submitted.emit(this.formGroup.getRawValue());
+  }
+
+  togglePasswordVisibility(): void {
+    this.isHiddenPassword = !this.isHiddenPassword;
   }
 }

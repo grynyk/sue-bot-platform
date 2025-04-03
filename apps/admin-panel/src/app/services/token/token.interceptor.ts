@@ -18,14 +18,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.authService.currentUser$.pipe(
-      filter((res: LoginResponse | null): boolean => !isNil(res)),
+      filter((res: LoginResponse | null): boolean => isNil(res)),
       take(1),
       switchMap((loginResponse: LoginResponse): Observable<HttpEvent<unknown>> => {
         const token: string = loginResponse.access_token;
-        const clonedRequest = req.clone({
+        const clonedRequest: HttpRequest<unknown> = req.clone({
           setHeaders: { Authorization: `Bearer ${token}` },
         });
-
         return next.handle(clonedRequest).pipe(
           catchError((error: HttpErrorResponse): Observable<never> => {
             if (error.status === 401) {
