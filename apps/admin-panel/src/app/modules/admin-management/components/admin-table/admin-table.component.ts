@@ -40,6 +40,14 @@ export class AdminTableComponent implements OnInit, AfterViewInit {
   selection: SelectionModel<AdminPanelUser>;;
   resultsLength: number;
 
+  get isToggleStatusButtonDisabled(): boolean {
+    return this.selection.selected.length !== 1;
+  }
+
+  get isChangeRoleButtonDisabled(): boolean {
+    return this.selection.selected.length !== 1;
+  }
+
   ngOnInit(): void {
     this.resultsLength = this.dataSource.data.length;
     this.selection = new SelectionModel<AdminPanelUser>(false, []);

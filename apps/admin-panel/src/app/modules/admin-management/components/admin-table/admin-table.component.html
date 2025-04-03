@@ -4,13 +4,11 @@
       <div class="action-bar__buttons-mobile">
         <button type="button" mat-stroked-button (click)="toggleStatus()" [matMenuTriggerFor]="menu">Modify</button>
         <mat-menu #menu="matMenu">
-          <button type="button" mat-menu-item (click)="toggleStatus()">Change Status</button>
-          <button type="button" mat-menu-item (click)="changeRole()">Change Role</button>
+          <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
         </mat-menu>
       </div>
       <div class="action-bar__buttons">
-        <button type="button" mat-stroked-button (click)="toggleStatus()">Change Status</button>
-        <button type="button" mat-stroked-button (click)="changeRole()">Change Role</button>
+        <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
       </div>
       <div class="action-bar__search theme-small">
         <mat-form-field [appearance]="'outline'">
@@ -74,3 +72,8 @@
   </div>
   <mat-paginator #paginator [length]="resultsLength" [pageSize]="5"> </mat-paginator>
 </mat-card>
+
+<ng-template #actionButtons>
+  <button [disabled]="isToggleStatusButtonDisabled" type="button" mat-stroked-button (click)="toggleStatus()">Change Status</button>
+  <button [disabled]="isChangeRoleButtonDisabled" type="button" mat-stroked-button (click)="changeRole()">Change Role</button>
+</ng-template>
